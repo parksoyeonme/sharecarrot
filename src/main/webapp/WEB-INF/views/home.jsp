@@ -7,6 +7,7 @@
 <body>
 <h1>
 	Hello Old world!  
+	"새로운 시대가 와따"
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
