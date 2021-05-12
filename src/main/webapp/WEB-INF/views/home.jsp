@@ -7,14 +7,9 @@
 <body>
 <h1>
 
-	Hello NEW world!!!! 
-
-
-	"ìë¡ì´ ìëê° ìë°"
-	"안녕하세요~" 
+hello
 
 </h1>
-
 <P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>
