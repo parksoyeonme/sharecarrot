@@ -12,8 +12,8 @@
    <!-- Root Context: defines shared resources visible to all other web components -->
    <!-- 자원들을 정의하세요 다른 compt에 노출시킬 자원을 정의하세요 데이터소스 마이바티스 트랜젹션 등-->   
    <context:property-placeholder location="classpath:data-source.properties" />
-   
-   <!-- security빈 -->
+
+
    
    
    <!-- Root Context: defines shared resources visible to all other web components -->
