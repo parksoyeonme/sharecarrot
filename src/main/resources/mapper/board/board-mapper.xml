@@ -3,18 +3,48 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-	<select id="selectBoardList" resultType="board">
-		select
-		    *
-		from
-		    board
-		order by
-		    board_no desc
+	<select id="selectBoardList" resultMap="boardCollectionMap">
+		select b.*,
+	        a.board_img_id,
+	        a.board_img_origin,
+	        a.board_img_renamed,
+	        a.board_no
+		from board b
+	        left join board_image a
+	            on b.board_no = a.board_no
+		<if test="boardCategory != '' and boardCategory != null">
+	        where b.board_category = #{boardCategory}
+	 	</if>
+	 	order by
+		    b.board_no desc
 	</select>
 	
-	<select id="getTotalContents" resultType="_int">
+	<resultMap type="board" id="boardCollectionMap">
+		<id column="board_no" property="boardNo" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<result column="board_enroll_date" property="boardEnrollDate" />
+		<result column="board_update_date" property="boardUpdateDate" />
+		<result column="board_delete_yn" property="boardDeleteYN" />
+		<result column="board_category" property="boardCategory" />
+		<result column="board_like" property="boardLike" />
+		<result column="member_id" property="memberId" />
+		<collection property="boardImageList" ofType="boardImage">
+			<id column="board_img_id" property="boardImgId" />
+			<result column="board_img_origin" property="boardImgOrigin" />
+			<result column="board_img_renamed" property="boardImgRenamed" />
+			<result column="board_no" property="boardNo" />
+		</collection>
+	</resultMap>
+	
+	
+	
+	<select id="getTotalContents" resultType="_int" parameterType="string">
 		select count(*)
 		from board
+		<if test="value != '' and value != null">
+	        where board_category = #{value}
+	 	</if>
 	</select>
 	
 	<insert id="insertBoard">
