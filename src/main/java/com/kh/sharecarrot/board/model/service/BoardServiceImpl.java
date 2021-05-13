@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.sharecarrot.board.model.dao.BoardDao;
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardImage;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -23,5 +24,21 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int getTotalContents() {
 		return boardDao.getTotalContents();
+	}
+
+	@Override
+	public int insertBorad(Board board) {
+		int result = 0;
+		//1. board객체 등록
+		result = boardDao.insertBoard(board);
+		
+		//2.boardImageList 등록
+		if(!board.getBoardImageList().isEmpty()) {
+			for(BoardImage boardImg : board.getBoardImageList()) {
+				boardImg.setBoardNo(board.getBoardNo());
+				result = boardDao.insertBoardImg(boardImg);
+			}
+		}
+		return result;
 	}
 }

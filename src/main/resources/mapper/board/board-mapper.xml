@@ -16,5 +16,36 @@
 		select count(*)
 		from board
 	</select>
+	
+	<insert id="insertBoard">
+		insert into board
+		values (
+			seq_board_no.nextval,
+			#{boardTitle},
+			#{boardContent},
+			default,
+			default,
+			default,
+			#{boardCategory},
+			default,
+			#{memberId}
+		)
+		
+		<selectKey resultType="_int" keyProperty="boardNo" order="AFTER">
+			select seq_board_no.currval
+			from dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertBoardImg">
+		insert into
+			board_image
+		values (
+			seq_board_image_no.nextval,
+			#{boardImgOrigin},
+			#{boardImgRenamed},
+			#{boardNo}
+		)
+	</insert>
 
 </mapper>
