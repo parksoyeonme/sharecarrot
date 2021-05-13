@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +31,9 @@
     <header>
     <ul class="nav nav-pills nav-fill" id="header-nav">
         <li class="nav-item" style="padding-top: 7px;">
-            <img src="${pageContext.request.contextPath}/resources/images/mainlogo.png" style="max-height: 50px;">
+	        <a href="${pageContext.request.contextPath}">
+	            <img src="${pageContext.request.contextPath}/resources/images/mainlogo.png" style="max-height: 50px;">
+	        </a>
         </li>
         <li class="nav-item">
             <div class="input-group mb-3">
@@ -41,10 +43,19 @@
         </li>
         <li class="nav-item">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" class="btn btn-primary">로그인</button>
-                <button type="button" class="btn btn-primary">회원가입</button>
-                <button type="button" class="btn btn-primary">판매하기</button>
-                <button type="button" class="btn btn-primary">내상점</button>
+   				<sec:authorize access="isAnonymous()">
+	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do';">로그인</button>
+	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do';">회원가입</button>
+	                <button type="button" class="btn btn-primary">판매하기</button>
+	                <button type="button" class="btn btn-primary">내상점</button>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+               		<form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
+					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
+	                </form:form>
+	                <button type="button" class="btn btn-primary">판매하기</button>
+	                <button type="button" class="btn btn-primary">내상점</button>
+                </sec:authorize>
                 <div class="btn-group" role="group">
                   <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     카테고리

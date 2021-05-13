@@ -35,7 +35,7 @@
 					default-target-url="/"
 					always-use-default-target="false"  
 					username-parameter="memberId" 
-					password-parameter="password"
+					password-parameter="memberPassword"
 					/>
 					
         <!-- logout-url은 로그아웃 POST 요청할 url로 핸들러 메소드 작성불필요 -->
