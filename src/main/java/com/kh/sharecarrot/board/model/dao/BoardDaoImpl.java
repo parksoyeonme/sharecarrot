@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardImage;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -28,6 +29,16 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public int getTotalContents() {
 		return session.selectOne("board.getTotalContents");
+	}
+
+	@Override
+	public int insertBoard(Board board) {
+		return session.insert("board.insertBoard", board);
+	}
+
+	@Override
+	public int insertBoardImg(BoardImage boardImg) {
+		return session.insert("board.insertBoardImg",boardImg);
 	}
 
 }
