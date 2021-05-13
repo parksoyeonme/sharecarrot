@@ -10,7 +10,7 @@ public interface BoardDao {
 
 	List<Board> selectBoardList(Map<String, Object> param);
 
-	int getTotalContents();
+	int getTotalContents(String boardCategory);
 
 	int insertBoard(Board board);
 

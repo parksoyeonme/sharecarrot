@@ -6,6 +6,9 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<style>
+</style>
 <section id="board-container" class="container">
 <br />
 	<ul class="nav nav-tabs nav-fill" id="navBars">
@@ -13,19 +16,19 @@
       <a class="nav-link active" aria-current="page" href="#">전체</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">여행/음식</a>
+      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C1">여행/음식</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">취미생활</a>
+      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C2">취미생활</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">헬스/다이어트</a>
+      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C3">헬스/다이어트</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">반려동물</a>
+      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C4">반려동물</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">회사생활</a>
+      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5">회사생활</a>
     </li>
   </ul>
 
@@ -61,22 +64,53 @@
 	</select>
 	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success pull-right" onclick="goBoardForm();"/>
 
-	<table id="tbl-board" class="table table-striped table-hover">
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>작성자</th>
-			<th>작성일</th>
-		</tr>
-		<c:forEach items="${boardList}" var="board">
-		<tr data-no="${board.boardNo}">
-			<td>${board.boardNo}</td>
-			<td>${board.boardTitle}</td>
-			<td>${board.memberId}</td>
-			<td><fmt:formatDate value="${board.boardEnrollDate}" pattern="yyyy-MM-dd"/></td>
-		</tr>
-		</c:forEach>
-	</table>
+	<c:forEach items="${boardList}" var="board">
+		<table id="tbl-board" class="table table-striped table-hover">
+			<tr>
+				<td>${board.memberId}</td>
+				<th colspan="2">${board.boardTitle}</th>
+				<td><fmt:formatDate value="${board.boardEnrollDate}" pattern="yyyy-MM-dd"/></td>
+			</tr>
+			<tr id="boardImage-tr">
+			<td colspan="4">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+					<div class="carousel-item active" style="height:500px;"></div>
+					<c:forEach items="${board.boardImageList}" var="boardImg">
+					  <div class="carousel-item">
+					    <img src="${pageContext.request.contextPath}/resources/upload/board/${boardImg.boardImgRenamed}" class="d-block w-100" alt="...">
+					  </div>
+					  </c:forEach>
+					</div>
+					<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+					  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					  <span class="visually-hidden">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+					  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+					  <span class="visually-hidden">Next</span>
+					</a>
+				</div>
+			</td>
+				<%-- <td><img src="${pageContext.request.contextPath}/resources/upload/board/${boardImg.boardImgRenamed}" /></td> --%>
+			</tr>
+			<tr>
+				<td colspan="4">${board.boardContent}</td>
+			</tr>
+			<tr>
+				<td>좋아요버튼</td>
+			</tr>
+			<tr>
+				<td colspan="4">댓글창</td>
+			<tr>
+			<tr>
+				<td colspan="4">
+					<textarea id="boardCommentText" style="width:80%;"></textarea>
+					<input type="button" class="btn btn-primary" value="댓글 등록" style="margin-top: -50px;"/>
+				</td>
+			</tr>
+		</table>
+	</c:forEach>
 	${pageBar}
 </section>
 <script>

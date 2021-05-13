@@ -43,18 +43,19 @@ public class BoardController {
 	private ServletContext servletContext; // application객체 파일의 절대경로를 알아낼수 있음
 	
 	@GetMapping("/boardList.do")
-	public void boardList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+	public void boardList(@RequestParam(defaultValue = "1") int cPage, @RequestParam(defaultValue =  "") String boardCategory,Model model, HttpServletRequest request) {
+		log.info("boardCategory = {}", boardCategory);
 		//사용자 입력값
 		int numPerPage = 5;
 		Map<String, Object> param = new HashMap<>();
 		param.put("numPerPage", numPerPage);
 		param.put("cPage", cPage);
-		
+		param.put("boardCategory", boardCategory);
 		//select boardList
 		List<Board> boardList = boardService.selectBoardList(param);
 		
 		//get pageBar
-		int totalContents = boardService.getTotalContents();
+		int totalContents = boardService.getTotalContents(boardCategory);
 		log.debug("totalContents = {}", totalContents);
 		String url = request.getRequestURI();
 		log.debug("url = {}", url);
