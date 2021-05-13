@@ -31,7 +31,9 @@
     <header>
     <ul class="nav nav-pills nav-fill" id="header-nav">
         <li class="nav-item" style="padding-top: 7px;">
-            <img src="${pageContext.request.contextPath}/resources/images/mainlogo.png" style="max-height: 50px;">
+	        <a href="${pageContext.request.contextPath}">
+	            <img src="${pageContext.request.contextPath}/resources/images/mainlogo.png" style="max-height: 50px;">
+	        </a>
         </li>
         <li class="nav-item">
             <div class="input-group mb-3">
