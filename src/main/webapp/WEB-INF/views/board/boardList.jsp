@@ -66,6 +66,7 @@
 	}
 	
 	$(document).ready(function(){
+		console.log('t');
 		var boardListCnt = $(boardList).children().length;
 		var boardCategory = '<c:out value="${param.boardCategory}" />'
 		var cPage = 1;
