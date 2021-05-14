@@ -80,7 +80,7 @@
          <tx:method name="update*" rollback-for="Exception"/>
          <tx:method name="delete*" rollback-for="Exception"/>
       </tx:attributes>
-   </tx:advice>
+   </tx:advice> 
    <aop:config proxy-target-class="true">
       <aop:pointcut id="serviceMethod" expression="execution(* com.kh.sharecarrot..*ServiceImpl.*(..)))"/>
       <aop:pointcut id="serviceMethod" expression="execution(* com.kh.security..*ServiceImpl.*(..)))"/>
