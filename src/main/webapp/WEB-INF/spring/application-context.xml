@@ -65,7 +65,10 @@
    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
       <property name="dataSource" ref="dataSource" />
    </bean>
-   	<bean id="securityService" class="com.kh.sharecarrot.member.model.service.MemberServiceImpl"></bean>
+
+<!--    	<bean id="securityService" class="com.kh.sharecarrot.member.model.service.MemberServiceImpl"> -->
+<!--    	    	<property name="securityService" ref="securityService"/> -->
+<!--    	</bean> -->
    
       <!-- #13.2. @Transactional이 붙은 메소드를 대상으로 Transaction Advice를 적용함. -->
 <!--    <tx:annotation-driven transaction-manager="transactionManager" /> -->
