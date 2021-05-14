@@ -6,6 +6,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <!-- 메인 페이지 작업영역 -->
 <link rel="stylesheet" href="./resources/css/index.css" />
+
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 <div class="container">
@@ -13,12 +14,33 @@
         <!-- 배너 시작 -->
         <!-- 이미지 슬라이더(carousel) 구현하기 -->
         <div class="banner">
-          <img src="./resources/images/sample_banner1.jpg" alt="배너">
+          <div class="slides">
+            <div class="slide">
+              <img src="./resources/images/sample_banner1.jpg" alt="배너1">
+            </div>
+            <div class="slide">
+              <img src="./resources/images/sample_banner2.jpg" alt="배너2">
+            </div>
+            <div class="slide">
+              <img src="./resources/images/sample_banner3.jpg" alt="배너3">
+            </div>
+          </div>
+          <div class="slide-controls">
+            <button id="prev-btn">
+              <
+            </button>
+            <button id="next-btn">
+              >
+            </button>
+         </div>
         </div>
         <!-- 배너 끝 -->
         <!-- 검색 시작 -->
         <div class="search">
-          <div class="location-nav" style="background-color: yellow">
+          <div style="display: flex">
+
+
+          <div class="location-nav">
             <select>
               <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
               <option value="" disabled selected>지역명</option>
@@ -26,7 +48,7 @@
               <option value="3">3</option>
             </select>
           </div>
-          <div class="category-nav" style="background-color: red">
+          <div class="category-nav">
             <select>
               <!-- 카테고리명 불러오기 -->
               <option value="" disabled selected>카테고리</option>
@@ -36,8 +58,9 @@
           </div>
           <div class="search-form">
             <!-- 폼 제출 방식 :  버튼? 엔터? -->
-            <input type="text">
+            <input type="text"  placeholder="검색어 입력">
           </div>
+        </div>
         </div>
         <!-- 검색 끝 -->
         <!-- 상품 리스트 시작 -->
@@ -175,7 +198,7 @@
         </div>
       </div>
     </div>
-
+    <script src="./resources/js/index.js"></script>
 
 
 

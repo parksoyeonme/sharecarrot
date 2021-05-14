@@ -20,6 +20,7 @@ public class Board {
 	private String boardCategory;
 	private int boardLike;
 	private String memberId;
+	private String locCode;
 	
 	private List<BoardImage> boardImageList;
 }

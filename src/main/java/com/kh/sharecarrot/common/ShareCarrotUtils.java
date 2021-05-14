@@ -79,7 +79,6 @@ public class ShareCarrotUtils {
 		return pageBar.toString();
 	}
 
-	
 
 
 
