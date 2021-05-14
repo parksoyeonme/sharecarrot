@@ -29,6 +29,7 @@
 		<result column="board_category" property="boardCategory" />
 		<result column="board_like" property="boardLike" />
 		<result column="member_id" property="memberId" />
+		<result column="loc_code" property="locCode" />
 		<collection property="boardImageList" ofType="boardImage">
 			<id column="board_img_id" property="boardImgId" />
 			<result column="board_img_origin" property="boardImgOrigin" />
@@ -58,7 +59,8 @@
 			default,
 			#{boardCategory},
 			default,
-			#{memberId}
+			#{memberId},
+			#{locCode}
 		)
 		
 		<selectKey resultType="_int" keyProperty="boardNo" order="AFTER">
