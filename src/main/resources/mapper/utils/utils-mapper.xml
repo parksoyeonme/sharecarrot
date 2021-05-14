@@ -6,4 +6,8 @@
 	<select id="selectLocationList" resultType="location">
 		select * from location
 	</select>
+	
+	<select id="selectCategoryList" resultType="category">
+		select * from category
+	</select>
 </mapper>
