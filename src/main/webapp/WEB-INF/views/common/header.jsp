@@ -46,8 +46,8 @@
    				<sec:authorize access="isAnonymous()">
 	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do';">로그인</button>
 	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do';">회원가입</button>
-	                <button type="button" class="btn btn-primary">판매하기</button>
-	                <button type="button" class="btn btn-primary">내상점</button>
+	                <button type="button" class="btn btn-primary" >판매하기</button>
+	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/mystore/mystore.do';">내상점</button>
                 </sec:authorize>
                 <sec:authorize access="isAuthenticated()">
                		<form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
