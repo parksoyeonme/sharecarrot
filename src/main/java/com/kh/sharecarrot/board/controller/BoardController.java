@@ -57,12 +57,20 @@ public class BoardController {
 	
 	@ResponseBody
 	@GetMapping("/searchBoardList.do")
-	public List<Board> searchBoardList(@RequestParam(defaultValue = "1") int cPage, int numPerPage,  @RequestParam(defaultValue =  "") String boardCategory) {
+	public List<Board> searchBoardList(@RequestParam(defaultValue = "1") int cPage, int numPerPage,  
+					@RequestParam(defaultValue =  "") String boardCategory, @RequestParam(defaultValue = "") String locCode) {
+		
+		//locCode 공백제거
+		locCode = locCode.trim();
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("cPage", cPage);
 		param.put("numPerPage", numPerPage);
 		param.put("boardCategory", boardCategory);
+		param.put("locCode", locCode);
 		
+		log.info("locCode = {}", locCode);
+		log.info("boardCategory = {}", boardCategory);
 		List<Board> boardList = boardService.selectBoardList(param);
 		
 		return boardList;

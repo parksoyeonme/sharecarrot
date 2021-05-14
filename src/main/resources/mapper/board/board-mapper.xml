@@ -12,9 +12,14 @@
 		from board b
 	        left join board_image a
 	            on b.board_no = a.board_no
-		<if test="boardCategory != '' and boardCategory != null">
-	        where b.board_category = #{boardCategory}
-	 	</if>
+	    <where>
+			<if test="boardCategory != '' and boardCategory != null">
+		        and b.board_category = #{boardCategory}
+		 	</if>
+		 	<if test="locCode != '' and locCode != null">
+		        and b.loc_code = #{locCode}
+		 	</if>
+	    </where>
 	 	order by
 		    b.board_no desc
 	</select>
