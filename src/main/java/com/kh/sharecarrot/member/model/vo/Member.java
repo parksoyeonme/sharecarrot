@@ -25,8 +25,9 @@ public class Member implements Serializable, UserDetails {
 	private String memberName;
 	private Date birthday;
 	private String email;
-	private String phnoe;
+	private String phone;
 	private boolean enabled;
+	private char quitYn;
 	private Date memberEnrollDate;
 	private String profileOriginal;
 	private String profileRenamed;
@@ -69,5 +70,10 @@ public class Member implements Serializable, UserDetails {
 	public String getPassword() {
 		return memberPassword;
 	}
-
+	
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }
