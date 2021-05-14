@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,6 +28,8 @@ import com.kh.sharecarrot.board.model.service.BoardService;
 import com.kh.sharecarrot.board.model.vo.Board;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.common.ShareCarrotUtils;
+import com.kh.sharecarrot.utils.model.service.UtilsService;
+import com.kh.sharecarrot.utils.model.vo.Location;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +40,8 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
-	
+	@Autowired
+	private UtilsService utilsService;
 	@Autowired
 	private ResourceLoader resourceLoader; // Resource 객체를 관리
 	
@@ -43,31 +49,30 @@ public class BoardController {
 	private ServletContext servletContext; // application객체 파일의 절대경로를 알아낼수 있음
 	
 	@GetMapping("/boardList.do")
-	public void boardList(@RequestParam(defaultValue = "1") int cPage, @RequestParam(defaultValue =  "") String boardCategory,Model model, HttpServletRequest request) {
-		log.info("boardCategory = {}", boardCategory);
-		//사용자 입력값
-		int numPerPage = 5;
-		Map<String, Object> param = new HashMap<>();
-		param.put("numPerPage", numPerPage);
-		param.put("cPage", cPage);
-		param.put("boardCategory", boardCategory);
-		//select boardList
-		List<Board> boardList = boardService.selectBoardList(param);
+	public void boardList(Model model) {
+		List<Location> locationList = utilsService.selectLocationList();
+		model.addAttribute(locationList);
 		
-		//get pageBar
-		int totalContents = boardService.getTotalContents(boardCategory);
-		log.debug("totalContents = {}", totalContents);
-		String url = request.getRequestURI();
-		log.debug("url = {}", url);
-		String pageBar = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
-		
-		//jsp
-		model.addAttribute("boardList", boardList);
-		model.addAttribute("pageBar", pageBar);
 	}
 	
+	@ResponseBody
+	@GetMapping("/searchBoardList.do")
+	public List<Board> searchBoardList(@RequestParam(defaultValue = "1") int cPage, int numPerPage,  @RequestParam(defaultValue =  "") String boardCategory) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("cPage", cPage);
+		param.put("numPerPage", numPerPage);
+		param.put("boardCategory", boardCategory);
+		
+		List<Board> boardList = boardService.selectBoardList(param);
+		
+		return boardList;
+	}
+	
+	
 	@GetMapping("/boardEnroll.do")
-	public void boardEnroll() {
+	public void boardEnroll(Model model) {
+		List<Location> locationList = utilsService.selectLocationList();
+		model.addAttribute(locationList);
 	}
 	
 	@PostMapping("/boardEnroll.do")

@@ -13,7 +13,7 @@
 <br />
 	<ul class="nav nav-tabs nav-fill" id="navBars">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#">전체</a>
+      <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/board/boardList.do">전체</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C1">여행/음식</a>
@@ -46,17 +46,9 @@
 
 	<select class="col-md-2" id="validationCustom04" required>
 	  <option selected disabled value="">지역선택</option>
-	  <option value="L1">강서구</option>
-	  <option value="L2">양천구</option>
-	  <option value="L3">구로구</option>
-	  <option value="L4">영등포구</option>
-	  <option value="L5">금천구</option>
-	  <option value="L6">동작구</option>
-	  <option value="L7">관악구</option>
-	  <option value="L8">서초구</option>
-	  <option value="L9">강남구</option>
-	  <option value="L10">송파구</option>
-	  <option value="L11">강동구</option>
+	  <c:forEach items="${locationList}" var="location">
+	  	<option value="${location.locCode}">${location.locName}</option>
+	  </c:forEach>
 	</select>
 	<select class="col-md-2" id="validationCustom04" required>
 	  <option value="latest">최신순</option>
@@ -64,45 +56,80 @@
 	</select>
 	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success pull-right" onclick="goBoardForm();"/>
 
-	<c:forEach items="${boardList}" var="board">
-		<table id="tbl-board" class="table table-striped table-hover">
-			<tr>
-				<td>${board.memberId}</td>
-				<th colspan="2">${board.boardTitle}</th>
-				<td><fmt:formatDate value="${board.boardEnrollDate}" pattern="yyyy-MM-dd"/></td>
-			</tr>
-			<tr id="boardImage-tr">
-			<td colspan="4">
-				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-					<div class="carousel-inner">
-					<div class="carousel-item active" style="height:500px;"></div>
-					<c:forEach items="${board.boardImageList}" var="boardImg">
-					  <div class="carousel-item">
-					    <img src="${pageContext.request.contextPath}/resources/upload/board/${boardImg.boardImgRenamed}" class="d-block w-100" alt="...">
-					  </div>
-					  </c:forEach>
-					</div>
-					<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
-					  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					  <span class="visually-hidden">Previous</span>
-					</a>
-					<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
-					  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-					  <span class="visually-hidden">Next</span>
-					</a>
-				</div>
-			</td>
-				<%-- <td><img src="${pageContext.request.contextPath}/resources/upload/board/${boardImg.boardImgRenamed}" /></td> --%>
-			</tr>
-			<tr>
-				<td colspan="4">${board.boardContent}</td>
-			</tr>
-			<tr>
-				<td>좋아요버튼</td>
-			</tr>
-			<tr>
-				<td colspan="4">댓글창</td>
-			<tr>
+	<div id="boardList">
+	</div>
+	<button id="searchMore" class="btn btn-outline-primary btn-block col-sm-10 mx-auto">더 보기</button>
+	
+	<script>
+	function goBoardForm(){
+		location.href="${pageContext.request.contextPath}/board/boardEnroll.do";
+	}
+	
+	$(document).ready(function(){
+		var boardListCnt = $(boardList).children().length;
+		var boardCategory = '<c:out value="${param.boardCategory}" />'
+		var cPage = 1;
+		var numPerPage = 5;
+		
+		readBoardList(cPage++);
+		
+		$(searchMore).click(function(){
+			readBoardList(cPage);
+			cPage++;
+		});
+		
+		function readBoardList(index){
+			console.log('${locationList}');
+			$.ajax({
+				type: "GET",
+				dataType : "json",
+				data: {
+					boardCategory : boardCategory,
+					cPage: index,
+					numPerPage: numPerPage
+				},
+				url: "${pageContext.request.contextPath}/board/searchBoardList.do?${_csrf.parameterName}=${_csrf.token}",
+				success: function(data){
+					console.log(data);
+					$.each(data, function(index, elem){
+						var html = "<table class='table table-striped table-hover'>";
+								html += "<tr>";
+									html += "<td>"+elem.memberId+"</td>";
+									html += "<th colspan='2'>"+elem.boardTitle+"</th>";
+									html += "<td>"+elem.boardEnrollDate+"</td>";
+									html += "<td>"+elem.locCode+"</td>";
+								html += "</tr>";
+								
+								html += "<tr id='boardImage-tr'>";
+									html += "<td colspan='4' style='margin: 0 auto;'>";	
+										$.each(elem.boardImageList, function(index, img){
+											html += "<img src='${pageContext.request.contextPath}/resources/upload/board/"+img.boardImgRenamed+"' class='img-thumbnail' style='width:200px; height:200px;' onclick='window.open(this.src)' />";
+										});
+									html += "</td>";
+								html += "</tr>";
+								html += "<tr><td colspan='4'>"+elem.boardContent+"</td></tr>";
+								html += "<tr><td><input type='button' class='btn btn-danger' value='좋아요'/></td><td>"+elem.boardLike+"</td></tr>";
+								html += "<tr><td colspan='4'>댓글창</td></tr>";
+								html +="<tr>";
+									html += "<td colspan='4'>";
+										html += "<textarea id='boardCommentText' style='width:80%;'></textarea>";
+										html += "<input type='button' class='btn btn-primary' value='댓글 등록' style='margin-top: -50px;'/>";
+									html += "</td>";
+								html += "</tr>";
+						html += "</table>";
+						
+						$(boardList).append(html);
+					});
+				},
+				error:function(request,status,error){
+		            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		           }
+			});
+		}
+	});
+	</script>
+	<%-- >
+
 			<tr>
 				<td colspan="4">
 					<textarea id="boardCommentText" style="width:80%;"></textarea>
@@ -110,13 +137,8 @@
 				</td>
 			</tr>
 		</table>
-	</c:forEach>
-	${pageBar}
+		<hr />
+	</c:forEach> --%>
 </section>
-<script>
-	function goBoardForm(){
-		console.log('test');
-		location.href="${pageContext.request.contextPath}/board/boardEnroll.do";
-	}
-</script> 
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
