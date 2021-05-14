@@ -12,9 +12,14 @@
 		from board b
 	        left join board_image a
 	            on b.board_no = a.board_no
-		<if test="boardCategory != '' and boardCategory != null">
-	        where b.board_category = #{boardCategory}
-	 	</if>
+	    <where>
+			<if test="boardCategory != '' and boardCategory != null">
+		        and b.board_category = #{boardCategory}
+		 	</if>
+		 	<if test="locCode != '' and locCode != null">
+		        and b.loc_code = #{locCode}
+		 	</if>
+	    </where>
 	 	order by
 		    b.board_no desc
 	</select>
@@ -29,6 +34,7 @@
 		<result column="board_category" property="boardCategory" />
 		<result column="board_like" property="boardLike" />
 		<result column="member_id" property="memberId" />
+		<result column="loc_code" property="locCode" />
 		<collection property="boardImageList" ofType="boardImage">
 			<id column="board_img_id" property="boardImgId" />
 			<result column="board_img_origin" property="boardImgOrigin" />
@@ -58,7 +64,8 @@
 			default,
 			#{boardCategory},
 			default,
-			#{memberId}
+			#{memberId},
+			#{locCode}
 		)
 		
 		<selectKey resultType="_int" keyProperty="boardNo" order="AFTER">

@@ -20,6 +20,12 @@
       <option value="C4">반려동물</option>
       <option value="C5">회사생활</option>
     </select>
+    <select class="col-md-2" name="locCode" required>
+	  <option selected disabled value="">지역선택</option>
+	  <c:forEach items="${locationList}" var="location">
+	  	<option value="${location.locCode}">${location.locName}</option>
+	  </c:forEach>
+	</select>
     <input type="text" name="memberId" id="memberId" value="honggd" readonly>
     <div class="mb-3">
       <input type="text" class="form-control" name="boardTitle" id="boardTitle" placeholder="제목을 입력해주세요">
