@@ -34,8 +34,8 @@
 					login-processing-url="/member/memberLogin.do"
 					default-target-url="/"
 					always-use-default-target="false"  
-					username-parameter="memberId" 
-					password-parameter="memberPassword"
+					username-parameter="id" 
+					password-parameter="password"
 					/>
 					
         <!-- logout-url은 로그아웃 POST 요청할 url로 핸들러 메소드 작성불필요 -->
@@ -61,7 +61,8 @@
 	
 	<authentication-manager>
 		<!-- UserDetailsService 구현체. 같은 application-context에 등록된 빈이어야 함. -->
-		<authentication-provider user-service-ref="memberServiceImpl" >			
+<!-- 		<authentication-provider user-service-ref="memberServiceImpl" >			 -->
+		<authentication-provider user-service-ref="securityService" >			
 			<password-encoder ref="bcryptPasswordEncoder"/>
 		</authentication-provider>
 	</authentication-manager>
@@ -69,6 +70,7 @@
 	
 	<!-- com.kh.security 패키지 빈으로 등록 -->
 	<!-- application-context에 등록된 빈으로 servlet-context의 빈은 참조불가하다. -->
+<!-- 	<context:component-scan base-package="com.kh.security"/> -->
 	<context:component-scan base-package="com.kh.sharecarrot"/>
 	
 </beans:beans>

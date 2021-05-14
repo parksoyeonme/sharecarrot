@@ -10,8 +10,12 @@
 
 	<typeAliases>
 		<!-- <typeAlias type="com.kh.spring.demo.model.vo.Dev" alias="dev"/> -->
+		<typeAlias type="org.springframework.security.core.authority.SimpleGrantedAuthority" 
+		alias="simpleGrantedAuthority"/>
 		<package name="com.kh.sharecarrot"/> <!-- 이하패키지의 모든 클래스를 소문자로 시작하는 별칭으로 등록 -->
-		<package name="org.springframework.security.core.authority" />
 	</typeAliases>
-	
+	<typeHandlers>
+		<!-- 패키지 이하의 모든 클래스를 타입핸들러로 지정 -->
+		<package name="com.kh.sharecarrot.common.typehandler"/>
+	</typeHandlers>
 </configuration>

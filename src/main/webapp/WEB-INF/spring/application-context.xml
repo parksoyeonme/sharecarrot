@@ -57,12 +57,16 @@
    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
       <constructor-arg index="0" ref="sqlSessionFactoryBean"/>
    </bean>
+<!--    <bean id="memberServiceImpl" class="com.kh.security.member.service.MemberServiceImpl"/> -->
+<!--    <bean id="memberDaoImpl" class="com.kh.security.member.dao.MemberDaoImpl"/> -->
    <!-- #8.1 spring-security가 제공하는 BCryptPasswordEncoder 빈을 등록 -->
    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
    <!-- #13.1. 트랜잭션 처리를 위한 트랜잭션매니저 설정해야 한다. -->
    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
       <property name="dataSource" ref="dataSource" />
    </bean>
+   	<bean id="securityService" class="com.kh.sharecarrot.member.model.service.MemberServiceImpl"></bean>
+   
       <!-- #13.2. @Transactional이 붙은 메소드를 대상으로 Transaction Advice를 적용함. -->
 <!--    <tx:annotation-driven transaction-manager="transactionManager" /> -->
       <!-- #13.2. 선언적 트랜잭션 -->
@@ -75,7 +79,8 @@
       </tx:attributes>
    </tx:advice>
    <aop:config proxy-target-class="true">
-      <aop:pointcut id="serviceMethod" expression="execution(* com.kh.spring..*ServiceImpl.*(..)))"/>
+      <aop:pointcut id="serviceMethod" expression="execution(* com.kh.sharecarrot..*ServiceImpl.*(..)))"/>
+      <aop:pointcut id="serviceMethod" expression="execution(* com.kh.security..*ServiceImpl.*(..)))"/>
       <aop:advisor id="transactionAdvisor" advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
    </aop:config>
 </beans>
