@@ -5,9 +5,13 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	var targetTab = '${targetTab}';
-	if(targetTab){
-		$('productManageNav').tab('show');
+	var initTab = '${tab}';
+	
+	if(initTab){
+		$('.nav-link').removeClass('active');
+		$('#'+ initTab +'Nav').addClass('active');
+		$('.tab-pane').removeClass('show active');
+		$('#'+ initTab).addClass('show active');
 	}	
 	
 	
@@ -40,14 +44,16 @@ $(document).ready(function(){
 	
 	<div class="row">
 		<div class="col-md-12">
-			<div class="tab-pane fade show active" id="productReg" role="tabpanel">
-				<jsp:include page="myshop_reg.jsp"></jsp:include>
-			</div>
-			<div class="tab-pane fade" id="productManage" role="tabpanel">
-				<span>상품관리페이지</span>
-			</div>
-			<div class="tab-pane fade" id="transactionHistory" role="tabpanel">
-				<span>구매/판매 내역 페이지</span>
+			<div class="tab-content">
+				<div class="tab-pane fade" id="productReg" role="tabpanel">
+					<jsp:include page="myshop_reg.jsp"></jsp:include>
+				</div>
+				<div class="tab-pane fade" id="productManage" role="tabpanel">
+					<jsp:include page="myshop_manage.jsp"></jsp:include>
+				</div>
+				<div class="tab-pane fade" id="transactionHistory" role="tabpanel">
+					<span>구매/판매 내역 페이지</span>
+				</div>
 			</div>
 		</div>
 	</div>

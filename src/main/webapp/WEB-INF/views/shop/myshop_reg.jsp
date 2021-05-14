@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+});
+</script>
 
-
-<div class="row mx-5">
+<div class="row mx-3">
 	<div class="col-md-10">
 		<span class="fs-4 fw-bold">기본정보&nbsp;<span class="fs-6 text-danger">*필수입력</span></span>
 		<hr/>
@@ -85,7 +89,7 @@
 			<div class="mb-3 row">
 				<label class="col-md-1 col-form-label fw-bold">거래 지역</label>
 				<div class="col-md-5">
-					<input class="form-control" name="product_price" id="productPrice">
+					<input class="form-control" name="product_price" id="">
 				</div>
 				<div class="col-md-1">
 					<button type="button" class="btn btn-success">지역 변경</button>

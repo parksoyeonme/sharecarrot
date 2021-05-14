@@ -13,15 +13,17 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes("loginMember")
 public class ShopController {
 	
-	@RequestMapping(value="/manage.do")
-	public String shopManagePage() {
-		return "shop/myshop";
-	}
-	
-	@RequestMapping(value="/productReg.do")
+	@RequestMapping(value="/reg.do")
 	public ModelAndView productReg() {
 		ModelAndView mav = new ModelAndView("shop/myshop");
-		mav.addObject("targetTab","productReg");
+		mav.addObject("tab","productReg");
+		return mav;
+	}
+	
+	@RequestMapping(value="/manage.do")
+	public ModelAndView productManage() {
+		ModelAndView mav = new ModelAndView("shop/myshop");
+		mav.addObject("tab","productManage");
 		return mav;
 	}
 	
