@@ -23,12 +23,12 @@ public class BoardDaoImpl implements BoardDao{
 		int limit = (int)param.get("numPerPage");
 		int offset = (cPage -1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("board.selectBoardList", null, rowBounds);
+		return session.selectList("board.selectBoardList", param, rowBounds);
 	}
 
 	@Override
-	public int getTotalContents() {
-		return session.selectOne("board.getTotalContents");
+	public int getTotalContents(String boardCategory) {
+		return session.selectOne("board.getTotalContents", boardCategory);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public interface BoardService {
 
 	List<Board> selectBoardList(Map<String, Object> param);
 
-	int getTotalContents();
+	int getTotalContents(String boardCategory);
 
 	int insertBorad(Board board);
 
