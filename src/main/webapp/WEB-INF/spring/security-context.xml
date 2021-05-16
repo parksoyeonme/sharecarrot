@@ -61,8 +61,8 @@
 	
 	<authentication-manager>
 		<!-- UserDetailsService 구현체. 같은 application-context에 등록된 빈이어야 함. -->
-<!-- 		<authentication-provider user-service-ref="memberServiceImpl" >			 -->
-		<authentication-provider user-service-ref="securityService" >			
+		<authentication-provider user-service-ref="memberServiceImpl" >			
+<!-- 		<authentication-provider user-service-ref="securityService" >			 -->
 			<password-encoder ref="bcryptPasswordEncoder"/>
 		</authentication-provider>
 	</authentication-manager>

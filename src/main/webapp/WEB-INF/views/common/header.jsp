@@ -64,7 +64,7 @@
                     <li><a class="dropdown-item" href="#">상품카테고리</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do">동네생활게시판</a></li>
                     <li><a class="dropdown-item" href="#">신고게시판</a></li>
-                    <li><a class="dropdown-item" href="#">공지사항</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do">공지사항</a></li>
                     <li><a class="dropdown-item" href="#">계정설정</a></li>
                   </ul>
                 </div>
