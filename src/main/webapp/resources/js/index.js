@@ -46,7 +46,7 @@ slide.addEventListener('transitionend', () => {
   }
 });
 
-/* 버튼을 통한 배너 이동 */
+
 const moveToNextSlide = () => {
   slides = getSlides();
   if (index >= slides.length - 1) return;
@@ -67,8 +67,9 @@ slideContainer.addEventListener('mouseenter', () => {
   clearInterval(slideId);
 });
 
-/* 배너 마우스 leave 후 함수 재 실행 */
+/* 배너 마우스 leave 후 함수 재실행 */
 slideContainer.addEventListener('mouseleave', startSlide);
+/* 버튼을 통한 배너 이동 */
 nextBtn.addEventListener('click', moveToNextSlide);
 prevBtn.addEventListener('click', moveToPreviousSlide);
 

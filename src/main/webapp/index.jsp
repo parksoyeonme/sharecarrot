@@ -44,16 +44,18 @@
             <select>
               <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
               <option value="" disabled selected>지역명</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+    	  		<c:forEach items="${locationList}" var="location">
+	  				<option value="${location.locCode}">${location.locName}</option>
+	  			</c:forEach>
             </select>
           </div>
           <div class="category-nav">
             <select>
               <!-- 카테고리명 불러오기 -->
               <option value="" disabled selected>카테고리</option>
-              <option value="2">2</option>
-              <option value="3">1</option>
+              	<c:forEach items="${categoryList}" var="category">
+	  				<option value="${category.categoryCode}">${category.categoryName}</option>
+	  			</c:forEach>
             </select>
           </div>
           <div class="search-form">
