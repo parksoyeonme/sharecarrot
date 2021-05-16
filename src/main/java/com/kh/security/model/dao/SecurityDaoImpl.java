@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kh.sharecarrot.member.model.vo.Member;
 
+
 public class SecurityDaoImpl implements SecurityDao{
 
 	@Autowired
