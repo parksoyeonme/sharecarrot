@@ -34,7 +34,6 @@ public class HomeController {
 	public String home(Locale locale, Model model) {
 		List<Location> locationList = utilsService.selectLocationList();
 		List<Category> categoryList = utilsService.selectCategoryList();
-		logger.info("찍혀라");
 		logger.info("locList={}, cateList={}", locationList, categoryList);
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
