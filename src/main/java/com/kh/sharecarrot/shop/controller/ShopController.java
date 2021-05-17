@@ -46,6 +46,116 @@ public class ShopController {
 		return mav;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@GetMapping("/myshop.do")
 	public void mystore(Member member, Model model) {
 		//shop_id로 정보 받아오기-아이디, 프로필
@@ -66,12 +176,13 @@ public class ShopController {
 		//List<Product> Productlist = shopService.selectProductOne(shopId);
 		//shop_id에 해당하는 상점후기 가져오기
 		//List<StoreReview> Reviewlist = shopService.selectReviewtOne(shopId);
-		//상점오픈일- 회원가입시 shop_id가 생기니깐 그날로부터 하면되지않을까?
 		
+		String shopId = shop.getShopId();
+		//상점오픈일- 회원가입시 shop_id가 생기니깐 그날로부터 하면되지않을까?
+		//int resultTotal = shopService.updateTotalCount(shopId);
 		//판매횟수
 		
 		
-		String shopId = shop.getShopId();
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
 		model.addAttribute("shop", shop);

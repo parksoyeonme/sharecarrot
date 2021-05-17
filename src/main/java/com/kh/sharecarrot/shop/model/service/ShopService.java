@@ -6,9 +6,58 @@ public interface ShopService {
 
 	void shopEnroll(Shop shop);
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	int updateVisitCount(String shopId);
 
 	Shop selectShopOne(String memberId);
+
 
 	
 

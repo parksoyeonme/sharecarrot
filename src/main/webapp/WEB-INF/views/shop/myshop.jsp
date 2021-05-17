@@ -30,7 +30,7 @@
                                <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
                             </div>
                             <div style="border: 1px solid red; float: left; width: 11%;">
-                                값
+                                 ${shop.shopTotalScore}일
                             </div>
                             <div style="border: 1px solid blue; float: left; width: 22%; color: #223465; font-weight: bold;">
                                 <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
@@ -42,7 +42,7 @@
                               <i class="fas fa-shopping-cart" style="font-size: 23px;color: skyblue"]></i>상품판매
                             </div>
                             <div style="border: 1px solid red; float: left; width: 13%;">
-                                값
+                                ${shop.shopSellCount}개
                             </div>
                         </li>
                     </ul>
