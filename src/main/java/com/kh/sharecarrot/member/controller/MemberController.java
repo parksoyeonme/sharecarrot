@@ -69,7 +69,7 @@ public class MemberController {
 			
 			//1. 업무로직
 			int result = memberService.memberEnroll(member);
-			
+			Shop 
 			shopService.shopEnroll(shop);
 		}catch(Exception e) {
 			//1. 로깅작업
