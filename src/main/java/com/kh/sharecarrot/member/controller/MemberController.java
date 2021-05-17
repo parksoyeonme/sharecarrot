@@ -1,22 +1,12 @@
 package com.kh.sharecarrot.member.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -24,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.member.model.vo.Member;
+import com.kh.sharecarrot.shop.model.service.ShopService;
+import com.kh.sharecarrot.shop.model.vo.Shop;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +27,13 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private ShopService shopService;
 
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	@GetMapping("/memberLogin.do")
 	public void memberLogin() {
 	}
@@ -55,4 +53,33 @@ public class MemberController {
 		
 	}
 
+	@GetMapping("/memberEnroll.do") //2
+	public void memberEnroll() {
+	}
+	
+	@PostMapping("/memberEnroll.do")
+	public String memberEnroll(Member member, RedirectAttributes redirectAttr) {
+		log.info("member = {}", member);
+		try {
+			Shop shop = new Shop();
+			String rawPassword = member.getPassword();
+			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
+			log.info("rawPassword = {}", rawPassword);
+			log.info("encodedPassword = {}", encodedPassword);			
+			member.setMemberPassword(encodedPassword);
+			
+			//1. 업무로직
+			int result = memberService.memberEnroll(member);
+			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf(Math.random()*(900)+100)+member.getMemberId().substring(2,3));
+			shopService.shopEnroll(shop);
+		}catch(Exception e) {
+			//1. 로깅작업
+			log.error(e.getMessage(), e);
+			//2. 다시 spring container에 던질 것.
+			throw e;
+		}
+		return "redirect:/";
+	}
+	
+	
 }
