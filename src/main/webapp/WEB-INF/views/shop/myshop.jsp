@@ -4,15 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
+
   
 <!--Custom CSS-->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mystore.css" type="text/css" />
-<!-- bootstrap css -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
 <!--jquery-->
-
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
+<!--icon-->
+ <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <section id="my-store-container" class="ms_container">
         <hr />
@@ -21,37 +20,79 @@
                 <div class="col-lg-3" style="background-color: red; height: 220px;">
                     <div>프로필넣을것</div>
                 </div>
-                <div class="col-lg-7" style="background-color: orange; height: 220px;">
+                <div class="col-lg-7" style="background-color: #faad4a; height: 220px;">
                     <ul class="amount">
                         <li>
-                            <div style="font-size: 20px; font-weight: bold; padding-top: 12px;">
-                                아이디
+                            <div style="font-size: 36px; font-weight: bold;">
+                                ${shop.memberId}
                             </div>
-                            <div style="border: 1px solid gold; float: left; width: 20%;">
-                                상점오픈일
+                            <div style="border: 1px solid gold; float: left; width: 22%; color: #ffffff; font-weight: bold;">
+                               <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 13%;">
+                            <div style="border: 1px solid red; float: left; width: 11%;">
                                 값
                             </div>
-                            <div style="border: 1px solid blue; float: left; width: 20%;">
-                                상품판매
+                            <div style="border: 1px solid blue; float: left; width: 22%; color: #223465; font-weight: bold;">
+                                <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 13%;">
-                                값
+                            <div style="border: 1px solid red; float: left; width: 11%;">
+                                ${shop.shopVisitCount}명
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 20%;">
-                                상점방문수
+                            <div style="border: 1px solid red; float: left; width: 21%; color: #223465; font-weight: bold;">
+                              <i class="fas fa-shopping-cart" style="font-size: 23px;color: skyblue"]></i>상품판매
                             </div>
                             <div style="border: 1px solid red; float: left; width: 13%;">
                                 값
                             </div>
                         </li>
                     </ul>
+                    <div style="margin-top: 41px;
+    margin-left: 28px;
+    height: 113px;
+    border: 1px solid;"
+}>dfd</div>
                 </div>
                 <div id="sidebar" class="col-lg-2">
-                    <div id="sticky">Sticky Div</div>
+                    <div id="sticky">
+                    <div class="history-box">
+					    <div class="history-box-container">
+					      <!-- 찜 상품 목록 시작-->
+					        <div class="jjim">
+					          <div class="jjim-title">찜한상품</div>
+					          <div class="jjim-count-wrapper">
+					            <!-- 찜한 상품 생길 시 count ++, 색상 변경(red)-->
+					            <div class="jjim-count">
+					              <span>♥</span>
+					              <span>0</span>
+					            </div>
+					          </div>
+					        </div>
+					      <!--  찜 상품 목록 끝 -->
+					      <!-- 최근 본 상품 목록 시작 -->
+					        <div class="recent">
+					          <div class="recent-title">최근 본 상품</div>
+					          <div class="recent-dot"></div>
+					          <!-- 최근 본 상품 == null -->
+					          <div class="recent-content">최근 본<br/> 상품이 <br/>없습니다</div>
+					          <!-- 최근 본 상품 != null => 3개까지 출력. 저장은 DB? Session? -->
+					        </div>
+					      <!-- 최근 본 상품 목록 끝 -->
+					      <!-- TOP 버튼 시작-->
+					        <div class="top">
+					          <!-- 버튼 클릭 시 화면 최상단으로 이동 : scrollTo() -->
+					          <button class="top-btn">TOP</button>
+					        </div>
+					      <!-- TOP 버튼 끝 -->
+					    </div>
+					    <!-- 1024px 이하일 경우..... 어떡하지... -->
+					</div>
+                    
+                    
+                    
+                    
+                    </div>
                 </div>
-                <div class="mystore-btn" style="margin-top: 2px;">
+                <div class="mystore-btn" style="margin-top: 10px;" >
                     <a href="#" class="gomystore-button">내상점관리</a>
                 </div>
             </div>
@@ -170,43 +211,52 @@
                     </div>
                 </div>
             </div>
-            <hr/>
+           
          
        
     </div>
-
+    </section>
 <script>
-const tabs = document.querySelectorAll("[data-tab-target]");
-const tabcon = document.querySelectorAll("[data-tab-content]");
-tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-        const target = document.querySelector(tab.dataset.tabTarget);
-        tabcon.forEach((tabc_all) => {
-            tabc_all.classList.remove("active");
+        const tabs = document.querySelectorAll("[data-tab-target]");
+        const tabcon = document.querySelectorAll("[data-tab-content]");
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                const target = document.querySelector(tab.dataset.tabTarget);
+                tabcon.forEach((tabc_all) => {
+                    tabc_all.classList.remove("active");
+                });
+                target.classList.add("active");
+            });
         });
-        target.classList.add("active");
-    });
-});
-$(function () {
-    if ($('#sticky').length) { //"#sticky" 확인
-        var el = $('#sticky');
-        var stickyTop = $('#sticky').offset().top; // returns number
-        var stickyHeight = $('#sticky').height();
-        $(window).scroll(function () { // scroll event
-            var limit = $('#footer').offset().top - stickyHeight - 20;
-            var windowTop = $(window).scrollTop(); // returns number
-            if (stickyTop < windowTop) {
-                el.css({position: 'fixed', top: 0});
-            } else {
-                el.css('position', 'static');
-            }
-            if (limit < windowTop) {
-                var diff = limit - windowTop;
-                el.css({top: diff});
+        
+        //stick box
+        $(function () { // document ready
+            if ($('#sticky').length) { // make sure "#sticky" element exists
+                var el = $('#sticky');
+                var stickyTop = $('#sticky').offset().top; // returns number
+                var stickyHeight = $('#sticky').height();
+                $(window).scroll(function () { // scroll event
+                    var limit = $('#footer').offset().top - stickyHeight - 20;
+                    var windowTop = $(window).scrollTop(); // returns number
+                    if (stickyTop < windowTop) {
+                        el.css({position: 'fixed', top: 0});
+                    } else {
+                        el.css('position', 'static');
+                    }
+                    if (limit < windowTop) {
+                        var diff = limit - windowTop;
+                        el.css({top: diff});
+                    }
+                });
             }
         });
-    }
-});
+        
+        //찜한상품,최근 본 상품 top
+        const topBtn = document.querySelector(".top-btn");
+        topBtn.addEventListener("click", e =>{
+          e.preventDefault();
+          window.scrollTo({top: 0, behavior:"smooth"});
+        });
+    </script>
 
-</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -17,4 +17,18 @@ public class ShopDaoImpl implements ShopDao{
 		session.insert("shop.shopEnroll", shop);
 	}
 
+	@Override
+	public int updateVisitCount(String shopId) {
+		// TODO Auto-generated method stub
+		return session.update("shop.updateVisitCount", shopId);
+	}
+
+	@Override
+	public Shop selectShopOne(String memberId) {
+		// TODO Auto-generated method stub
+		return session.selectOne("shop.selectShopOne", memberId);
+	}
+
+	
+
 }
