@@ -70,6 +70,7 @@ public class ShopController {
 		
 		//판매횟수
 		
+		
 		String shopId = shop.getShopId();
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
