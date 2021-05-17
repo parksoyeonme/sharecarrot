@@ -68,6 +68,7 @@ public class MemberController {
 	
 	}
 	
+	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(
 			@RequestParam(value = "id") String memberId,
@@ -83,7 +84,7 @@ public class MemberController {
 		try {
 			String address = addr2 + addr3;
 			Member member = new Member(memberId, memberPassword, memberName,
-					birthday, email, phone, true, 'n', null, null, null, address, null, null);
+					birthday, email, phone, true, 'n', null, null, null, address, "L1", null);
 			log.info("member = {}", member);
 			
 			Shop shop = new Shop();
