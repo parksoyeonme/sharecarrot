@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 <script type="text/javascript">
 $(document).ready(function(){
 	var initTab = '${tab}';
@@ -24,7 +25,7 @@ $(document).ready(function(){
 		<div class="col-md-12">
 			<ul class="nav nav-pills">
 				<li class="nav-item">
-					<button class="nav-link" id="productRegNav" data-bs-toggle="tab" data-bs-target="#productReg" type="button" role="tab" aria-controls="productReg" aria-selected="true">
+					<button class="nav-link" id="productEnrollNav" data-bs-toggle="tab" data-bs-target="#productEnroll" type="button" role="tab" aria-controls="productEnroll" aria-selected="true">
 						상품등록
 					</button>
 				</li>
@@ -45,14 +46,14 @@ $(document).ready(function(){
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tab-content">
-				<div class="tab-pane fade" id="productReg" role="tabpanel">
-					<jsp:include page="myshop_reg.jsp"></jsp:include>
+				<div class="tab-pane fade" id="productEnroll" role="tabpanel">
+					<jsp:include page="productsEnroll.jsp"></jsp:include>
 				</div>
 				<div class="tab-pane fade" id="productManage" role="tabpanel">
-					<jsp:include page="myshop_manage.jsp"></jsp:include>
+					<jsp:include page="productsManage.jsp"></jsp:include>
 				</div>
 				<div class="tab-pane fade" id="transactionHistory" role="tabpanel">
-					<span>구매/판매 내역 페이지</span>
+					<jsp:include page="transactionHistroy.jsp"></jsp:include>
 				</div>
 			</div>
 		</div>
