@@ -54,7 +54,7 @@
 					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
 	                </form:form>
 	                <button type="button" class="btn btn-primary">판매하기</button>
-	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/shop/mystore.do';">내상점</button>
+	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/shop/myshop.do';">내상점</button>
                 </sec:authorize>
                 <div class="btn-group" role="group">
                   <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
