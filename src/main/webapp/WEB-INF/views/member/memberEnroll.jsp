@@ -81,29 +81,6 @@
 					<input type="text" class="form-control" placeholder="" name="address" id="address">
 				</td>
 			</tr>
-			<tr>
-				<th>성별 </th>
-				<td>
-					<div class="form-check form-check-inline">
-						<input type="radio" class="form-check-input" name="gender" id="gender0" value="M">
-						<label  class="form-check-label" for="gender0">남</label>&nbsp;
-						<input type="radio" class="form-check-input" name="gender" id="gender1" value="F">
-						<label  class="form-check-label" for="gender1">여</label>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th>취미 </th>
-				<td>
-					<div class="form-check form-check-inline">
-						<input type="checkbox" class="form-check-input" name="hobby" id="hobby0" value="운동"><label class="form-check-label" for="hobby0">운동</label>&nbsp;
-						<input type="checkbox" class="form-check-input" name="hobby" id="hobby1" value="등산"><label class="form-check-label" for="hobby1">등산</label>&nbsp;
-						<input type="checkbox" class="form-check-input" name="hobby" id="hobby2" value="독서"><label class="form-check-label" for="hobby2">독서</label>&nbsp;
-						<input type="checkbox" class="form-check-input" name="hobby" id="hobby3" value="게임"><label class="form-check-label" for="hobby3">게임</label>&nbsp;
-						<input type="checkbox" class="form-check-input" name="hobby" id="hobby4" value="여행"><label class="form-check-label" for="hobby4">여행</label>&nbsp;
-					 </div>
-				</td>
-			</tr>
 		</table>
 		<input type="submit" value="가입" >
 		<input type="reset" value="취소">

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.shop.model.service.ShopService;
+import com.kh.sharecarrot.shop.model.vo.Shop;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,7 +61,7 @@ public class MemberController {
 	public String memberEnroll(Member member, RedirectAttributes redirectAttr) {
 		log.info("member = {}", member);
 		try {
-			//0. 암호화처리
+			Shop shop = new Shop();
 			String rawPassword = member.getPassword();
 			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
 			log.info("rawPassword = {}", rawPassword);
@@ -69,7 +70,7 @@ public class MemberController {
 			
 			//1. 업무로직
 			int result = memberService.memberEnroll(member);
-			Shop 
+			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf(Math.random()*(900)+100)+member.getMemberId().substring(2,3));
 			shopService.shopEnroll(shop);
 		}catch(Exception e) {
 			//1. 로깅작업

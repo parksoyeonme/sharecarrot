@@ -42,7 +42,7 @@
 		 	text-align:left;
 		 }
 	</style>
-	<footer>
+	<footer id="footer">
 		<hr />
 		<div class="footer-maindiv">
 			<div class="footer-mainsub1">
