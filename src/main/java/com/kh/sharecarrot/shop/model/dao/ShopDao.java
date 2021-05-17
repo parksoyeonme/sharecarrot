@@ -6,9 +6,56 @@ public interface ShopDao {
 
 	void shopEnroll(Shop shop);
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	int updateVisitCount(String shopId);
 
 	Shop selectShopOne(String memberId);
+
+	
 
 
 
