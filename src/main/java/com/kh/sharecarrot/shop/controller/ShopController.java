@@ -13,17 +13,24 @@ import lombok.extern.slf4j.Slf4j;
 @SessionAttributes("loginMember")
 public class ShopController {
 	
-	@RequestMapping(value="/reg.do")
+	@RequestMapping(value="/enroll.do")
 	public ModelAndView productReg() {
-		ModelAndView mav = new ModelAndView("shop/myshop");
-		mav.addObject("tab","productReg");
+		ModelAndView mav = new ModelAndView("products/products");
+		mav.addObject("tab","productEnroll");
 		return mav;
 	}
 	
 	@RequestMapping(value="/manage.do")
 	public ModelAndView productManage() {
-		ModelAndView mav = new ModelAndView("shop/myshop");
+		ModelAndView mav = new ModelAndView("products/products");
 		mav.addObject("tab","productManage");
+		return mav;
+	}
+	
+	@RequestMapping(value="/transactionHistory.do")
+	public ModelAndView transactionHistory() {
+		ModelAndView mav = new ModelAndView("products/products");
+		mav.addObject("tab","transactionHistory");
 		return mav;
 	}
 	
