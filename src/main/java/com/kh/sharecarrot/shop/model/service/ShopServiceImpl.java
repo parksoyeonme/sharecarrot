@@ -19,6 +19,54 @@ public class ShopServiceImpl implements ShopService{
 		shopDao.shopEnroll(shop);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public int updateVisitCount(String shopId) {
 		// TODO Auto-generated method stub
@@ -30,6 +78,9 @@ public class ShopServiceImpl implements ShopService{
 		// TODO Auto-generated method stub
 		return shopDao.selectShopOne(memberId);
 	}
+
+
+
 
 	
 }
