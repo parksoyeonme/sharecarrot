@@ -69,6 +69,7 @@ public class BoardController {
 		param.put("boardCategory", boardCategory);
 		param.put("locCode", locCode);
 		
+		log.info("cPage = {}", cPage);
 		log.info("locCode = {}", locCode);
 		log.info("boardCategory = {}", boardCategory);
 		List<Board> boardList = boardService.selectBoardList(param);
