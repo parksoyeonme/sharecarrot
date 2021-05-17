@@ -10,7 +10,7 @@
 				on m.member_id = a.member_id
 		where m.member_id = #{memberId}
 	</select>
-
+   
 	<insert id="memberEnroll">
 		insert into 
 			member
@@ -22,11 +22,11 @@
 			#{email},
 			#{phone},
 			default,
-			default,
 			#{profileOriginal},
 			#{profileRenamed},
 			#{memberAddr},
 			#{locCode},
+			default,
 			default
 		)
 	</insert>
