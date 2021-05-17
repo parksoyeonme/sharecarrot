@@ -18,6 +18,7 @@ public class Shop {
 		private String shopId;
 		private int shopTotalScore;
 		private int shopVisitCount;
+		private int shopSellCount;
 		private String shopMemo;
 		private String memberId;
 }
