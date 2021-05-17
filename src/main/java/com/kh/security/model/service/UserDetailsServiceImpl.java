@@ -6,25 +6,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.kh.security.model.dao.SecurityDao;
+import com.kh.security.model.dao.UserDetailsDao;
 import com.kh.sharecarrot.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+@Service("securityService")
 @Slf4j
-public class SecurityService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	SecurityDao securityDao;
+	private UserDetailsDao userDetailsDao;
 	
 	@Override
-	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-		Member user = securityDao.loadUserByUsername(memberId);
+	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+		Member user = userDetailsDao.loadUserByUsername(id);
 		log.debug("user = {}", user);
 
 		if(user == null)
-            throw new UsernameNotFoundException(memberId);
+            throw new UsernameNotFoundException(id);
         
 		return user;
 //		return new UserAdapter(user); // adapter객체 사용시

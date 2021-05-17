@@ -1,11 +1,11 @@
-package com.kh.sharecarrot.admin.model.dao;
+package com.kh.sharecarrot.report.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AdminDaoImpl implements AdminDao {
+public class ReportDaoImpl implements ReportDao {
 
 	@Autowired
 	private SqlSessionTemplate session;
