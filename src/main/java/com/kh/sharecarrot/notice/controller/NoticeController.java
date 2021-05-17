@@ -23,13 +23,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/notice")
 public class NoticeController {
-
+	//notice는 board를 공유
 	@Autowired
 	private NoticeService noticeService;
 	
 
 	@GetMapping("/noticeList.do")
 	public void noticeList() {
+		
 	}
 
 	
