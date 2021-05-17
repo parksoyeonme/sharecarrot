@@ -11,9 +11,22 @@ header div#header-container h2 	{margin:30px 10px 0px 10px;}
 
 
 /********** content **********/
+
+ a:link { color: black; text-decoration: none;}
+ a:visited { color: gray; text-decoration: none;}
+ a:hover { color: blue; text-decoration: underline;}
+
+div.sub_title{
+    margin-top: 20px;
+    width: 800px;
+ 	margin: 0 auto;
+ 	margin-top:40px;
+    text-align: left; 
+ }
 section#content		{min-height:600px;}
 
 
 /********** footer **********/
-footer	{background-color:#f8f9fa; background-clip:content-box; clear:both; height:95px; text-align:center;}
+footer	{background-color:#f8f9fa; width: 1024px; margin:0 auto; text-align:center; background-clip:content-box; height: 400px; }
 footer p 	{margin-top:30px;}
+footer-table {}

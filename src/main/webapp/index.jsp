@@ -7,6 +7,7 @@
 <!-- 메인 페이지 작업영역 -->
 <link rel="stylesheet" href="./resources/css/index.css" />
 
+
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 <div class="container">
