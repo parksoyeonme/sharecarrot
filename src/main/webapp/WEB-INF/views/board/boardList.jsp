@@ -11,38 +11,28 @@
 </style>
 <section id="board-container" class="container">
 <br />
+
+	<%-- Nav Bars --%>
 	<ul class="nav nav-tabs nav-fill" id="navBars">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/board/boardList.do">전체</a>
+      <a class="nav-link ${param.boardCategory eq null? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/board/boardList.do">전체</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C1">여행/음식</a>
+      <a class="nav-link ${param.boardCategory eq 'C1'? 'active' : ''} " href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C1">여행/음식</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C2">취미생활</a>
+      <a class="nav-link ${param.boardCategory eq 'C2'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C2">취미생활</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C3">헬스/다이어트</a>
+      <a class="nav-link ${param.boardCategory eq 'C3'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C3">헬스/다이어트</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C4">반려동물</a>
+      <a class="nav-link ${param.boardCategory eq 'C4'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C4">반려동물</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5">회사생활</a>
+      <a class="nav-link ${param.boardCategory eq 'C5'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5">회사생활</a>
     </li>
   </ul>
-
-  <script>
-    const navItem = $("ul .nav-item");
-    navItem.click(function(e){
-      navItem.removeClass('active');
-      $.each(navItem, function(index, item){
-        let tagA = $(item).find('a');
-        tagA.removeClass('active');
-      });
-      $(e.target).addClass('active');
-    });
-  </script>
 
 	<select class="col-md-2" id="selectLocation" required>
 	  <option selected disabled value="">지역선택</option>
@@ -66,11 +56,11 @@
 	}
 	
 	$(document).ready(function(){
-		console.log('t');
 		var boardListCnt = $(boardList).children().length;
-		var boardCategory = '<c:out value="${param.boardCategory}" />'
+		var boardCategory = '<c:out value="${param.boardCategory}"/>';
+		var locCode = '<c:out value="${param.locCode}"/>';
 		var cPage = 1;
-		var numPerPage = 5;
+		const numPerPage = 5;
 		
 		readBoardList(cPage++);
 		
@@ -80,17 +70,19 @@
 
 		$("#selectLocation").change(function(e){
 			var locCode = e.target.value;
-			readBoardList(cPage++, locCode);
+			var url = boardCategory == null || boardCategory == '' ? "" : "&boardCategory="+boardCategory;
+			console.log(url);
+			location.href="${pageContext.request.contextPath}/board/boardList.do?locCode=" + locCode + url;
+			/* readBoardList(null, locCode); */
 		});
 		
-		function readBoardList(index, code){
-			console.log(code);
+		function readBoardList(index){
 			$.ajax({
 				type: "GET",
 				dataType : "json",
 				data: {
 					boardCategory : boardCategory,
-					locCode : code,
+					locCode : locCode,
 					cPage: index,
 					numPerPage: numPerPage
 				},
