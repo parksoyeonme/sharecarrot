@@ -13,6 +13,7 @@
 	        left join board_image a
 	            on b.board_no = a.board_no
 	    <where>
+	    	board_delete_yn = 'N'
 		 	<if test="locCode != '' and locCode != null">
 		        and b.loc_code = #{locCode}
 		 	</if>
@@ -85,4 +86,21 @@
 		)
 	</insert>
 
+	<update id="deleteBoard">
+		update board set
+			board_delete_yn = 'Y'
+		where board_no = #{boardNo}
+	</update>
+	
+	<select id="selectOneBoard" resultMap="boardCollectionMap">
+		select b.*,
+	        a.board_img_id,
+	        a.board_img_origin,
+	        a.board_img_renamed,
+	        a.board_no
+		from board b
+	        left join board_image a
+	            on b.board_no = a.board_no
+	    where b.board_no = #{boardNo}
+	</select>
 </mapper>

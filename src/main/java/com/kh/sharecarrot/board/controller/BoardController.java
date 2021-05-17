@@ -1,5 +1,7 @@
 package com.kh.sharecarrot.board.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -132,4 +132,25 @@ public class BoardController {
 		return "redirect:/board/boardList.do";
 	}
 	
+	@PostMapping("/boardDelete.do")
+	public String boardDelete(@RequestParam int boardNo, RedirectAttributes redirectAttr) {
+		try {
+			int reuslt = boardService.boardDelete(boardNo);			
+			redirectAttr.addFlashAttribute("msg", "게시물이 삭제되었습니다.");
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	
+		return "redirect:/board/boardList.do";
+	}
+	
+	@GetMapping("/boardUpdate.do")
+	public void boardUpdate(@RequestParam int boardNo, Model model) {
+		Board board = boardService.selectOneBoard(boardNo);
+		List<Location> locationList = utilsService.selectLocationList();
+		
+		model.addAttribute(locationList);
+		model.addAttribute("board", board);
+	}
 }

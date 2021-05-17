@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -35,9 +37,9 @@
   </ul>
 
 	<select class="col-md-2" id="selectLocation" required>
-	  <option selected disabled value="">지역선택</option>
+	  <option selected value="">전체지역</option>
 	  <c:forEach items="${locationList}" var="location">
-	  	<option value="${location.locCode}">${location.locName}</option>
+	  	<option value="${location.locCode}" ${param.locCode eq location.locCode ? 'selected' : ''}>${location.locName}</option>
 	  </c:forEach>
 	</select>
 	<select class="col-md-2" id="validationCustom04" required>
@@ -116,7 +118,7 @@
 						html += "</tr>";
 						
 						html += "<tr id='boardImage-tr'>";
-							html += "<td colspan='4' style='margin: 0 auto;'>";	
+							html += "<td colspan='5' style='margin: 0 auto;'>";	
 								$.each(elem.boardImageList, function(index, img){
 									html += "<img src='${pageContext.request.contextPath}/resources/upload/board/"+img.boardImgRenamed+"' class='img-thumbnail' style='width:200px; height:200px;' onclick='window.open(this.src)' />";
 								});
@@ -126,29 +128,47 @@
 						html += "<tr><td><input type='button' class='btn btn-danger' value='좋아요'/></td><td>"+elem.boardLike+"</td></tr>";
 						html += "<tr><td colspan='5'>댓글창</td></tr>";
 						html +="<tr>";
-							html += "<td colspan='5'>";
-								html += "<textarea id='boardCommentText' style='width:80%;'></textarea>";
-								html += "<input type='button' class='btn btn-primary' value='댓글 등록' style='margin-top: -50px;'/>";
+							html += "<td colspan='4'>";
+								html += "<textarea id='boardCommentText' style='width:100%;'></textarea>";
+							html += "</td>";
+							html += "<td>";
+								html += "<input type='button' class='btn btn-primary' value='댓글 등록' />";
 							html += "</td>";
 						html += "</tr>";
-				html += "</table>";
+						//로그인 한경우 수정/삭제버튼 추가
+						<sec:authorize access="isAuthenticated()">
+						if(elem.memberId == "<sec:authentication property='principal.username'/>"){
+							html += "<tr><td></td><td></td><td></td>";
+							html += "<td>";
+							html += `<input type='button' class='btn btn-danger' onclick="location.href='${pageContext.request.contextPath}/board/boardUpdate.do?boardNo=\${elem.boardNo}';" value='수정'/>`;
+							html += "</td>";
+							html += "<td>";
+							html += `<form name='deleteF' id='deleteFrm\${elem.boardNo}' action='${pageContext.request.contextPath}/board/boardDelete.do?${_csrf.parameterName}=${_csrf.token}' method='POST'>`;
+							html += `<button onclick='deleteFrm();' type='button' class='btn btn-danger d-inline'>삭제</button>`;
+							html += `<input name='boardNo' type='hidden' value='\${elem.boardNo}'/>`;
+							html += "</form>";
+							html += "</td>";
+							html += "</tr>";			
+						}
+						
+						</sec:authorize>
+				html += "<hr/></table>";
 				
 				$(boardList).append(html);
 			});
 		}
 	});
-	</script>
-	<%-- >
+	
+	function deleteFrm(){
+		if(!confirm("정말 삭제하시겠습니까?")){
+			return;
+		}
+		
+		$("[name=deleteF]").submit();
+	}
+	
 
-			<tr>
-				<td colspan="4">
-					<textarea id="boardCommentText" style="width:80%;"></textarea>
-					<input type="button" class="btn btn-primary" value="댓글 등록" style="margin-top: -50px;"/>
-				</td>
-			</tr>
-		</table>
-		<hr />
-	</c:forEach> --%>
+	</script>
 </section>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
