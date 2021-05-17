@@ -46,4 +46,14 @@ public class BoardDaoImpl implements BoardDao{
 		return session.insert("board.insertBoardImg",boardImg);
 	}
 
+	@Override
+	public int boardDelete(int boardNo) {
+		return session.delete("board.deleteBoard", boardNo);
+	}
+
+	@Override
+	public Board selectOneBoard(int boardNo) {
+		return session.selectOne("board.selectOneBoard", boardNo);
+	}
+
 }
