@@ -21,7 +21,7 @@ const slideWidth = slides[index].clientWidth;
 
 slide.style.transform = `translateX(${-slideWidth * index}px)`;
 
-console.log(slides);
+// console.log(slides);
 
 const startSlide = () => {
   slideId = setInterval(() => {

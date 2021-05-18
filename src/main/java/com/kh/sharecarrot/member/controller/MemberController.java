@@ -96,7 +96,7 @@ public class MemberController {
 			
 			//1. 업무로직
 			int result = memberService.memberEnroll(member);
-			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf(Math.random()*(900)+100)+member.getMemberId().substring(2,3));
+			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf(Math.random()*(90)+10));
 			shop.setMemberId(memberId);
 			shopService.shopEnroll(shop);
 		}catch(Exception e) {
