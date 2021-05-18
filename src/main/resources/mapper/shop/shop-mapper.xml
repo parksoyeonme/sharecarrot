@@ -10,6 +10,7 @@
 			#{shopId},
 			default,
 			default,
+			default,
 			null,
 			#{memberId}
 		)
