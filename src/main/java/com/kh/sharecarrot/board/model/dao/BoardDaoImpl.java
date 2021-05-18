@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.sharecarrot.board.model.vo.Board;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
+import com.kh.sharecarrot.board.model.vo.BoardLike;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +55,36 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public Board selectOneBoard(int boardNo) {
 		return session.selectOne("board.selectOneBoard", boardNo);
+	}
+
+	@Override
+	public int updateBoard(Board board) {
+		return session.update("board.updateBoard", board);
+	}
+
+	@Override
+	public int deleteBoardImg(String id) {
+		return session.delete("board.deleteBoardImg", id);
+	}
+
+	@Override
+	public List<BoardLike> selectBoardLikeList(String memberId) {
+		return session.selectList("board.selectBoardLikeList", memberId);
+	}
+
+	@Override
+	public int updateBoardLike(Map<String, Object> param) {
+		return session.update("board.updateBoardLike", param);
+	}
+
+	@Override
+	public int insertBoardLike(Map<String, Object> param) {
+		return session.insert("board.insertBoardLike", param);
+	}
+
+	@Override
+	public int deleteBoardLike(Map<String, Object> param) {
+		return session.delete("board.deleteBoardLike", param);
 	}
 
 }

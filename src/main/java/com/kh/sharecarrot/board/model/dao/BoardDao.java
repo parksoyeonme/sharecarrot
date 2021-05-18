@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.sharecarrot.board.model.vo.Board;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
+import com.kh.sharecarrot.board.model.vo.BoardLike;
 
 public interface BoardDao {
 
@@ -19,5 +20,17 @@ public interface BoardDao {
 	int boardDelete(int boardNo);
 
 	Board selectOneBoard(int boardNo);
+
+	int updateBoard(Board board);
+
+	int deleteBoardImg(String id);
+
+	List<BoardLike> selectBoardLikeList(String memberId);
+
+	int updateBoardLike(Map<String, Object> param);
+
+	int insertBoardLike(Map<String, Object> param);
+
+	int deleteBoardLike(Map<String, Object> param);
 
 }

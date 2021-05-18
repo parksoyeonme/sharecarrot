@@ -10,32 +10,36 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <style>
+	.likeBtn{
+		cursor:pointer;
+		height:2em;
+	}
 </style>
 <section id="board-container" class="container">
-<br />
 
+<br />
 	<%-- Nav Bars --%>
 	<ul class="nav nav-tabs nav-fill" id="navBars">
     <li class="nav-item">
-      <a class="nav-link ${param.boardCategory eq null? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/board/boardList.do">전체</a>
+      <a class="nav-link ${param.boardCategory eq null? 'active' : ''}" aria-current="page" href="${pageContext.request.contextPath}/board/boardList.do${!empty param.locCode ? '?locCode='+=param.locCode : '' }">전체</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link ${param.boardCategory eq 'C1'? 'active' : ''} " href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C1">여행/음식</a>
+      <a class="nav-link ${param.boardCategory eq 'C1'? 'active' : ''} " href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C1${!empty param.locCode ? '&locCode='+=param.locCode : '' }">여행/음식</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link ${param.boardCategory eq 'C2'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C2">취미생활</a>
+      <a class="nav-link ${param.boardCategory eq 'C2'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C2${!empty param.locCode ? '&locCode='+=param.locCode : '' }">취미생활</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link ${param.boardCategory eq 'C3'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C3">헬스/다이어트</a>
+      <a class="nav-link ${param.boardCategory eq 'C3'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C3${!empty param.locCode ? '&locCode='+=param.locCode : '' }">헬스/다이어트</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link ${param.boardCategory eq 'C4'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C4">반려동물</a>
+      <a class="nav-link ${param.boardCategory eq 'C4'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C4${!empty param.locCode ? '&locCode='+=param.locCode : '' }">반려동물</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link ${param.boardCategory eq 'C5'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5">회사생활</a>
+      <a class="nav-link ${param.boardCategory eq 'C5'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5${!empty param.locCode ? '&locCode='+=param.locCode : '' }">회사생활</a>
     </li>
   </ul>
-
+	<div class='mb-2 mt-2'>
 	<select class="col-md-2" id="selectLocation" required>
 	  <option selected value="">전체지역</option>
 	  <c:forEach items="${locationList}" var="location">
@@ -46,8 +50,9 @@
 	  <option value="latest">최신순</option>
 	  <option value="hottest">인기순</option>
 	</select>
-	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success pull-right" onclick="goBoardForm();"/>
-
+	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
+	</div>
+	
 	<div id="boardList">
 	</div>
 	<button id="searchMore" class="btn btn-outline-primary btn-block col-sm-10 mx-auto">더 보기</button>
@@ -109,25 +114,50 @@
 						loc = '${location.locName}';
 				</c:forEach>
 
-				var html = "<table class='table table-striped table-hover'>";
-						html += "<tr>";
+				var html = "<div class='m-3'>";
+						html = "<table class='table'>";
+						html += "<tr class='table-dark'>";
 							html += "<td>"+elem.memberId+"</td>";
 							html += "<th colspan='2'>"+elem.boardTitle+"</th>";
 							html += "<td>"+elem.boardEnrollDate+"</td>";
 							html += "<td>"+loc+"</td>";
 						html += "</tr>";
 						
-						html += "<tr id='boardImage-tr'>";
-							html += "<td colspan='5' style='margin: 0 auto;'>";	
+						html += "<tr id='boardImage-tr' class='table-secondary'>";
+							html += "<th colspan='5' style='margin: 0 auto;'>";	
 								$.each(elem.boardImageList, function(index, img){
 									html += "<img src='${pageContext.request.contextPath}/resources/upload/board/"+img.boardImgRenamed+"' class='img-thumbnail' style='width:200px; height:200px;' onclick='window.open(this.src)' />";
 								});
-							html += "</td>";
+							html += "</th>";
 						html += "</tr>";
-						html += "<tr><td colspan='5'>"+elem.boardContent+"</td></tr>";
-						html += "<tr><td><input type='button' class='btn btn-danger' value='좋아요'/></td><td>"+elem.boardLike+"</td></tr>";
-						html += "<tr><td colspan='5'>댓글창</td></tr>";
-						html +="<tr>";
+						html += "<tr class='table-secondary'><td colspan='5'>"+elem.boardContent+"</td></tr>";
+						
+						<%--좋아요 버튼--%>
+						<%-- 좋아요테이블에 해당게시물의 번호가 포함되어있는지 확인 --%>
+						var likeBool = false;
+						<c:forEach var="boardLike" items="${boardLikeList}">
+						  var boardNo = "${boardLike.boardNo}";
+						  if(boardNo == elem.boardNo){
+						    likeBool = true;
+						  }
+						</c:forEach>
+						
+						if(likeBool){ <%--좋아요를 누른경우--%>
+							html += `<tr class='table-secondary'><td colspan='5'><img id='likeBtn\${elem.boardNo}' class='likeBtn' src='${pageContext.request.contextPath}/resources/images/board/like.png' onclick="likeBtnTrigger('like\${elem.boardNo}', 'likeCntH\${elem.boardNo}', 'likeCnt\${elem.boardNo}', '\${elem.boardNo}', 'likeBtn\${elem.boardNo}');"/><span id='likeCnt\${elem.boardNo}'> \${elem.boardLike} 명이 좋아합니다.</span></td></tr>`;
+							html += `<input type='hidden' id='likeCntH\${elem.boardNo}' value='\${elem.boardLike}'/>`;
+							html += `<input type='hidden' id='like\${elem.boardNo}' value='1'>`;
+							
+						} else { <%-- 안누른경우--%>
+							html += `<tr class='table-secondary'><td colspan='5'><img id='likeBtn\${elem.boardNo}' class='likeBtn' src='${pageContext.request.contextPath}/resources/images/board/nolike.png' onclick="likeBtnTrigger('like\${elem.boardNo}', 'likeCntH\${elem.boardNo}',  'likeCnt\${elem.boardNo}', '\${elem.boardNo}', 'likeBtn\${elem.boardNo}');"/><span id='likeCnt\${elem.boardNo}'> \${elem.boardLike} 명이 좋아합니다.</span></td></tr>`;
+							html += `<input type='hidden' id='likeCntH\${elem.boardNo}' value='\${elem.boardLike}'/>`;
+							html += `<input type='hidden' id='like\${elem.boardNo}' value='-1'>`;
+						}
+						
+						
+						<%-- 댓글창 --%>
+						html += "<tr class='table-secondary'><td colspan='5'>댓글창</td></tr>";
+						
+						html +="<tr class='table-secondary'>";
 							html += "<td colspan='4'>";
 								html += "<textarea id='boardCommentText' style='width:100%;'></textarea>";
 							html += "</td>";
@@ -148,16 +178,68 @@
 							html += `<input name='boardNo' type='hidden' value='\${elem.boardNo}'/>`;
 							html += "</form>";
 							html += "</td>";
-							html += "</tr>";			
+							html += "</tr>";
 						}
 						
 						</sec:authorize>
-				html += "<hr/></table>";
+				html += "</table>";
+				html += "</div><br><br><br>";
 				
 				$(boardList).append(html);
 			});
 		}
+		
 	});
+	
+	function likeBtnTrigger(likeHiddenId, likeCntH, likeCntSpan, boardNo, likeBtn){
+		
+		//로그인 하지 않았으면 조기리턴
+		<sec:authorize access="isAnonymous()">
+			alert('로그인 후 이용하실 수 있습니다.');
+			return;
+		</sec:authorize>
+		
+		var hidden = $(`#\${likeHiddenId}`);
+		var cntSpan = $(`#\${likeCntSpan}`);
+		var likeCntH = $(`#\${likeCntH}`);
+		var likeCntHVal = Number(likeCntH.val());
+		var likeBtnImg = $(`#\${likeBtn}`);
+		
+		
+		var count = 0;
+		if(hidden.val() == 1){ // 좋아요가 눌러져 있다면, 좋아요를 취소한경우
+			hidden.val('0');
+			likeCntH.val(likeCntHVal - 1);
+			count = likeCntHVal -1;
+			likeBtnImg.attr('src', '${pageContext.request.contextPath}/resources/images/board/nolike.png');
+		} else { // 아니라면, 좋아요를 누른경우
+			hidden.val('1');
+			likeCntH.val(likeCntHVal +1);
+			count = likeCntHVal +1;	
+			likeBtnImg.attr('src', '${pageContext.request.contextPath}/resources/images/board/like.png');
+		}
+		cntSpan.html(` \${count} 명이 좋아합니다.`);
+		
+		
+		$.ajax({
+			type: 'POST',
+			url: '${pageContext.request.contextPath}/board/boardLike.do?${_csrf.parameterName}=${_csrf.token}',
+			data : {
+				boardNo : boardNo,
+				likeCnt : count,
+				likeBool : hidden.val(),
+				<sec:authorize access="isAuthenticated()">
+				memberId : "<sec:authentication property='principal.username' />"
+				</sec:authorize>
+			},
+			success: function(data){
+				console.log(data);
+			},
+			error:function(request,status,error){
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+           }
+		});
+	}
 	
 	function deleteFrm(){
 		if(!confirm("정말 삭제하시겠습니까?")){
