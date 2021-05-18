@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.sharecarrot.board.model.service.BoardService;
 import com.kh.sharecarrot.board.model.vo.Board;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
+import com.kh.sharecarrot.board.model.vo.BoardLike;
 import com.kh.sharecarrot.common.ShareCarrotUtils;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Location;
@@ -42,16 +44,17 @@ public class BoardController {
 	private BoardService boardService;
 	@Autowired
 	private UtilsService utilsService;
-	@Autowired
-	private ResourceLoader resourceLoader; // Resource 객체를 관리
-	
-	@Autowired
-	private ServletContext servletContext; // application객체 파일의 절대경로를 알아낼수 있음
-	
+
 	@GetMapping("/boardList.do")
-	public void boardList(Model model) {
+	public void boardList(Model model, @RequestParam(defaultValue="") String memberId) {
+		List<BoardLike> boardLikeList = null;
+		if(!(memberId == null || memberId.equals(""))) {
+			boardLikeList = boardService.selectBoardLikeList(memberId);
+		}
+	
 		List<Location> locationList = utilsService.selectLocationList();
-		model.addAttribute(locationList);
+		model.addAttribute("locationList",locationList );
+		model.addAttribute("boardLikeList", boardLikeList);
 		
 	}
 	
@@ -69,9 +72,6 @@ public class BoardController {
 		param.put("boardCategory", boardCategory);
 		param.put("locCode", locCode);
 		
-		log.info("cPage = {}", cPage);
-		log.info("locCode = {}", locCode);
-		log.info("boardCategory = {}", boardCategory);
 		List<Board> boardList = boardService.selectBoardList(param);
 		
 		return boardList;
@@ -119,6 +119,7 @@ public class BoardController {
 			
 			board.setBoardImageList(boardImgList);
 			int reuslt = boardService.insertBorad(board);
+			redirectAttr.addFlashAttribute("msg", "게시글 등록이 완료되었습니다.");
 			
 		} catch(IllegalStateException e) {
 			log.error("첨부파일 저장오류", e);
@@ -131,6 +132,65 @@ public class BoardController {
 		}
 		return "redirect:/board/boardList.do";
 	}
+	
+	@PostMapping("/boardUpdate.do")
+	public String boardUpdate(@ModelAttribute Board board, String[] boardImgId, 
+						@RequestParam(value="upfile", required= false) MultipartFile[] upFiles,
+						HttpServletRequest request, RedirectAttributes redirectAttr) throws Exception {
+
+		try {
+			//파일저장
+			//saveDir
+			String saveDirectory =
+					request.getServletContext().getRealPath("/resources/upload/board");
+			File dir = new File(saveDirectory);
+			if(!dir.exists())
+				dir.mkdirs(); // 지정경로 존재X 시 폴더 생성
+			
+			//BoardImageList
+			List<BoardImage> boardImgList = new ArrayList<>();
+			
+			for(MultipartFile upFile : upFiles) {
+				if(upFile.isEmpty()) continue;
+				
+				//저장할 파일명
+				File renamedFile = ShareCarrotUtils.getRenamedFile(saveDirectory, upFile.getOriginalFilename());
+				
+				//파일저장
+				upFile.transferTo(renamedFile);
+				BoardImage boardImg = new BoardImage();
+				boardImg.setBoardImgOrigin(upFile.getOriginalFilename());
+				boardImg.setBoardImgRenamed(renamedFile.getName());
+				
+				boardImgList.add(boardImg);
+			}
+			
+			board.setBoardImageList(boardImgList);
+			int reuslt = boardService.updateBorad(board, boardImgId);
+			redirectAttr.addFlashAttribute("msg", "게시글 수정이 완료되었습니다.");
+			
+		} catch(IllegalStateException e) {
+			log.error("첨부파일 저장오류", e);
+			e.printStackTrace();
+			throw e;
+		} catch(Exception e) {
+			log.error("게시물 수정 오류", e);
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return "redirect:/board/boardList.do";
+	}
+	
+	@GetMapping("/boardUpdate.do")
+	public void boardUpdate(@RequestParam int boardNo, Model model) {
+		Board board = boardService.selectOneBoard(boardNo);
+		List<Location> locationList = utilsService.selectLocationList();
+		
+		model.addAttribute(locationList);
+		model.addAttribute("board", board);
+	}
+	
 	
 	@PostMapping("/boardDelete.do")
 	public String boardDelete(@RequestParam int boardNo, RedirectAttributes redirectAttr) {
@@ -145,12 +205,21 @@ public class BoardController {
 		return "redirect:/board/boardList.do";
 	}
 	
-	@GetMapping("/boardUpdate.do")
-	public void boardUpdate(@RequestParam int boardNo, Model model) {
-		Board board = boardService.selectOneBoard(boardNo);
-		List<Location> locationList = utilsService.selectLocationList();
+	@PostMapping("/boardLike.do")
+	@ResponseBody
+	public void boardLike(@RequestParam String boardNo, @RequestParam int likeCnt, @RequestParam int likeBool ,@RequestParam String memberId) {
+		//likeBool == 0 --> boardLike -1;
+	
 		
-		model.addAttribute(locationList);
-		model.addAttribute("board", board);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("boardNo", boardNo);
+		param.put("likeCnt", likeCnt);
+		param.put("memberId", memberId);
+		param.put("likeBool", likeBool);
+		
+		log.info("likeCnt = {}", likeCnt);
+		log.info("boardNo = {} -- {}", boardNo, memberId);
+		
+		int result = boardService.updateBoardLike(param);
 	}
 }
