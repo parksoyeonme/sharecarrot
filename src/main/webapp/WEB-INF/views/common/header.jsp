@@ -26,6 +26,11 @@
             padding-top: 10px;
         }
     </style>
+<c:if test="${not empty msg}">
+<script>
+	alert("${msg}");
+</script>
+</c:if>
 </head>
 <body>
     <header>
@@ -62,7 +67,13 @@
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <li><a class="dropdown-item" href="#">상품카테고리</a></li>
+                    <%--분기처리 --%>
+                    <sec:authorize access="isAnonymous()">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do">동네생활게시판</a></li>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do?memberId=<sec:authentication property='principal.username'/>">동네생활게시판</a></li>
+                    </sec:authorize>
                     <li><a class="dropdown-item" href="#">신고게시판</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do">공지사항</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">계정설정</a></li>
