@@ -1,7 +1,9 @@
 package com.kh.sharecarrot.member.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -66,7 +71,49 @@ public class MemberController {
 	public void memberEnroll() {
 		
 	}
-	
+
+    @PostMapping("/memberUpdate.do")
+    public String memberUpdate(
+			@RequestParam(value = "id") String memberId,
+			@RequestParam(value = "name") String memberName,
+			@RequestParam(value = "birthday") Date birthday,
+			@RequestParam(value = "email") String email,
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "address") String address,
+    		Authentication oldAuthentication,
+ 		    RedirectAttributes redirectAttr) {
+ 	    //1. 업무로직 : db 반영
+    	Member updateMember = new Member(memberId, ((Member)oldAuthentication.getPrincipal()).getPassword(), memberName,
+				birthday, email, phone, ((Member)oldAuthentication.getPrincipal()).isEnabled(), 
+				((Member)oldAuthentication.getPrincipal()).getQuitYn(), ((Member)oldAuthentication.getPrincipal()).getMemberEnrollDate()
+				, ((Member)oldAuthentication.getPrincipal()).getProfileOriginal(), ((Member)oldAuthentication.getPrincipal()).getProfileRenamed()
+				, address, ((Member)oldAuthentication.getPrincipal()).getLocCode(), null);
+		log.info("member = {}", updateMember);
+ 	    //updateMember에 authorities setting
+ 	    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+ 	    for(GrantedAuthority auth : oldAuthentication.getAuthorities()) {
+ 		    SimpleGrantedAuthority simpleGrantedAuthority = 
+ 				    new SimpleGrantedAuthority(auth.getAuthority());
+ 		    authorities.add(simpleGrantedAuthority);
+ 	    }
+	   
+	    updateMember.setAuthorities(authorities); 
+	    //누락된 데이터처리
+	   
+	    //2. security context에서 principal 갱신
+	    Authentication newAuthentication = 
+	  		    new UsernamePasswordAuthenticationToken(
+				 	    updateMember, 
+					    oldAuthentication.getCredentials(),
+					    oldAuthentication.getAuthorities()
+					    );
+	    SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+	   
+	    //3. 사용자 피드백
+	    redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공");
+	   
+	    return "redirect:/member/memberDetail.do";
+    }	
 	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(
