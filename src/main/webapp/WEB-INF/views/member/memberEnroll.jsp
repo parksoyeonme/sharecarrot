@@ -29,6 +29,13 @@
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 		<table>
 			<tr>
+			</tr>
+			<tr>
+                <th>프로필사진</th>
+                <td><input type="file" name="upProfile" id="upProfile" ></td>
+                <td><img id="profileImg" src="" style="max-width:150px; max-height:80px;"></td>
+            </tr>
+			<tr>
 				<th>아이디</th>
 				<td>
 					<div id="memberId-container">
@@ -222,8 +229,28 @@ $("[name=memberEnrollFrm]").submit(function(){
 		alert("아이디 중복 검사해주세요.");
 		return false;
 	}
+	
+	
 	return true;
 });
+
+$('#upProfile').change(function(){
+    setProfile(this, '#profileImg');
+    if(!/([^\s]+(?=\.(jpg|gif|png))\.\2)/.test($("#upProfile").val())){
+        alert('프로필사진은 jpg|png|gif 형식의 파일만 가능합니다.');
+        return false;
+    }
+});
+
+function setProfile(input, profileImg){
+    if(input.files && input.files[0]){
+        var reader = new FileReader();
+        reader.onload = function(e){
+            $(profileImg).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+};
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
