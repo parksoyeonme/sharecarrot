@@ -4,7 +4,7 @@
 	.history-box{
     position: fixed;
     top: 102px;
-    right: calc(50% - 700px);
+    right: calc(50% - 500px);
     z-index: 20;
 	}
     .history-box-container{
