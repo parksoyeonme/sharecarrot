@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop">
+	<insert id="shopEnroll">
+		insert into 
+			shop
+		values(
+			#{shopId},
+			default,
+			default,
+			null,
+			#{memberId}
+		)
+	</insert>
+
+
+	<update id="updateVisitCount" parameterType="String">
+	update shop set
+	shop_visit_count = shop_visit_count + 1
+	where shop_id =#{shopId}
+	</update>
+	
+	<select id= "selectShopOne" resultMap="shopMap">
+	select * from shop where member_id = #{memberId}
+	</select>
+	
+	<resultMap type="shop" id="shopMap">
+		<id column="shop_id" property="shopId" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_sell_count" property="shopSellCount" />
+		<result column="shop_memo" property="shopMemo" />
+		<result column="member_id" property="memberId" />
+	</resultMap>
+
+
+</mapper>

@@ -49,7 +49,6 @@
 		<!-- remember me 설정 -->
 		<remember-me  
 			data-source-ref="dataSource" 
-			user-service-ref="memberServiceImpl"
 			token-validity-seconds="1209600"/> <!-- 초단위 기입 2419200 (60*60*24*14 : 4 주) -->
 
 		<!-- 접근권한이 없는 경우, forwarding할 url -->
@@ -61,8 +60,8 @@
 	
 	<authentication-manager>
 		<!-- UserDetailsService 구현체. 같은 application-context에 등록된 빈이어야 함. -->
-		<authentication-provider user-service-ref="memberServiceImpl" >			
-<!-- 		<authentication-provider user-service-ref="securityService" >			 -->
+<!-- 		<authentication-provider user-service-ref="memberServiceImpl" >			 -->
+		<authentication-provider user-service-ref="securityService" >			
 			<password-encoder ref="bcryptPasswordEncoder"/>
 		</authentication-provider>
 	</authentication-manager>
@@ -70,7 +69,6 @@
 	
 	<!-- com.kh.security 패키지 빈으로 등록 -->
 	<!-- application-context에 등록된 빈으로 servlet-context의 빈은 참조불가하다. -->
-<!-- 	<context:component-scan base-package="com.kh.security"/> -->
-	<context:component-scan base-package="com.kh.sharecarrot"/>
+	<context:component-scan base-package="com.kh.security"/>
 	
 </beans:beans>
