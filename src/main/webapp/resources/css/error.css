@@ -1,0 +1,34 @@
+.body {
+    width: 1024px;
+    height: 768px;
+    justify-content: center;
+    text-align: center;
+}
+
+.errorlogo{
+    margin-left: 33%;
+    margin-top: 12%;
+    
+
+}
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.sorry-text{
+    text-align: center;
+    font-size: 18px;
+    color: cornflowerblue;
+    font-weight: bold;
+    padding-top: 25px;
+
+}
+.plznotice-text{
+    text-align: center;
+    padding-top: 40px;
+    line-height: 41px;
+    color: #7A7777;
+}
+.error-btn{
+    margin-left: 48%;
+    margin-top: 3%; 
+}
