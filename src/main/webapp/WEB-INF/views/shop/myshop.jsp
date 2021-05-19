@@ -12,6 +12,27 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
 <!--icon-->
  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+           url:"${pageContext.request.contextPath}/shop/myshop.do",
+           type: "GET",
+			dataType : "json",
+			data: {
+				prolist : prolist
+			},
+			success: function(data){
+				console.log(data);
+				displayList(data);
+			},
+			error:function(request,status,error){
+	            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	           }
+		});
+           }
+    });
+
+</script>
 
 <section id="my-store-container" class="ms_container">
         <hr />
@@ -39,18 +60,16 @@
                                 ${shop.shopVisitCount}명
                             </div>
                             <div style="border: 1px solid red; float: left; width: 21%; color: #223465; font-weight: bold;">
-                              <i class="fas fa-shopping-cart" style="font-size: 23px;color: skyblue"]></i>상품판매
+                              <i class="fas fa-shopping-cart" style="font-size: 23px;color: skyblue;"></i>상품판매
                             </div>
                             <div style="border: 1px solid red; float: left; width: 13%;">
                                 ${shop.shopSellCount}개
                             </div>
                         </li>
                     </ul>
-                    <div style="margin-top: 41px;
-    margin-left: 28px;
-    height: 113px;
-    border: 1px solid;"
-}>dfd</div>
+                    <div style="margin-top: 41px; margin-left: 28px; height: 113px; border: 1px solid;"}>
+                    	${shop.shopMemo}
+                    </div>
                 </div>
                 <div id="sidebar" class="col-lg-2">
                     <div id="sticky">
@@ -120,9 +139,9 @@
                         </div>
                         <div>
                             <div class="wrap-pro">
-                                <div class="box box1 boxC">사진</div>
-                                <div class="pro-title">제목</div>
-                                <div class="pro-price">가격</div>
+                                <div class="box box1 boxC"></div>
+                                <div class="pro-title"></div>
+                                <div class="pro-price"></div>
                             </div>
                             <div class="wrap-pro">
                                 <div class="box box1 boxC">사진</div>

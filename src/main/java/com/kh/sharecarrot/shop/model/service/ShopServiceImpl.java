@@ -1,8 +1,11 @@
 package com.kh.sharecarrot.shop.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shop.model.dao.ShopDao;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 
@@ -80,6 +83,16 @@ public class ShopServiceImpl implements ShopService{
 	}
 
 
+
+	@Override
+	public List<Product> selectProductList(String shopId) {
+		// TODO Auto-generated method stub
+		return shopDao.selectProductList(shopId);
+	}
+
+
+
+	
 
 
 	

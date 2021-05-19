@@ -1,5 +1,8 @@
 package com.kh.sharecarrot.shop.model.dao;
 
+import java.util.List;
+
+import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 
 public interface ShopDao {
@@ -55,7 +58,50 @@ public interface ShopDao {
 
 	Shop selectShopOne(String memberId);
 
-	
+	List<Product> selectProductList(String shopId);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
