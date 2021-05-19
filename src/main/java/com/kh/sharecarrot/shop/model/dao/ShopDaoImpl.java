@@ -1,9 +1,12 @@
 package com.kh.sharecarrot.shop.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 
 @Repository
@@ -82,7 +85,13 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectOne("shop.selectShopOne", memberId);
 	}
 
-	
-	
+
+	@Override
+	public List<Product> selectProductList(String shopId) {
+		return session.selectList("shop.selectProductList", shopId);
+	}
+
+
+
 
 }
