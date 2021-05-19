@@ -1,0 +1,271 @@
+.section {
+    width: 1024px;
+    height: 768px;
+    overflow: auto;
+    justify-content: center;
+}
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    list-style: none;
+    text-decoration: none;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    box-sizing: border-box;
+}
+/*=====지우기=====*/
+#header-nav {
+    background-color: rgb(247, 247, 247);
+    border-bottom: 1px solid rgb(209, 209, 209);
+    padding-top: 10px;
+}
+/*=====지우기=====*/
+.tabs {
+    display: flex;
+}
+.tabs .tab {
+    text-align: center;
+    line-height: 30px;
+    width: 390px;
+    height: 35px;
+    cursor: pointer;
+    background-color: rgb(243, 243, 243);
+    color: rgb(20, 19, 19);
+    position: relative;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border: 2px solid black;
+}
+.content-mystorepro {
+    border: 2px solid black;
+    height: 326px;
+  
+}
+.itemss {
+    display: none;
+    padding: 10px;
+    background-color: #fff;
+    position: relative;
+}
+.itemss::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 386px;
+    height: 4px;
+    background-color: rgb(255, 255, 255);
+}
+.itemss:nth-child(2)::before {
+    left: 390px;
+    top: -4px;
+    background-color: rgb(255, 255, 255);
+}
+.itemss:nth-child(3)::before {
+    left: 188px;
+    top: -4px;
+    background-color: rgb(255, 255, 255);
+}
+.itemss.active {
+    display: inline-block;
+}
+/*내상점관리 버튼*/
+.gomystore-button {
+    -webkit-border-radius: 7;
+    -moz-border-radius: 7;
+    border-radius: 7px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 13px;
+    background: #eba326;
+    padding: 10px 20px;
+    margin-left: 41px;
+    text-decoration: none;
+}
+.gomystore-button:hover {
+    background: #428c54;
+    text-decoration: none;
+}
+.gomystore-button:active {
+    position: relative;
+    top: 1px;
+}
+/*전체*/
+.div-division > .left {
+    width: 8%;
+    float: left;
+    box-sizing: border-box;
+    background: #8977ad;
+}
+.div-division > .right {
+    width: 92%;
+    float: right;
+    box-sizing: border-box;
+    background: #ece6cc;
+}
+/*상품나열하기*/
+.wrap-pro {
+    float: left;
+}
+div.box {
+    padding: 58px;
+    margin: 21px 5px 5px;
+}
+.box1 {
+    background: #ff3131;
+    height: 99px;
+    width: 140px;
+}
+.wrap-pro > .pro-title {
+    margin-left: 20px;
+}
+.wrap-pro > .pro-price {
+    margin-left: 97px;
+    font-weight: bold;
+}
+.div-division2 > .left2 {
+    width: 12%;
+    float: left;
+    box-sizing: border-box;
+    background: #8977ad;
+}
+.div-division2 > .right2 {
+    width: 88%;
+    float: right;
+    box-sizing: border-box;
+    background: #ece6cc;
+}
+.review-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.review-table td {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+.review-table th {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+.review-table .rt-tbl {
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+    width: 146px;
+}
+.see-review {
+    margin-left: 35px;
+    padding-top: 39px;
+}
+#sidebar {
+    float: right;
+    padding: 10px;
+}
+
+.history-box{
+    position: fixed;
+    top: 102px;
+    margin-left: 20px;
+ 
+	}
+    .history-box-container{
+      width: 128px;
+    }
+    /* 공통부분 CSS 시작 */
+    .jjim,
+    .recent{
+      padding: 10px;
+      width: 100%;
+      border: 1px solid rgb(204, 204, 204);
+      background: rgb(255, 255, 255);
+      margin-bottom: 6px;
+    }
+    .jjim{
+      border-color: rgb(102, 102, 102);
+    }
+    .top{
+      margin-bottom: 0px;
+      padding: 0px;
+      border-color: rgb(229, 229, 229);
+    }
+    
+    .jjim-title,
+    .recent-title{
+      font-size: 12px;
+      font-weight: 600;
+      color: rgb(102, 102, 102);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    /* 공통부분 CSS 끝 */
+    /*찜한 상품 CSS 시작*/
+    .jjim-count-wrapper{
+      display: flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+    }
+    .jjim-count{
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      font-size: 12px;
+      color: rgb(204, 204, 204);
+      font-weight: 600;
+    }
+    /*찜한 상품 CSS 끝*/
+    /*최근 본 상품 CSS 시작*/
+    .recent-dot{
+      display: flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      font-size: 12px;
+      color: rgb(247, 0, 0);
+      font-weight: 600;
+      border-bottom: 2px dotted rgb(136, 136, 136);
+    }
+
+    .recent-content{
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      color: rgb(204, 204, 204);
+      font-size: 12px;
+      text-align: center;
+    }
+    /*최근 본 상품 CSS 끝*/
+    /* TOP 버튼 CSS 시작 */
+    .top-btn{
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      height: 40px;
+      width: 100%;
+      font-weight: 800;
+      font-size: 14px;
+      color: rgb(102, 102, 102);
+      border: 1px solid rgb(204, 204, 204);
+      background-color: transparent;
+      outline: none;
+    }
+    /* TOP 버튼 CSS 끝 */
+

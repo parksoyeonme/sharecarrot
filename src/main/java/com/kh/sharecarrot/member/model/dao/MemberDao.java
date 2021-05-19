@@ -6,4 +6,6 @@ public interface MemberDao {
 
 	Member selectOneMember(String id);
 
+	int memberEnroll(Member member);
+
 }

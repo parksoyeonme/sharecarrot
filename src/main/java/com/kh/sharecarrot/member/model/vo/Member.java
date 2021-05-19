@@ -3,6 +3,7 @@ package com.kh.sharecarrot.member.model.vo;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -25,16 +26,19 @@ public class Member implements Serializable, UserDetails {
 	private String memberName;
 	private Date birthday;
 	private String email;
-	private String phnoe;
+	private String phone;
 	private boolean enabled;
+	private char quitYn;
 	private Date memberEnrollDate;
 	private String profileOriginal;
 	private String profileRenamed;
 	private String memberAddr;
 	private String locCode;
-	
-	private Set<SimpleGrantedAuthority> authorities;
-	
+	/**
+	 * 권한을 문자열로 관리
+	 */
+	//GrantedAuthority의 구현체
+	private List<SimpleGrantedAuthority> authorities;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -69,5 +73,10 @@ public class Member implements Serializable, UserDetails {
 	public String getPassword() {
 		return memberPassword;
 	}
-
+	
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

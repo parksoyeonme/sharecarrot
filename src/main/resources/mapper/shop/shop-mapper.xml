@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop">
+	<insert id="shopEnroll">
+		insert into 
+			shop
+		values(
+			#{shopId},
+			default,
+			default,
+			default,
+			null,
+			#{memberId}
+		)
+	</insert>
+
+
+	<update id="updateVisitCount" parameterType="String">
+	update shop set
+	shop_visit_count = shop_visit_count + 1
+	where shop_id =#{shopId}
+	</update>
+	
+	<select id= "selectShopOne" resultMap="shopMap">
+	select * from shop where member_id = #{memberId}
+	</select>
+	
+	<select id="selectProductList" resultMap="shopProductMap">
+	select s.shop_id, p.product_id,p.product_name, p.product_price, pi.product_img_renamed
+	from 
+	shop s
+	inner join product p on  s.shop_id = p.shop_id
+	inner join product_image pi
+	on pi.product_id = p. product_id
+	where s.shop_id = #{shopId}
+	 
+	
+	</select>
+	
+	<resultMap type="product" id="productMap">
+		<id column="product_id" property="productId"/>
+			<result column="product_name" property="productName"/>
+			<result column="product_price" property="productPrice"/>
+			<result column="product_ynh" property="productYnh"/>
+			<result column="product_reg_date" property="productRegDate"/>
+			<result column="product_content" property="productContent"/>
+			<result column="product_del_flag" property="productDelFlag"/>
+			<result column="shop_id" property="shopId"/>
+			<result column="category_code" property="categoryCode"/>
+	</resultMap>
+			
+	<resultMap type="productImage" id="productImgMap">
+		<id column="product_img_no" property="productImgNo"/>
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+	</resultMap>
+			
+
+		
+	
+	<resultMap type="shop" id="shopMap">
+		<id column="shop_id" property="shopId" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_sell_count" property="shopSellCount" />
+		<result column="shop_memo" property="shopMemo" />
+		<result column="member_id" property="memberId" />
+		
+	</resultMap>
+
+		<resultMap type="ShopProduct" id="shopProductMap">
+			<collection property="product" resultMap="productMap"/>
+			<collection property="productImage" resultMap="productImgMap"/>
+		</resultMap>
+	
+</mapper>

@@ -7,7 +7,43 @@
 		select *
 		from member m
 			left join authorities a
-				on m.id = a.id
-		where m.memberid = #{id}
-		</select>
+				on m.member_id = a.member_id
+		where m.member_id = #{memberId}
+	</select>
+   
+	<insert id="memberEnroll">
+		insert into 
+			member
+		values(
+			#{memberId},
+			#{memberPassword},
+			#{memberName},
+			#{birthday},
+			#{email},
+			#{phone},
+			default,
+			#{profileOriginal},
+			#{profileRenamed},
+			#{memberAddr},
+			#{locCode},
+			default,
+			default
+		)
+	</insert>
+	
+	<resultMap type="member" id="memberMap">
+		<id column="member_id" property="memberId"/>
+		<result column="member_password" property="memberPassword"/>
+		<result column="member_name" property="memberName"/>
+		<result column="birthday" property="birthday"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="member_enroll_date" property="memberEnrollDate"/>
+		<result column="enabled" property="enabled"/>
+		<collection property="authorities" ofType="simpleGrantedAuthority">
+			<constructor>
+				<arg column="auth" javaType="string"/>
+			</constructor>
+		</collection>
+	</resultMap>
 </mapper>

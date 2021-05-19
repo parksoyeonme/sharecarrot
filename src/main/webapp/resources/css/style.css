@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+body {font-family:"휴먼모음T";}
+div, section, header, aside, footer {padding:10px;}
+
+/********** 전체컨테이너 **********/
+div#container	{}
+
+/********** header **********/
+header div#header-container {height:100px;}
+header div#header-container h2 	{margin:30px 10px 0px 10px;}
+
+
+/********** content **********/
+
+ a:link { color: black; text-decoration: none;}
+ a:visited { color: gray; text-decoration: none;}
+ a:hover { color: blue; text-decoration: underline;}
+
+div.sub_title{
+    margin-top: 20px;
+    width: 800px;
+ 	margin: 0 auto;
+ 	margin-top:40px;
+    text-align: left; 
+ }
+section#content		{min-height:600px;}
+
+
+/********** footer **********/
+footer	{background-color:#f8f9fa; width: 1024px; margin:0 auto; text-align:center; background-clip:content-box; height: 400px; }
+footer p 	{margin-top:30px;}
+footer-table {}

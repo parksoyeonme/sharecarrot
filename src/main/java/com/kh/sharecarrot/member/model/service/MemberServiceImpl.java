@@ -27,5 +27,15 @@ public class MemberServiceImpl implements MemberService {
 			throw new UsernameNotFoundException(id);
 		return member;
 	}
+
+	@Override
+	public int memberEnroll(Member member) {
+		return memberDao.memberEnroll(member);
+	}
+
+	@Override
+	public Member selectOneMember(String id) {
+		return memberDao.selectOneMember(id);
+	}
 	
 }
