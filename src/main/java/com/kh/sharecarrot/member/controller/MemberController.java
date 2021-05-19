@@ -5,16 +5,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +33,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -181,4 +191,56 @@ public class MemberController {
 		return new ResponseEntity<>(map, headers, HttpStatus.OK);
 	}
 	
+    /* 이메일 인증 */
+	@GetMapping("/emailCheck.do")
+	@ResponseBody
+    public String emailCheck(String email) throws Exception{
+        
+//        log.info("이메일 데이터 전송 확인");
+//        log.info("인증번호 : " + email);
+                
+	    Random random = new Random();
+	    int checkNum = random.nextInt(888888) + 111111;
+        log.info("인증번호 " + checkNum);
+        
+        /* 이메일 보내기 */
+        String host = "smtp.naver.com";
+        final String username = "testyongdo1";
+        final String password = "sharecarrot";
+        int port = 465;
+        
+        String recipient = email;
+        String subject = "회원가입 인증 이메일 입니다.";
+        String body = 
+                "홈페이지를 방문해주셔서 감사합니다." +
+                "\n" + 
+                "인증 번호는 " + checkNum + "입니다." + 
+                "\n" + 
+                "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        
+        Properties props = System.getProperties();
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.ssl.tr ust", host);
+        
+        Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+        	String un=username;
+        	String pw=password;
+        	protected PasswordAuthentication getPasswordAuthentication() {
+        		return new PasswordAuthentication(un, pw);
+        	}
+        });
+        session.setDebug(true);
+        
+        Message mimeMessage = new MimeMessage(session);
+        mimeMessage.setFrom(new InternetAddress("testyongdo1@naver.com"));
+        mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+        mimeMessage.setSubject(subject);
+        mimeMessage.setText(body);
+        Transport.send(mimeMessage);
+        
+        return String.valueOf(checkNum);
+	}	
 }

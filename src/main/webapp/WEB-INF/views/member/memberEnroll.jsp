@@ -88,7 +88,17 @@
 					<input type="email" class="form-control" placeholder="abc@xyz.com" name="email" id="email">
 				</td>
 				<td>
-					<input type="button" value="이메일 인증" class="btn btn-outline-secondary" style="margin-left:10px;">
+					<input type="button" value="인증번호 전송" class="btn btn-outline-secondary" style="margin-left:10px;" name="emailbutton" id="emailbutton">
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input	type="text" class="form-control" placeholder="인증번호 입력" name="emailconfirm" id="emailconfirm" readonly>
+				</td>
+				<td>
+					<input type="button" value="인증번호 확인"  class="btn btn-outline-secondary" name="emailconfirmbutton" id="emailconfirmbutton" style="margin-left:10px; visibility:hidden;">
+					<input type="hidden" id="emailValid" value="0"/>
 				</td>
 			</tr>
 			<tr>
@@ -118,6 +128,9 @@
 	</form>
 </div>
 <script>
+
+// 이메일 인증용 코드
+var code = "";  
 
 $(() => {
 	$(".guide").hide();
@@ -167,6 +180,54 @@ function execPostCode() {
     }).open();
 }
 
+$('[name=emailbutton]').click(function(){
+	// 이메일 유효성 검사
+	console.log("test");
+	var email = $("#email").val();
+	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	
+	if( !email ){ 
+	   alert("이메일주소를 입력 해 주세요"); 
+	   $("#email").focus(); 
+	   return false; 
+	} else { 
+	   if(!regExp.test(email)) { 
+	      alert("이메일 주소가 유효하지 않습니다"); 
+	      $("#email").focus(); 
+	      return false; 
+	   } 
+	} 
+	
+	$('[name=emailconfirm]').attr("readonly",false);	
+	$('[name=emailconfirmbutton]').attr("style","visivility:visible");	
+	$('[name=emailconfirmbutton]').attr("style","margin-left:10px");	
+	alert('인증번호가 전송되었습니다.');
+    $.ajax({
+        
+        type:"GET",
+        url:"${pageContext.request.contextPath}/member/emailCheck.do?email="+email,
+        success:function(data){
+//             console.log(data);
+            code = data;
+        }                
+    });
+	
+});
+
+$('[name=emailconfirmbutton]').click(function(){
+	var emailconfirm = $("#emailconfirm").val();
+	var $emailValid = $("#emailValid");
+	if(code != emailconfirm){
+		alert('인증번호가 일치하지 않습니다.');
+		return false;
+	}else{
+		alert('이메일 인증에 성공하였습니다.');
+		$emailValid.val(1);
+		$('[name=emailconfirm]').attr("readonly",true);			
+	}
+});
+	
+	
 // 중복검사
 $('#id').keyup(e => {
 	const id = $(e.target).val();
@@ -230,6 +291,11 @@ $("[name=memberEnrollFrm]").submit(function(){
 		return false;
 	}
 	
+	var $emailValid = $("#emailValid");
+	if($emailValid.val() == 0){
+		alert("이메일 중복 검사해주세요.");
+		return false;
+	}
 	
 	return true;
 });
