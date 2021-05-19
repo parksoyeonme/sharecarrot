@@ -166,8 +166,8 @@ function execPostCode() {
            }
 
            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-           console.log(data.zonecode);
-           console.log(fullRoadAddr);
+//            console.log(data.zonecode);
+//            console.log(fullRoadAddr);
            
            
            $("[name=address1]").val(data.zonecode);
@@ -182,7 +182,6 @@ function execPostCode() {
 
 $('[name=emailbutton]').click(function(){
 	// 이메일 유효성 검사
-	console.log("test");
 	var email = $("#email").val();
 	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	
@@ -247,7 +246,7 @@ $('#id').keyup(e => {
 		data: {id}, //변수 이름을 속성명으로 쓰고 싶을 때
 		success: data => {
 			$(".guide").show();
-			console.log(data);
+// 			console.log(data);
 			if(data.usable){
 				$result.show();
  			    $result.html("아이디가 사용 가능합니다.");
