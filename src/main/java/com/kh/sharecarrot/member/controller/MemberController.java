@@ -1,5 +1,8 @@
 package com.kh.sharecarrot.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +17,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,8 +39,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.sharecarrot.board.model.vo.BoardImage;
+import com.kh.sharecarrot.common.ShareCarrotUtils;
 import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.shop.model.service.ShopService;
@@ -90,8 +97,10 @@ public class MemberController {
 			@RequestParam(value = "email") String email,
 			@RequestParam(value = "phone") String phone,
 			@RequestParam(value = "address") String address,
+			@RequestParam(value="upfile", required= false) MultipartFile upFile,
+			HttpServletRequest request,
     		Authentication oldAuthentication,
- 		    RedirectAttributes redirectAttr) {
+ 		    RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
  	    //1. 업무로직 : db 반영
     	Member updateMember = new Member(memberId, ((Member)oldAuthentication.getPrincipal()).getPassword(), memberName,
 				birthday, email, phone, ((Member)oldAuthentication.getPrincipal()).isEnabled(), 
@@ -106,6 +115,20 @@ public class MemberController {
  				    new SimpleGrantedAuthority(auth.getAuthority());
  		    authorities.add(simpleGrantedAuthority);
  	    }
+ 	    
+ 	   String saveDirectory =
+				request.getServletContext().getRealPath("/resources/upload/member");
+		File dir = new File(saveDirectory);
+		if(!dir.exists())
+			dir.mkdirs(); // 지정경로 존재X 시 폴더 생성
+		
+		if(!upFile.isEmpty()) {
+			File renamedFile = ShareCarrotUtils.getRenamedFile(saveDirectory, upFile.getOriginalFilename());
+			//파일저장
+			upFile.transferTo(renamedFile);
+			updateMember.setProfileOriginal(upFile.getOriginalFilename());
+			updateMember.setProfileRenamed(renamedFile.getName());				
+		}
 	   
 	    updateMember.setAuthorities(authorities); 
 	    //누락된 데이터처리
@@ -135,11 +158,14 @@ public class MemberController {
 			@RequestParam(value = "birthday") Date birthday,
 			@RequestParam(value = "address2") String addr2,
 			@RequestParam(value = "address3") String addr3,
+			@RequestParam(value="upfile", required= false) MultipartFile upFile,
+			HttpServletRequest request,
+    		Authentication oldAuthentication,
 			RedirectAttributes redirectAttr
 //			,HttpServletRequest request
-			) {
-		
+			) throws Exception {
 		try {
+			request.setCharacterEncoding("UTF-8");
 //			//MultipartRequest객체 생성
 //			String saveDirectory = getServletContext().getRealPath("/upload/memberProfile");// / -> Web Root Directory
 //			int maxPostSize = 30 * 1024 * 1024;
@@ -149,10 +175,25 @@ public class MemberController {
 //					new MultipartRequest(request, saveDirectory, maxPostSize, encoding, policy);
 //		
 			
+			//저장할 파일명
 			String address = addr2 + addr3;
 			Member member = new Member(memberId, memberPassword, memberName,
 					birthday, email, phone, true, 'n', null, null, null, address, "L1", null);
 			log.info("member = {}", member);
+
+			String saveDirectory =
+					request.getServletContext().getRealPath("/resources/upload/member");
+			File dir = new File(saveDirectory);
+			if(!dir.exists())
+				dir.mkdirs(); // 지정경로 존재X 시 폴더 생성
+			
+			if(!upFile.isEmpty()) {
+				File renamedFile = ShareCarrotUtils.getRenamedFile(saveDirectory, upFile.getOriginalFilename());
+				//파일저장
+				upFile.transferTo(renamedFile);
+				member.setProfileOriginal(upFile.getOriginalFilename());
+				member.setProfileRenamed(renamedFile.getName());				
+			}
 			
 			Shop shop = new Shop();
 			String rawPassword = member.getPassword();
