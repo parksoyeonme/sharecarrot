@@ -75,6 +75,17 @@
 		</selectKey>
 	</insert>
 	
+	<update id="updateBoard">
+		update board set
+			board_title = #{boardTitle},
+			board_content = #{boardContent},
+			board_update_date = sysdate,
+			board_category = #{boardCategory},
+			loc_code = #{locCode}
+		where board_no = #{boardNo}
+	</update>
+	
+	
 	<insert id="insertBoardImg">
 		insert into
 			board_image
@@ -103,4 +114,28 @@
 	            on b.board_no = a.board_no
 	    where b.board_no = #{boardNo}
 	</select>
+	
+	<delete id="deleteBoardImg">
+		delete from board_image where board_img_id = #{id}
+	</delete>
+	
+	<select id="selectBoardLikeList" resultType="boardLike">
+		select * from board_Like where member_id = #{memberId}
+	</select>
+	
+	<update id="updateBoardLike">
+		update board set
+			board_like = #{likeCnt}
+		where board_no = #{boardNo}
+	</update>
+	
+	<insert id="insertBoardLike">
+		insert into board_like
+		values(#{memberId}, #{boardNo})
+	</insert>
+	
+	<delete id="deleteBoardLike">
+		delete from board_like
+		where board_no = #{boardNo}
+	</delete>
 </mapper>

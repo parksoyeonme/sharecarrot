@@ -41,21 +41,21 @@ public class ShopController {
 	
 	@RequestMapping(value="/enroll.do")
 	public ModelAndView productReg() {
-		ModelAndView mav = new ModelAndView("products/products");
+		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		mav.addObject("tab","productEnroll");
 		return mav;
 	}
 	
 	@RequestMapping(value="/manage.do")
 	public ModelAndView productManage() {
-		ModelAndView mav = new ModelAndView("products/products");
+		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		mav.addObject("tab","productManage");
 		return mav;
 	}
 	
 	@RequestMapping(value="/transactionHistory.do")
 	public ModelAndView transactionHistory() {
-		ModelAndView mav = new ModelAndView("products/products");
+		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		mav.addObject("tab","transactionHistory");
 		return mav;
 	}

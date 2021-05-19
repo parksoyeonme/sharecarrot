@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardLike;
 
 public interface BoardService {
 
@@ -16,5 +17,11 @@ public interface BoardService {
 	int boardDelete(int boardNo);
 
 	Board selectOneBoard(int boardNo);
+
+	int updateBorad(Board board, String[] boardImgId);
+
+	List<BoardLike> selectBoardLikeList(String memberId);
+
+	int updateBoardLike(Map<String, Object> param);
 
 }

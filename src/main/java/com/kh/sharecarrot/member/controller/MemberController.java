@@ -1,7 +1,9 @@
 package com.kh.sharecarrot.member.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +11,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -49,25 +54,66 @@ public class MemberController {
 	}
 	
 	@GetMapping("/memberDetail.do")
-	public void memberDetail(Authentication authentication, @AuthenticationPrincipal Member member, Model model) { //principal로 부터 멤버 정보를 가져오는 2가지방법
+	public void memberDetail(Authentication authentication, Model model) { //principal로 부터 멤버 정보를 가져오는 2가지방법
 		//1. secuirty context holder bean 빈으로 부터 직접 가져오는 방법
 		//2. handler의 매개인자로 Authenticaiton을 기재하면 자동으로 받아온다.
 		//3. @AuthenticationPrincipal 어노테이션을 붙혀주면 멤버값을 바로 불러올수 있다. Member가 userDetails를 상속받고 있기때문이다.
 //		Authentication authentication =
 //		SecurityContextHolder.getContext().getAuthentication(); // 여기에 인증된 사용자 정보가있다.
-		log.debug("authentication = {}", authentication); 
+		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		//UsernamePasswordAuthenticationToken 
-		log.debug("member = {}",authentication.getPrincipal());
+		log.debug("member = {}",member);
 
-		model.addAttribute("loginMember", authentication.getPrincipal());
-		
+		model.addAttribute("loginMember", member);
 	}
 
 	@GetMapping("/memberEnroll.do")
 	public void memberEnroll() {
-	
+		
 	}
-	
+
+    @PostMapping("/memberUpdate.do")
+    public String memberUpdate(
+			@RequestParam(value = "id") String memberId,
+			@RequestParam(value = "name") String memberName,
+			@RequestParam(value = "birthday") Date birthday,
+			@RequestParam(value = "email") String email,
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "address") String address,
+    		Authentication oldAuthentication,
+ 		    RedirectAttributes redirectAttr) {
+ 	    //1. 업무로직 : db 반영
+    	Member updateMember = new Member(memberId, ((Member)oldAuthentication.getPrincipal()).getPassword(), memberName,
+				birthday, email, phone, ((Member)oldAuthentication.getPrincipal()).isEnabled(), 
+				((Member)oldAuthentication.getPrincipal()).getQuitYn(), ((Member)oldAuthentication.getPrincipal()).getMemberEnrollDate()
+				, ((Member)oldAuthentication.getPrincipal()).getProfileOriginal(), ((Member)oldAuthentication.getPrincipal()).getProfileRenamed()
+				, address, ((Member)oldAuthentication.getPrincipal()).getLocCode(), null);
+		log.info("member = {}", updateMember);
+ 	    //updateMember에 authorities setting
+ 	    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+ 	    for(GrantedAuthority auth : oldAuthentication.getAuthorities()) {
+ 		    SimpleGrantedAuthority simpleGrantedAuthority = 
+ 				    new SimpleGrantedAuthority(auth.getAuthority());
+ 		    authorities.add(simpleGrantedAuthority);
+ 	    }
+	   
+	    updateMember.setAuthorities(authorities); 
+	    //누락된 데이터처리
+	   
+	    //2. security context에서 principal 갱신
+	    Authentication newAuthentication = 
+	  		    new UsernamePasswordAuthenticationToken(
+				 	    updateMember, 
+					    oldAuthentication.getCredentials(),
+					    oldAuthentication.getAuthorities()
+					    );
+	    SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+	   
+	    //3. 사용자 피드백
+	    redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공");
+	   
+	    return "redirect:/member/memberDetail.do";
+    }	
 	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(
@@ -79,9 +125,20 @@ public class MemberController {
 			@RequestParam(value = "birthday") Date birthday,
 			@RequestParam(value = "address2") String addr2,
 			@RequestParam(value = "address3") String addr3,
-			RedirectAttributes redirectAttr) {
+			RedirectAttributes redirectAttr
+//			,HttpServletRequest request
+			) {
 		
 		try {
+//			//MultipartRequest객체 생성
+//			String saveDirectory = getServletContext().getRealPath("/upload/memberProfile");// / -> Web Root Directory
+//			int maxPostSize = 30 * 1024 * 1024;
+//			String encoding = "utf-8";
+//			FileRenamePolicy policy = new MvcFileRenamePolicy();
+//			MultipartRequest multipartReq = 
+//					new MultipartRequest(request, saveDirectory, maxPostSize, encoding, policy);
+//		
+			
 			String address = addr2 + addr3;
 			Member member = new Member(memberId, memberPassword, memberName,
 					birthday, email, phone, true, 'n', null, null, null, address, "L1", null);
@@ -96,7 +153,7 @@ public class MemberController {
 			
 			//1. 업무로직
 			int result = memberService.memberEnroll(member);
-			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf(Math.random()*(90)+10));
+			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf((int)(Math.random()*9)+1));
 			shop.setMemberId(memberId);
 			shopService.shopEnroll(shop);
 		}catch(Exception e) {

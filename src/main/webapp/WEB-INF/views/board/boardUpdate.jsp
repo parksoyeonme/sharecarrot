@@ -9,9 +9,14 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-  <form:form method="post" 
+  <form:form 
+  		id="updateFrm"
+  		method="post" 
   		action="${pageContext.request.contextPath}/board/boardUpdate.do?${_csrf.parameterName}=${_csrf.token}" 
   		enctype="multipart/form-data">
+  	<%-- hidden 정보 --%>
+ 	<input type ='hidden' name='boardNo' value='${board.boardNo} '/>
+ 
     <select id="boardCategory" name="boardCategory" required>
       <option selected disabled value="">카테고리</option>
       <option value="C1" ${board.boardCategory eq 'C1' ? 'selected' : '' }>여행/음식</option>
@@ -37,24 +42,33 @@
     <div class="input-group" id="imgContainer">
       <input type="file" class="form-control" id="upfile1" name="upfile">
     </div>
-    <div>
+    <div class='mt-5'>
+    <h2>업로드 이미지</h2>
     	<c:forEach items='${board.boardImageList}' var='img'>
+    	<div id='board${img.boardImgId}' class="d-inline" style="position:relative;">
+    		<input type='button' style='position:absolute' value='삭제' onclick='deleteImg(${img.boardImgId});' />
     		<img src='${pageContext.request.contextPath}/resources/upload/board/${img.boardImgRenamed}' class='img-thumbnail' style='width:200px; height:200px;' onclick='window.open(this.src)'/>
+    	</div>
     	</c:forEach> 
     </div>
     <hr />
     <button class="btn btn-primary form-control">수정</button>
   </form:form>
   <script>
-    var i = 1;
+    var imgIndex = 1;
     $("#addImgBtn").click(function(){
-      i++;
-      console.log(i);
+      imgIndex++;
       if(i > 10) {
         alert("이미지 파일은 최대 10개까지만 등록이 가능합니다.");
         return;
       }
       $("#imgContainer").append("<input type='file' class='form-control' id='upfile"+i+"' name='upfile'>");
     });
+    
+    function deleteImg(boardImgId){
+    	$(`#board\${boardImgId}`).remove();
+    	var delImgHidden = `<input type='hidden' name='boardImgId' value='\${boardImgId}' />`;
+    	$(updateFrm).append(delImgHidden);
+    }
   </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
