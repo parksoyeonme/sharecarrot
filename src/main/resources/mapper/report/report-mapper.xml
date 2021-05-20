@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="report">
+	<select id="selectReportList" resultMap="reportListMap">
+		  SELECT REPORT_NO
+		       , REPORT_TITLE
+		       , REPORT_DATE
+		       , REPORT_CONTENT
+		       , REPORT_REPORTED
+		       , REPORT_PROCESSING_DATE
+		       , REPORT_PROCESS_YN
+		       , MEMBER_ID
+		       , SHOP_ID
+		    FROM REPORT_BOARD
+		ORDER BY REPORT_NO DESC
+	</select>
+	<resultMap type="report" id="reportListMap">
+		<id column="REPORT_NO" property="reportNo" />
+		<result column="REPORT_TITLE" property="reportTitle" />
+		<result column="REPORT_DATE" property="reportDate" />
+		<result column="REPORT_CONTENT" property="reportContent" />
+		<result column="REPORT_REPORTED" property="reportReported" />
+		<result column="REPORT_PROCESSING_DATE" property="reportProcessingDate" />
+		<result column="REPORT_PROCESS_YN" property="reportProcessYn" />
+		<result column="MEMBER_ID" property="memberId" />
+		<result column="SHOP_ID" property="shopId" />
+	</resultMap>
+	
+	<select id="selectOneReprotDetail" resultType="report">
+		  SELECT REPORT_NO
+		       , REPORT_TITLE
+		       , REPORT_DATE
+		       , REPORT_CONTENT
+		       , REPORT_REPORTED
+		       , REPORT_PROCESSING_DATE
+		       , REPORT_PROCESS_YN
+		       , MEMBER_ID
+		       , SHOP_ID
+		    FROM REPORT_BOARD
+		   WHERE REPORT_NO = #{no}
+	</select>
+	
+	<update id="updateReportYn">
+		UPDATE REPORT_BOARD
+           SET REPORT_PROCESS_YN = 'Y'
+         WHERE REPORT_NO = #{no}
+	</update>
+	
+	
+</mapper>
+

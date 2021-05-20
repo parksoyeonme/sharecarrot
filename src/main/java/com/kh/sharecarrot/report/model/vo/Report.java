@@ -25,13 +25,14 @@ public class Report {
 //	   "REPORT_PROCESS_YN"   CHAR(1)   DEFAULT 'N',
 //	   "MEMBER_ID"   VARCHAR2(20)      NOT NULL,
 //	   "SHOP_ID"   CHAR(15)      NOT NULL,
+	
 		private int reportNo;
 		private String reportTitle;
 		private Date reportDate;
 		private String reportContent;
 		private String reportReported;
 		private Date reportProcessingDate;
-		private boolean reportProcessYn;
+		private char reportProcessYn;
 		private String memberId;
 		private String shopId;
 	
