@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.sharecarrot.board.model.service.BoardService;
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardComment;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.board.model.vo.BoardLike;
 import com.kh.sharecarrot.common.ShareCarrotUtils;
@@ -61,16 +62,17 @@ public class BoardController {
 	@ResponseBody
 	@GetMapping("/searchBoardList.do")
 	public List<Board> searchBoardList(@RequestParam(defaultValue = "1") int cPage, int numPerPage,  
-					@RequestParam(defaultValue =  "") String boardCategory, @RequestParam(defaultValue = "") String locCode) {
+					@RequestParam(defaultValue =  "") String boardCategory, @RequestParam(defaultValue = "") String locCode, @RequestParam(defaultValue = "") String code) {
 		
 		//locCode 공백제거
 		locCode = locCode.trim();
-		
+		log.info("code = {}", code);
 		Map<String, Object> param = new HashMap<>();
 		param.put("cPage", cPage);
 		param.put("numPerPage", numPerPage);
 		param.put("boardCategory", boardCategory);
 		param.put("locCode", locCode);
+		param.put("code", code);
 		
 		List<Board> boardList = boardService.selectBoardList(param);
 		
@@ -221,5 +223,38 @@ public class BoardController {
 		log.info("boardNo = {} -- {}", boardNo, memberId);
 		
 		int result = boardService.updateBoardLike(param);
+	}
+	
+	@PostMapping(value = "/boardCommentInsert.do", produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String boardCommentInsert(@ModelAttribute BoardComment boardComment) {
+		log.info("boardComment = {}", boardComment);
+		//업무로직
+		int result = boardService.boardCommentInsert(boardComment);
+		
+		return "댓글등록이 완료되었습니다.";
+	}
+	
+	@GetMapping("/boardCommentSelect.do")
+	@ResponseBody
+	public List<BoardComment> boardCommentSelect(@RequestParam int boardNo){
+		List<BoardComment> list = boardService.boardCommentSelect(boardNo);
+		
+		return list;
+	}
+	
+	@PostMapping(value = "/boardCommentUpdate.do", produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String boardCommentUpdate(@ModelAttribute BoardComment boardComment) {
+		int result = boardService.boardCommentUpdate(boardComment);
+		return result > 0 ? "댓글 수정이 완료되었습니다." : "댓글 수정에 실패하였습니다.";
+	}
+	
+	@PostMapping(value = "/boardCommentDelete.do", produces = "application/text; charset=utf-8")
+	@ResponseBody
+	public String boardCommentDelete(@RequestParam String boardCommentId) {
+		log.info("boardCommentId = {}", boardCommentId);
+		int result = boardService.boardCommentDelete(boardCommentId);
+		return result > 0 ? "댓글 수정이 완료되었습니다." : "댓글 수정에 실패하였습니다.";
 	}
 }
