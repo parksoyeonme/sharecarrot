@@ -55,7 +55,7 @@
 		<result column="enabled" property="enabled"/>
 		<collection property="authorities" ofType="simpleGrantedAuthority">
 			<constructor>
-				<arg column="auth" javaType="string"/>*
+				<arg column="auth" javaType="string"/>
 			</constructor>
 		</collection>
 	</resultMap>
