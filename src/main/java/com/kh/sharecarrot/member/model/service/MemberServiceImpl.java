@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.kh.sharecarrot.member.model.dao.MemberDao;
+import com.kh.sharecarrot.member.model.vo.Authority;
 import com.kh.sharecarrot.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int memberUpdate(Member updateMember) {
 		return memberDao.memberUpdate(updateMember);
+	}
+
+	@Override
+	public int setAuthority(Authority auth) {
+		return memberDao.setAuthority(auth);
 	}
 	
 }

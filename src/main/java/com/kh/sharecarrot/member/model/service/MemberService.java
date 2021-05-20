@@ -2,6 +2,7 @@ package com.kh.sharecarrot.member.model.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.kh.sharecarrot.member.model.vo.Authority;
 import com.kh.sharecarrot.member.model.vo.Member;
 
 public interface MemberService extends UserDetailsService {
@@ -12,5 +13,6 @@ public interface MemberService extends UserDetailsService {
 	int memberEnroll(Member member);
 	Member selectOneMember(String id);
 	int memberUpdate(Member updateMember);
+	int setAuthority(Authority auth);
 
 }

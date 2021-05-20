@@ -2,7 +2,6 @@ package com.kh.sharecarrot.member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +23,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,9 +40,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.common.ShareCarrotUtils;
 import com.kh.sharecarrot.member.model.service.MemberService;
+import com.kh.sharecarrot.member.model.vo.Authority;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
@@ -114,7 +112,6 @@ public class MemberController {
 //			FileRenamePolicy policy = new MvcFileRenamePolicy();
 //			MultipartRequest multipartReq = 
 //					new MultipartRequest(request, saveDirectory, maxPostSize, encoding, policy);
-//		
 			
 			//저장할 파일명
 			String address = addr2 + addr3;
@@ -136,6 +133,7 @@ public class MemberController {
 				member.setProfileRenamed(renamedFile.getName());				
 			}
 			
+			
 			Shop shop = new Shop();
 			String rawPassword = member.getPassword();
 			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -148,6 +146,8 @@ public class MemberController {
 			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf((int)(Math.random()*9)+1));
 			shop.setMemberId(memberId);
 			shopService.shopEnroll(shop);
+			Authority auth = new Authority(MemberService.ROLE_USER, memberId);
+			int authset = memberService.setAuthority(auth);	
 		}catch(Exception e) {
 			//1. 로깅작업
 			log.error(e.getMessage(), e);
