@@ -31,6 +31,19 @@
 		)
 	</insert>
 	
+	<update id="memberUpdate">
+		update member
+		set
+			profile_original = #{profileOriginal},
+			profile_renamed = #{profileRenamed},
+			member_name = #{memberName},
+			birthday = #{birthday},
+			email = #{email},
+			phone =	#{phone},
+			member_addr = #{memberAddr}
+		where member_id = #{memberId}		
+	</update>
+	
 	<resultMap type="member" id="memberMap">
 		<id column="member_id" property="memberId"/>
 		<result column="member_password" property="memberPassword"/>
@@ -42,7 +55,7 @@
 		<result column="enabled" property="enabled"/>
 		<collection property="authorities" ofType="simpleGrantedAuthority">
 			<constructor>
-				<arg column="auth" javaType="string"/>
+				<arg column="auth" javaType="string"/>*
 			</constructor>
 		</collection>
 	</resultMap>

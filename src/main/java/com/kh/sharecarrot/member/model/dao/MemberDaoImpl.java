@@ -21,4 +21,9 @@ public class MemberDaoImpl implements MemberDao{
 	public int memberEnroll(Member member) {
 		return session.insert("member.memberEnroll",member);
 	}
+
+	@Override
+	public int memberUpdate(Member updateMember) {
+		return session.update("member.memberUpdate",updateMember);
+	}
 }
