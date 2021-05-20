@@ -11,6 +11,15 @@
 		where m.member_id = #{memberId}
 	</select>
    
+   	<insert id="setAuthority">
+   		insert into
+   			authorities
+   		values(
+   			#{auth},
+   			#{memberId}
+   		)
+   	</insert>
+   
 	<insert id="memberEnroll">
 		insert into 
 			member
@@ -30,6 +39,19 @@
 			default
 		)
 	</insert>
+	
+	<update id="memberUpdate">
+		update member
+		set
+			profile_original = #{profileOriginal},
+			profile_renamed = #{profileRenamed},
+			member_name = #{memberName},
+			birthday = #{birthday},
+			email = #{email},
+			phone =	#{phone},
+			member_addr = #{memberAddr}
+		where member_id = #{memberId}		
+	</update>
 	
 	<resultMap type="member" id="memberMap">
 		<id column="member_id" property="memberId"/>

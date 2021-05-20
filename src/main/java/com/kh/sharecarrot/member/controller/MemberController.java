@@ -2,7 +2,6 @@ package com.kh.sharecarrot.member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +23,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,9 +40,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.common.ShareCarrotUtils;
 import com.kh.sharecarrot.member.model.service.MemberService;
+import com.kh.sharecarrot.member.model.vo.Authority;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
@@ -88,65 +86,6 @@ public class MemberController {
 	public void memberEnroll() {
 		
 	}
-
-    @PostMapping("/memberUpdate.do")
-    public String memberUpdate(
-			@RequestParam(value = "id") String memberId,
-			@RequestParam(value = "name") String memberName,
-			@RequestParam(value = "birthday") Date birthday,
-			@RequestParam(value = "email") String email,
-			@RequestParam(value = "phone") String phone,
-			@RequestParam(value = "address") String address,
-			@RequestParam(value="upfile", required= false) MultipartFile upFile,
-			HttpServletRequest request,
-    		Authentication oldAuthentication,
- 		    RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
- 	    //1. 업무로직 : db 반영
-    	Member updateMember = new Member(memberId, ((Member)oldAuthentication.getPrincipal()).getPassword(), memberName,
-				birthday, email, phone, ((Member)oldAuthentication.getPrincipal()).isEnabled(), 
-				((Member)oldAuthentication.getPrincipal()).getQuitYn(), ((Member)oldAuthentication.getPrincipal()).getMemberEnrollDate()
-				, ((Member)oldAuthentication.getPrincipal()).getProfileOriginal(), ((Member)oldAuthentication.getPrincipal()).getProfileRenamed()
-				, address, ((Member)oldAuthentication.getPrincipal()).getLocCode(), null);
-		log.info("member = {}", updateMember);
- 	    //updateMember에 authorities setting
- 	    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
- 	    for(GrantedAuthority auth : oldAuthentication.getAuthorities()) {
- 		    SimpleGrantedAuthority simpleGrantedAuthority = 
- 				    new SimpleGrantedAuthority(auth.getAuthority());
- 		    authorities.add(simpleGrantedAuthority);
- 	    }
- 	    
- 	   String saveDirectory =
-				request.getServletContext().getRealPath("/resources/upload/member");
-		File dir = new File(saveDirectory);
-		if(!dir.exists())
-			dir.mkdirs(); // 지정경로 존재X 시 폴더 생성
-		
-		if(!upFile.isEmpty()) {
-			File renamedFile = ShareCarrotUtils.getRenamedFile(saveDirectory, upFile.getOriginalFilename());
-			//파일저장
-			upFile.transferTo(renamedFile);
-			updateMember.setProfileOriginal(upFile.getOriginalFilename());
-			updateMember.setProfileRenamed(renamedFile.getName());				
-		}
-	   
-	    updateMember.setAuthorities(authorities); 
-	    //누락된 데이터처리
-	   
-	    //2. security context에서 principal 갱신
-	    Authentication newAuthentication = 
-	  		    new UsernamePasswordAuthenticationToken(
-				 	    updateMember, 
-					    oldAuthentication.getCredentials(),
-					    oldAuthentication.getAuthorities()
-					    );
-	    SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-	   
-	    //3. 사용자 피드백
-	    redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공");
-	   
-	    return "redirect:/member/memberDetail.do";
-    }	
 	
 	@PostMapping("/memberEnroll.do")
 	public String memberEnroll(
@@ -173,7 +112,6 @@ public class MemberController {
 //			FileRenamePolicy policy = new MvcFileRenamePolicy();
 //			MultipartRequest multipartReq = 
 //					new MultipartRequest(request, saveDirectory, maxPostSize, encoding, policy);
-//		
 			
 			//저장할 파일명
 			String address = addr2 + addr3;
@@ -195,6 +133,7 @@ public class MemberController {
 				member.setProfileRenamed(renamedFile.getName());				
 			}
 			
+			
 			Shop shop = new Shop();
 			String rawPassword = member.getPassword();
 			String encodedPassword = bcryptPasswordEncoder.encode(rawPassword);
@@ -207,6 +146,8 @@ public class MemberController {
 			shop.setShopId(member.getMemberId().substring(0, 1) + String.valueOf((int)(Math.random()*9)+1));
 			shop.setMemberId(memberId);
 			shopService.shopEnroll(shop);
+			Authority auth = new Authority(MemberService.ROLE_USER, memberId);
+			int authset = memberService.setAuthority(auth);	
 		}catch(Exception e) {
 			//1. 로깅작업
 			log.error(e.getMessage(), e);
@@ -284,4 +225,67 @@ public class MemberController {
         
         return String.valueOf(checkNum);
 	}	
+	
+
+    @PostMapping("/memberUpdate.do")
+    public String memberUpdate(
+			@RequestParam(value = "id") String memberId,
+			@RequestParam(value = "name") String memberName,
+			@RequestParam(value = "birthday") Date birthday,
+			@RequestParam(value = "email") String email,
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "address") String address,
+			@RequestParam(value="upfile", required= false) MultipartFile upFile,
+			HttpServletRequest request,
+    		Authentication oldAuthentication,
+ 		    RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
+ 	    //1. 업무로직 : db 반영
+    	Member updateMember = new Member(memberId, ((Member)oldAuthentication.getPrincipal()).getPassword(), memberName,
+				birthday, email, phone, ((Member)oldAuthentication.getPrincipal()).isEnabled(), 
+				((Member)oldAuthentication.getPrincipal()).getQuitYn(), ((Member)oldAuthentication.getPrincipal()).getMemberEnrollDate()
+				, ((Member)oldAuthentication.getPrincipal()).getProfileOriginal(), ((Member)oldAuthentication.getPrincipal()).getProfileRenamed()
+				, address, ((Member)oldAuthentication.getPrincipal()).getLocCode(), null);
+		log.info("member = {}", updateMember);
+ 	    //updateMember에 authorities setting
+ 	    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+ 	    for(GrantedAuthority auth : oldAuthentication.getAuthorities()) {
+ 		    SimpleGrantedAuthority simpleGrantedAuthority = 
+ 				    new SimpleGrantedAuthority(auth.getAuthority());
+ 		    authorities.add(simpleGrantedAuthority);
+ 	    }
+ 	    
+ 	   String saveDirectory =
+				request.getServletContext().getRealPath("/resources/upload/member");
+		File dir = new File(saveDirectory);
+		if(!dir.exists())
+			dir.mkdirs(); // 지정경로 존재X 시 폴더 생성
+		
+		if(!upFile.isEmpty()) {
+			File renamedFile = ShareCarrotUtils.getRenamedFile(saveDirectory, upFile.getOriginalFilename());
+			//파일저장
+			upFile.transferTo(renamedFile);
+			updateMember.setProfileOriginal(upFile.getOriginalFilename());
+			updateMember.setProfileRenamed(renamedFile.getName());				
+		}
+	   
+	    updateMember.setAuthorities(authorities); 
+	    //누락된 데이터처리
+	   
+	    //2. security context에서 principal 갱신
+	    Authentication newAuthentication = 
+	  		    new UsernamePasswordAuthenticationToken(
+				 	    updateMember, 
+					    oldAuthentication.getCredentials(),
+					    oldAuthentication.getAuthorities()
+					    );
+	    SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+	   
+	    //db에도 등록해야함.
+	    int result = memberService.memberUpdate(updateMember);
+	    
+	    //3. 사용자 피드백
+	    redirectAttr.addFlashAttribute("msg", "사용자 정보 수정 성공");
+	   
+	    return "redirect:/member/memberDetail.do";
+    }	
 }
