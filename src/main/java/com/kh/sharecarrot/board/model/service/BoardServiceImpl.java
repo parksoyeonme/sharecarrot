@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.sharecarrot.board.model.dao.BoardDao;
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardComment;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.board.model.vo.BoardLike;
 
@@ -102,5 +103,25 @@ public class BoardServiceImpl implements BoardService{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int boardCommentInsert(BoardComment boardComment) {
+		return boardDao.boardCommentInsert(boardComment);
+	}
+
+	@Override
+	public List<BoardComment> boardCommentSelect(int boardNo) {
+		return boardDao.boardCommentSelect(boardNo);
+	}
+
+	@Override
+	public int boardCommentUpdate(BoardComment boardComment) {
+		return boardDao.boardCommentUpdate(boardComment);
+	}
+
+	@Override
+	public int boardCommentDelete(String boardCommentId) {
+		return boardDao.boardCommentDelete(boardCommentId);
 	}
 }

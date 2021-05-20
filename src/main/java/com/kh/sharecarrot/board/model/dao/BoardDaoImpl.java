@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardComment;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.board.model.vo.BoardLike;
 
@@ -85,6 +86,26 @@ public class BoardDaoImpl implements BoardDao{
 	@Override
 	public int deleteBoardLike(Map<String, Object> param) {
 		return session.delete("board.deleteBoardLike", param);
+	}
+
+	@Override
+	public int boardCommentInsert(BoardComment boardComment) {
+		return session.insert("board.insertBoardComment", boardComment);
+	}
+
+	@Override
+	public List<BoardComment> boardCommentSelect(int boardNo) {
+		return session.selectList("board.selectBoardCommentList", boardNo);
+	}
+
+	@Override
+	public int boardCommentUpdate(BoardComment boardComment) {
+		return session.update("board.boardCommentUpdate", boardComment);
+	}
+
+	@Override
+	public int boardCommentDelete(String boardCommentId) {
+		return session.update("board.boardCommentDelete", boardCommentId);
 	}
 
 }
