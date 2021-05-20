@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.sharecarrot.board.model.vo.Board;
+import com.kh.sharecarrot.board.model.vo.BoardComment;
 import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.board.model.vo.BoardLike;
 
@@ -32,5 +33,13 @@ public interface BoardDao {
 	int insertBoardLike(Map<String, Object> param);
 
 	int deleteBoardLike(Map<String, Object> param);
+
+	int boardCommentInsert(BoardComment boardComment);
+
+	List<BoardComment> boardCommentSelect(int boardNo);
+
+	int boardCommentUpdate(BoardComment boardComment);
+
+	int boardCommentDelete(String boardCommentId);
 
 }
