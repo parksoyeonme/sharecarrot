@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kh.sharecarrot.product.model.vo.ProductImage;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,17 +27,6 @@ public class MainProduct {
 		private String productId;
 		private String productName;
 		private int productPrice;
-
-//		private boolean productYnh;
-
-		private String productYnh;
-
-		private Date productRegDate;
-		private String productContent;
-		private String productDelFlag;
-		private String shopId;
-		private String categoryCode;
 		
-		private List<MainProductImage> productIamgeList;
-		private String locName;
+		private String productImgRenamed;
 }
