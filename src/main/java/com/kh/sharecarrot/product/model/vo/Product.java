@@ -1,6 +1,7 @@
 package com.kh.sharecarrot.product.model.vo;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,4 +30,24 @@ public class Product {
 		private boolean productDelFlag;
 		private String shopId;
 		private String categoryCode;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		private List<ProductImage> list;
 }

@@ -1,6 +1,7 @@
 package com.kh.sharecarrot.product.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,43 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private ProductDao productDao;
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public List<Product> selectProductList(Map<String, Object> param) {
+		
+		return productDao.selectProductList(param);
+	}
 
 	
 }

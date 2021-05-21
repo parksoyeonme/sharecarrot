@@ -6,4 +6,114 @@
 
 	
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<select id="SelectProductList" resultMap="productListMap">
+	select 
+		*
+	from
+		product p
+	left join product_image i
+	on 	
+	p.product_id = i.product_id
+	<where>
+	product_del_flag = 'N'
+	<if test="locCode != '' and locCode != null">
+		and p.loc_code = #{locCode}
+	</if>
+	<if test="category != '' and category != null">
+		and p.category = #{category}
+	</if>
+	
+	</where>
+</select>
 </mapper>
