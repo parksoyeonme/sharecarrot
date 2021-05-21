@@ -58,51 +58,6 @@ public interface ShopDao {
 
 	Shop selectShopOne(String memberId);
 
-	List<Product> selectProductList(String shopId);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	List<Product> selectshopProductList(String shopId);
 
 }

@@ -9,6 +9,16 @@ import com.kh.sharecarrot.product.model.vo.ProductImage;
 
 public interface ProductDao {
 
+
+
+	List<Product> selectProductList(String shopId);
+
+//	List<ProductImage> selectProductImageList(Product productId);
+
+	List<ProductImage> selectProductImageList(String productId);
+
+	int selectProductListSize(String shopId);
+
 	List<Product> searchLocation(String locName);
 
 	List<Product> searchTitle(String productName);
@@ -18,6 +28,7 @@ public interface ProductDao {
 	String selectLocCode(String productId);
 
 	int insertJjim(Map<String, Object> param);
+
 
 	
 }

@@ -1,7 +1,7 @@
 package com.kh.sharecarrot.shop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,9 +38,9 @@ public class ShopController {
 	
 	@Autowired
 	private ShopService shopService;
-	
 	@Autowired
 	private ProductService productService;
+
 	
 	@RequestMapping(value="/enroll.do")
 	public ModelAndView productReg() {
@@ -60,155 +63,79 @@ public class ShopController {
 		return mav;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("/myshop.do")
-	public void mystore(Member member, Model model, HttpServletResponse rs) throws IOException {
+	public void mystore(Member member, Model model) {
 		//shop_id로 정보 받아오기-아이디, 프로필
 		//Shop shop = shopService.selectShopOne(shopId);
-		
+
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 	      String memberId = ((UserDetails) principal).getUsername(); 		
 		//loginmember로 정보 받아오기
 		System.out.println("##############"+memberId);
 		Shop shop = shopService.selectShopOne(memberId);
-		
-		
-		
+
+
 		//프로필
 		//Member profile = shopService.selectProfilOne(memberId);
 		//model.addAttribute("loginMember", authentication.getPrincipal());
 
-		//shop_id에 해당하는 상품 가져오기 이거아님
+		//shop_id에 해당하는 상품 가져오기
 		//List<Product> Productlist = shopService.selectProductOne(shopId);
 		//shop_id에 해당하는 상점후기 가져오기
 		//List<StoreReview> Reviewlist = shopService.selectReviewtOne(shopId);
-		
-		String shopId = shop.getShopId();
 		//상점오픈일- 회원가입시 shop_id가 생기니깐 그날로부터 하면되지않을까?
-		
+
 		//판매횟수
-		
+
+		String shopId = shop.getShopId();
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
-		
-		//상품
-		List<Product> prolist = shopService.selectProductList(shopId);
 		model.addAttribute("shop", shop);
-		model.addAttribute("prolist", prolist);
 		//model.addAttribute("profile", profile);
-		
-		//상품 불러오가ㅣ
-		
-		//상점후기 불러우기
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/myshopProductList.do", method=RequestMethod.GET,
+			produces ="application/text; charset=utf8")
+//	@GetMapping("/myshopProductList.do")
+	public String myshopProductList(@RequestParam String shopId,
+			Model model
+//			, Product product
+			, ProductImage productImage,
+			
+			HttpServletResponse response) throws IOException {
+//		response.setCharacterEncoding("UTF-8");
+		List<Product> productList = productService.selectProductList(shopId);
+		int productListSize = productService.selectProductListSize(shopId);
+		
+//		Product product = productlist.get(0);
+		
+		List<ProductImage> productImageList = new ArrayList<>();
+		Iterator<Product> iter = productList.iterator();
+		//ProductImage productImage = null;
+		while(iter.hasNext()) {
+			Product product = (Product)iter.next();
+			List<ProductImage> proimgList =  productService.selectProductImageList(product.getProductId());
+			productImageList.addAll(proimgList);
+		}
+
+		log.info("productList : {}", productList);
+		log.info("productImageList : {}", productImageList);
+		log.info("productListSize : {}", productListSize);
+//		log.info("productlist = {}", productlist);
+	//	log.info("productImageList = {}", productImageList);
+		
+		
+		//상위 오브젝트 생성
+		JSONObject obj = new JSONObject();
+				
+	//	model.addAttribute("productListSize", productListSize);
+		//data: 뒤에 들어갈 값인 jArray 생성
+		obj.put("productList", productList);
+		obj.put("productImageList", productImageList);
+		obj.put("productListSize", productListSize);
+		String resp = obj.toString();
+				
+		return resp;
+	}
 }

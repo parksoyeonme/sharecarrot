@@ -87,11 +87,9 @@ public class ShopDaoImpl implements ShopDao{
 
 
 	@Override
-	public List<Product> selectProductList(String shopId) {
-		return session.selectList("shop.selectProductList", shopId);
+	public List<Product> selectshopProductList(String shopId) {
+		// TODO Auto-generated method stub
+		return session.selectList("shop.selectshopProductList", shopId);
 	}
-
-
-
 
 }
