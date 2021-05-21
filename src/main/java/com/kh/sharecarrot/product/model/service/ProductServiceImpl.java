@@ -15,5 +15,15 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductDao productDao;
 
+	@Override
+	public List<Product> searchLocation(String locName) {
+		return productDao.searchLocation(locName);
+	}
+
+	@Override
+	public List<Product> searchTitle(String productName) {
+		return productDao.searchTitle(productName);
+	}
+
 	
 }

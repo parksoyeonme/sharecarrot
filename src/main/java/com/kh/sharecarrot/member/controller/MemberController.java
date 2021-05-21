@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -46,6 +47,8 @@ import com.kh.sharecarrot.member.model.vo.Authority;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
+import com.kh.sharecarrot.utils.model.service.UtilsService;
+import com.kh.sharecarrot.utils.model.vo.Location;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +60,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	@Autowired
 	private ShopService shopService;
@@ -115,8 +121,19 @@ public class MemberController {
 			
 			//저장할 파일명
 			String address = addr2 + addr3;
+			String locCode = null;
+			List<Location> locationList = utilsService.selectLocationList();
+			Iterator<Location> iter = locationList.iterator();
+			while(iter.hasNext()) {
+				Location loc = (Location)iter.next();
+				if(address.contains(loc.getLocName())) {
+					locCode = loc.getLocCode();
+					break;
+				}
+			}
+			
 			Member member = new Member(memberId, memberPassword, memberName,
-					birthday, email, phone, true, 'n', null, null, null, address, "L1", null);
+					birthday, email, phone, true, 'n', null, null, null, address, locCode, null);
 			log.info("member = {}", member);
 
 			String saveDirectory =

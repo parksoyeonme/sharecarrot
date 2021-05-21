@@ -26,6 +26,21 @@
             padding-top: 10px;
         }
     </style>
+<script>
+
+function enterkey() {
+    if (window.event.keyCode == 13) {
+    	search_button_click();
+    }
+}
+
+function search_button_click() {
+    // 검색 버튼을 눌렀을때의 기능 구현
+	var searchkeyword = $('#headersearch').val();
+    location.href = "${pageContext.request.contextPath}/product/headerSearch.do?searchkeyword="+searchkeyword;
+}
+
+</script>
 <c:if test="${not empty msg}">
 <script>
 	alert("${msg}");
@@ -42,8 +57,8 @@
         </li>
         <li class="nav-item">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="지역 혹은 물품을 검색해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+                <input type="text" onkeyup="enterkey();" id="headersearch" name="headersearch" class="form-control" placeholder="지역 혹은 물품을 검색해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" onclick="search_button_click();" id="searchbutton" name="searchbutton" type="button" id="button-addon2">검색</button>
             </div>
         </li>
         <li class="nav-item">
