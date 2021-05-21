@@ -16,4 +16,34 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
 
 	
+
+	@Override
+	public List<Product> selectProductList(String shopId) {
+		// TODO Auto-generated method stub
+		return productDao.selectProductList(shopId);
+	}
+
+
+
+//	@Override
+//	public List<ProductImage> selectProductImageList(Product productId) {
+//		// TODO Auto-generated method stub
+//		return productDao.selectProductImageList(productId);
+//	}
+
+
+
+	@Override
+	public List<ProductImage> selectProductImageList(String productId) {
+		return productDao.selectProductImageList(productId);
+	}
+
+
+
+	@Override
+	public int selectProductListSize(String shopId) {
+		return productDao.selectProductListSize(shopId);
+	}
+
+	
 }

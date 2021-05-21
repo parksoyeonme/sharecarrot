@@ -16,4 +16,32 @@ public class ProductDaoImpl implements ProductDao {
 	private SqlSessionTemplate session;
 
 	
+
+
+	@Override
+	public List<Product> selectProductList(String shopId) {
+		// TODO Auto-generated method stub
+		return session.selectList("product.selectProductList", shopId);
+	}
+
+
+//	@Override
+//	public List<ProductImage> selectProductImageList(Product productId) {
+//		// TODO Auto-generated method stub
+//		return session.selectList("product.selectProductImageList", productId);
+//	}
+
+	@Override
+	public List<ProductImage> selectProductImageList(String productId) {
+		// TODO Auto-generated method stub
+		return session.selectList("product.selectProductImageList", productId);
+	}
+
+
+	@Override
+	public int selectProductListSize(String shopId) {
+		return session.selectOne("product.selectProductListSize",shopId);
+	}
+
+	
 }

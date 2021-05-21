@@ -4,6 +4,51 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="product">
 
-	
+	<select id= "selectProductList" resultMap="productMap">
+		select product_id, product_name, product_price from product
+		where shop_id = #{shopId}
+	</select>
+	<select id= "selectProductListSize" resultType="_int">
+		select count(*)	from 
+		product
+		where shop_id = #{shopId}
+	</select>
+	<resultMap type="product" id="productMap">
+		<id column="product_id" property="productId"/>
+			<result column="product_name" property="productName"/>
+			<result column="product_price" property="productPrice"/>
+			<result column="product_ynh" property="productYnh" jdbcType="CHAR" javaType="_boolean" typeHandler="BooleanTypeHandler"/>
+			<result column="product_reg_date" property="productRegDate"/>
+			<result column="product_content" property="productContent"/>
+			<result column="product_del_flag" property="productDelFlag" jdbcType="CHAR" javaType="_boolean" typeHandler="BooleanTypeHandler"/>
+			<result column="shop_id" property="shopId"/>
+			<result column="category_code" property="categoryCode"/>
+	</resultMap>
+			   
+	<select id="selectProductImageList" resultMap="productImgMap">
+		select * from product_image
+		where product_img_no in (select min(product_img_no) from product_image where product_id = #{productId})
+	 </select>
 
+	<resultMap type="productImage" id="productImgMap">
+		<id column="product_img_no" property="productImgNo"/>
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+	</resultMap>
+	
+	<resultMap type="shop" id="shopMap">
+		<id column="shop_id" property="shopId" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_sell_count" property="shopSellCount" />
+		<result column="shop_memo" property="shopMemo" />
+		<result column="member_id" property="memberId" />
+		
+	</resultMap>
+	
+	<resultMap type="ShopProduct" id="shopProductMap">
+		<collection property="product" resultMap="productMap"/>
+		<collection property="productImage" resultMap="productImgMap"/>
+	</resultMap>
 </mapper>
