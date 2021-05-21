@@ -47,14 +47,14 @@ public class HomeController {
 	public String home(Locale locale, Model model) { 
 //			@RequestParam(defaultValue = "1") int cPage,
 //			int numPerPage, 
-//			@RequestParam(defaultValue = "") String locCode,
+//			@RequestParam(defaultValue = "") `String locCode,
 //			@RequestParam(defaultValue = "") String Category,
 //			@RequestParam(defaultValue = "") String option) {
 
 //		//locCode 공백제거
 //		locCode = locCode.trim();
 //		
-//		Map<String, Object> param = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
 //		param.put("cPage", cPage);
 //		param.put("numPerPage", numPerPage);
 //		param.put("locCode", locCode);
@@ -63,13 +63,13 @@ public class HomeController {
 //		
 		List<Location> locationList = utilsService.selectLocationList();
 		List<Category> categoryList = utilsService.selectCategoryList();
-//		logger.info("locList={}, cateList={}", locationList, categoryList);
-//
-//		List<MainProduct> productList = mainService.selectProductList(param);
+		logger.info("locList={}, cateList={}", locationList, categoryList);
+
+		List<MainProduct> productList = mainService.selectProductList(param);
+		
+		model.addAttribute("productList", productList);
 //		
-////		model.addAttribute("productList", productList);
-////		
-//		
+		
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
 		return "forward:/index.jsp";

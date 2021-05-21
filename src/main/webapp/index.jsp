@@ -65,129 +65,26 @@
         <!-- 검색 끝 -->
         <!-- 상품 리스트 시작 -->
         <!-- 조건에 맞는 상품 정보 불러오기 -->
+        
+			
         <div class="item-wrapper">
           <div class="items">
-            <div class="item list1">
+  		<c:forEach items="${productList}" var="product">
+            <div class="item" onclick="location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=${product.productId}'">
               <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
+                <img src="./resources/upload/product/${product.productImgRenamed}" alt="상품이미지">
               </div>
               <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
+                <div class="item-name">${product.productName}</div>
                 <div class="item-price">
-                  <strong class="amount">10,000</strong>
+                  <strong class="amount">${product.productPrice}</strong>
                   <span class="currency">원</span>
                 </div>
               </div>
             </div>
-            <div class="item list2">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list3">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list4">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list5">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list6">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list7">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list8">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list9">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list10">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-          </div>
+		</c:forEach>
+            
+		</div>
           <!-- 상품 끝 -->
           <!-- 버튼 시작-->
           <!-- 버튼 클릭 시 상품 목록 불러오기 (10개씩)-->
