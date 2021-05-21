@@ -88,7 +88,7 @@
 		        from shop s
 		            join product p
 		                on s.shop_id = p.shop_id
-		                    where product_id = #{productName} 
+		                    where product_id = #{productId} 
 		        ) ps
 		    join member m
 		        on ps.member_id = m.member_id
