@@ -45,12 +45,6 @@ public class ProductServiceImpl implements ProductService {
 
 	
 
-	@Override
-	public List<Product> selectProductList(String shopId) {
-		// TODO Auto-generated method stub
-		return productDao.selectProductList(shopId);
-	}
-
 
 
 //	@Override
@@ -71,6 +65,18 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int selectProductListSize(String shopId) {
 		return productDao.selectProductListSize(shopId);
+	}
+
+	@Override
+	public List<Product> selectProductList(String shopId, Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return productDao.selectProductList(shopId, param);
+	}
+
+	@Override
+	public int getTotalContents(String shopId) {
+		// TODO Auto-generated method stub
+		return productDao.getTotalContents(shopId);
 	}
 
 	

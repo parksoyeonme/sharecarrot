@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-
+<jsp:include page="/WEB-INF/views/common/history.jsp" />
   
 <!--Custom CSS-->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mystore.css" type="text/css" />
@@ -33,7 +33,8 @@
                                <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
                             </div>
                             <div style="border: 1px solid red; float: left; width: 11%;">
-                                 ${shop.shopTotalScore}일
+<%--                                  ${shop.shopTotalScore}일 --%>
+                                 ${openday}일
                             </div>
                             <div style="border: 1px solid blue; float: left; width: 22%; color: #223465; font-weight: bold;">
                                 <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
@@ -59,42 +60,7 @@
                     </script>
                 </div>
                 <div id="sidebar" class="col-lg-2">
-                    <div id="sticky">
-                    <div class="history-box">
-					    <div class="history-box-container">
-					      <!-- 찜 상품 목록 시작-->
-					        <div class="jjim">
-					          <div class="jjim-title">찜한상품</div>
-					          <div class="jjim-count-wrapper">
-					            <!-- 찜한 상품 생길 시 count ++, 색상 변경(red)-->
-					            <div class="jjim-count">
-					              <span>♥</span>
-					              <span>0</span>
-					            </div>
-					          </div>
-					        </div>
-					      <!--  찜 상품 목록 끝 -->
-					      <!-- 최근 본 상품 목록 시작 -->
-					        <div class="recent">
-					          <div class="recent-title">최근 본 상품</div>
-					          <div class="recent-dot"></div>
-					          <!-- 최근 본 상품 == null -->
-					          <div class="recent-content">최근 본<br/> 상품이 <br/>없습니다</div>
-					          <!-- 최근 본 상품 != null => 3개까지 출력. 저장은 DB? Session? -->
-					        </div>
-					      <!-- 최근 본 상품 목록 끝 -->
-					      <!-- TOP 버튼 시작-->
-					        <div class="top">
-					          <!-- 버튼 클릭 시 화면 최상단으로 이동 : scrollTo() -->
-					          <button class="top-btn">TOP</button>
-					        </div>
-					      <!-- TOP 버튼 끝 -->
-					    </div>
-					    <!-- 1024px 이하일 경우..... 어떡하지... -->
-					</div>
-                    
-                    
-                    
+                  
                     
                     </div>
                 </div>
@@ -105,7 +71,7 @@
             <br>
             <div class="col-lg-10">
                 <div class="main">
-                    <div class="tabs">
+                    <div class="tabs" style="margin-left: 21px;">
                         <div class="tab" data-tab-target="#tab1">
                             <p>상품</p>
                         </div>
@@ -140,34 +106,7 @@
             });
         });
         
-        //stick box
-        $(function () { // document ready
-            if ($('#sticky').length) { // make sure "#sticky" element exists
-                var el = $('#sticky');
-                var stickyTop = $('#sticky').offset().top; // returns number
-                var stickyHeight = $('#sticky').height();
-                $(window).scroll(function () { // scroll event
-                    var limit = $('#footer').offset().top - stickyHeight - 20;
-                    var windowTop = $(window).scrollTop(); // returns number
-                    if (stickyTop < windowTop) {
-                        el.css({position: 'fixed', top: 0});
-                    } else {
-                        el.css('position', 'static');
-                    }
-                    if (limit < windowTop) {
-                        var diff = limit - windowTop;
-                        el.css({top: diff});
-                    }
-                });
-            }
-        });
-        
-        //찜한상품,최근 본 상품 top
-        const topBtn = document.querySelector(".top-btn");
-        topBtn.addEventListener("click", e =>{
-          e.preventDefault();
-          window.scrollTo({top: 0, behavior:"smooth"});
-        });
+
     </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

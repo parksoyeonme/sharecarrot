@@ -11,7 +11,7 @@ public interface ProductDao {
 
 
 
-	List<Product> selectProductList(String shopId);
+	List<Product> selectProductList(String shopId, Map<String, Object> param);
 
 //	List<ProductImage> selectProductImageList(Product productId);
 
@@ -29,6 +29,8 @@ public interface ProductDao {
 	String selectLocCode(String productId);
 
 	int insertJjim(Map<String, Object> param);
+
+	int getTotalContents(String shopId);
 
 
 	

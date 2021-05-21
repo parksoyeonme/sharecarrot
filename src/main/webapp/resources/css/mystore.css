@@ -39,7 +39,8 @@
 }
 .content-mystorepro {
     border: 2px solid black;
-    height: 326px;
+    height: 360px;
+    margin-left: 20px;
   
 }
 .itemss {
@@ -139,7 +140,9 @@ div.box {
 .review-table {
     border-collapse: collapse;
     border-spacing: 0;
+    margin-right: 42px;
 }
+
 .review-table td {
     border-color: black;
     border-style: solid;
