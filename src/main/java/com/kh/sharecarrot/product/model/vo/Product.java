@@ -26,12 +26,11 @@ public class Product {
 		private String productId;
 		private String productName;
 		private int productPrice;
-<<<<<<< HEAD
-		private boolean productYnh;
-		@JsonFormat(pattern="yyyy-MM-dd")
-=======
+
+//		private boolean productYnh;
+
 		private String productYnh;
->>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
+
 		private Date productRegDate;
 		private String productContent;
 		private String productDelFlag;

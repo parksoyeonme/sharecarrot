@@ -117,10 +117,10 @@ div.box {
     height: 99px;
     width: 140px;
 }
-.wrap-pro > .pro-title {
+ .pro-title {
     margin-left: 20px;
 }
-.wrap-pro > .pro-price {
+ .pro-price {
     margin-left: 97px;
     font-weight: bold;
 }
