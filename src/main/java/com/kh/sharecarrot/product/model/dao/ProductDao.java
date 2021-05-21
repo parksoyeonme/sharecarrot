@@ -8,6 +8,10 @@ import com.kh.sharecarrot.product.model.vo.ProductImage;
 
 public interface ProductDao {
 
+	List<Product> searchLocation(String locName);
+
+	List<Product> searchTitle(String productName);
+
 	
 	
 	

@@ -17,6 +17,17 @@ public class ProductDaoImpl implements ProductDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
+	@Override
+	public List<Product> searchLocation(String locName) {
+		return session.selectList("product.searchLocation", locName);
+	}
+
+	@Override
+	public List<Product> searchTitle(String productName) {
+		// TODO Auto-generated method stub
+		return session.selectList("product.searchTitle", productName);
+	}
+
 	
 	
 	

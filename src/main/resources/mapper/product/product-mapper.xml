@@ -4,7 +4,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="product">
 
+	<select id="searchLocation" resultType="product">
+		select * from product
+		where shop_id in (
+		select shop_id from shop
+		where shop_id in (
+		    select shop_id from member
+		        where loc_code in (
+		            select loc_code from location
+		            where loc_name like '%' ||  #{locName} || '%'
+		        )
+		    ))
+	</select>
 	
+	<select id="searchTitle" resultType="product">
+		select * from product 
+		where product_id like '%' ||  #{productName} || '%'
+	</select>
 
 
 
@@ -97,23 +113,5 @@
 
 
 
-<select id="SelectProductList" resultMap="productListMap">
-	select 
-		*
-	from
-		product p
-	left join product_image i
-	on 	
-	p.product_id = i.product_id
-	<where>
-	product_del_flag = 'N'
-	<if test="locCode != '' and locCode != null">
-		and p.loc_code = #{locCode}
-	</if>
-	<if test="category != '' and category != null">
-		and p.category = #{category}
-	</if>
-	
-	</where>
-</select>
+
 </mapper>
