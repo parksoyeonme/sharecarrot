@@ -9,6 +9,7 @@
 		select product_id, product_name, product_price from product
 		where shop_id = #{shopId}
 	</select>
+	
 	<select id= "selectProductListSize" resultType="_int">
 		select count(*)	from 
 		product
@@ -143,4 +144,14 @@
 		#{memberId}
 	)
 	</insert>
+	
+	<select id="getTotalContents" resultType="_int">
+	 select
+         count(*)
+      from product
+		where shop_id = #{shopId}
+	
+	</select>
+	
+	
 </mapper>

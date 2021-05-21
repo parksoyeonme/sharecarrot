@@ -15,10 +15,10 @@ $(document).ready(function() {
 		
 			error:function(request,status,error){
 	            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	           },
-              success: function(data){
+           },
+            success: function(data){
 // 	              	console.log(data);
-console.log(data);
+// 					console.log(data);
    //찍어주는 법
 // 	console.log(data.productlist[0].product);
 // 	console.log(data.productlist[0].productImage);
@@ -27,7 +27,7 @@ console.log(data);
 // 	              	console.log(data[1]);
  					$('#totalDiv').html(data.productListSize + "개");
 					displayList(data);
-               }
+             }
        });
 });
 
@@ -42,20 +42,23 @@ function displayList(data){
 // 		console.log(elem);
 		console.log(data);
 // 		for(var i = 0; i < data.productListSize; i++){
+		//나중에 페이징 처리 후에 5에서 data.productListSize로 바꾸기
 		for(var i = 0; i < 5; i++){
 			if(i == 0){
 				html += "<table>";
 				html += "<tr>";
 			}
-
-			html += "<td><div class='box box1 boxC'>"+ data.productImageList[i].productImgRenamed +"</div>";
+			html += "<td><div class='box box1 boxC'>"
+// 			+ "<img id='profileImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>"
+	        + "</div>";
 			html += "<div class='pro-title'>"+ data.productList[i].productName +"</div>";
 			html += "<div class='pro-price'>"+ data.productList[i].productPrice +"</div>";
 			html += "</td>";
-			
-			if(i == (data.productListSize-1)){
+			//나중에 페이징 처리 후에 data.productListSize-1로 바꿔주기
+			if(i == (4)){
 				html += "</tr>";
 				html += "</table>";
+				
 			}
 		}
 		
@@ -81,7 +84,8 @@ function displayList(data){
 //               value.contract_id);
 //      }
 //   });
-	
+		console.log("@@pagebar : " + data.pageBar);
+		$('#pagebar').append(data.pageBar);
 }
 
 </script>
@@ -117,3 +121,4 @@ function displayList(data){
 <!--      </div> -->
                             
 </div>
+<div id="pagebar"></div>

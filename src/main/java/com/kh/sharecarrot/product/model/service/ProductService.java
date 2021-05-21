@@ -23,13 +23,15 @@ public interface ProductService {
 
 
 
-	List<Product> selectProductList(String shopId);
+	List<Product> selectProductList(String shopId, Map<String, Object> param);
 
 //	List<ProductImage> selectProductImageList(Product productId);
 
 	List<ProductImage> selectProductImageList(String productId);
 
 	int selectProductListSize(String shopId);
+
+	int getTotalContents(String shopId);
 
 
 
