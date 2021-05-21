@@ -26,19 +26,19 @@
 	<select id= "selectShopOne" resultMap="shopMap">
 	select * from shop where member_id = #{memberId}
 	</select>
-	
-	<select id="selectProductList" resultMap="shopProductMap">
+<!--  
+	<select id="selectshopProductList" resultMap="shopProductMap">
 	select s.shop_id, p.product_id,p.product_name, p.product_price, pi.product_img_renamed
 	from 
 	shop s
 	inner join product p on  s.shop_id = p.shop_id
 	inner join product_image pi
-	on pi.product_id = p. product_id
+	on pi.product_id = p.product_id
 	where s.shop_id = #{shopId}
 	 
 	
 	</select>
-	
+	-->
 	<resultMap type="product" id="productMap">
 		<id column="product_id" property="productId"/>
 			<result column="product_name" property="productName"/>
@@ -57,10 +57,6 @@
 			<result column="product_img_renamed" property="productImgRenamed"/>
 			<result column="product_id" property="productId"/>
 	</resultMap>
-			
-
-		
-	
 	<resultMap type="shop" id="shopMap">
 		<id column="shop_id" property="shopId" />
 		<result column="shop_total_score" property="shopTotalScore" />
@@ -70,10 +66,10 @@
 		<result column="member_id" property="memberId" />
 		
 	</resultMap>
-
-		<resultMap type="ShopProduct" id="shopProductMap">
-			<collection property="product" resultMap="productMap"/>
-			<collection property="productImage" resultMap="productImgMap"/>
-		</resultMap>
+	
+	<resultMap type="ShopProduct" id="shopProductMap">
+		<collection property="product" resultMap="productMap"/>
+		<collection property="productImage" resultMap="productImgMap"/>
+	</resultMap>
 	
 </mapper>

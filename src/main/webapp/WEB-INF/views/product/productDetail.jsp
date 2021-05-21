@@ -43,7 +43,7 @@
 <div class="container">
 	<div class="row justify-content-between">
 		<div class="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="#">
+		<a href="${pageContext.request.contextPath}/shop/myshop.do">
 			<img id='memberProfile' src="${pageContext.request.contextPath}/resources/upload/member/${product.profileRenamed}"/>
 			<b>${product.memberId}</b>
 			<sub>${product.locName}</sub>

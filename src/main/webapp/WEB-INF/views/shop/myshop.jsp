@@ -13,25 +13,7 @@
 <!--icon-->
  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <script>
-$(document).ready(function() {
-    $.ajax({
-           url:"${pageContext.request.contextPath}/shop/myshop.do",
-           type: "GET",
-			dataType : "json",
-			data: {
-				prolist : prolist
-			},
-			success: function(data){
-				console.log(data);
-				displayList(data);
-			},
-			error:function(request,status,error){
-	            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	           }
-		});
-           }
-    });
-
+	console.log('test');
 </script>
 
 <section id="my-store-container" class="ms_container">
@@ -70,6 +52,11 @@ $(document).ready(function() {
                     <div style="margin-top: 41px; margin-left: 28px; height: 113px; border: 1px solid;"}>
                     	${shop.shopMemo}
                     </div>
+                    <script>
+                    	const tempParam = {
+                    			shopId: "${shop.shopId}",
+                    	}
+                    </script>
                 </div>
                 <div id="sidebar" class="col-lg-2">
                     <div id="sticky">
@@ -129,105 +116,10 @@ $(document).ready(function() {
                 </div>
                 <div class="content-mystorepro">
                     <div id="tab1" data-tab-content class="itemss active">
-                        <div class="div-division">
-                            <div class="left">
-                                전체
-                            </div>
-                            <div class="right">
-                                00개
-                            </div>
-                        </div>
-                        <div>
-                            <div class="wrap-pro">
-                                <div class="box box1 boxC"></div>
-                                <div class="pro-title"></div>
-                                <div class="pro-price"></div>
-                            </div>
-                            <div class="wrap-pro">
-                                <div class="box box1 boxC">사진</div>
-                                <div class="pro-title">제목</div>
-                                <div class="pro-price">가격</div>
-                            </div>
-                            <div class="wrap-pro">
-                                <div class="box box1 boxC">사진</div>
-                                <div class="pro-title">제목</div>
-                                <div class="pro-price">가격</div>
-                            </div>
-                            <div class="wrap-pro">
-                                <div class="box box1 boxC">사진</div>
-                                <div class="pro-title">제목</div>
-                                <div class="pro-price">가격</div>
-                            </div>
-                            <div class="wrap-pro">
-                                <div class="box box1 boxC">사진</div>
-                                <div class="pro-title">제목</div>
-                                <div class="pro-price">가격</div>
-                            </div>
-                        </div>
-                        <div>빈자리?</div>
+                        <jsp:include page="myshopProductList.jsp"></jsp:include>
                     </div>
                     <div id="tab2" data-tab-content class="itemss">
-                        <div class="div-division2">
-                            <div class="left2">
-                                상점후기
-                            </div>
-                            <div class="right2">
-                                00개
-                            </div>
-                        </div>
-                        <div class="see-review">
-                            <div style="float: left; margin-left: 5px;">
-                                <table class="review-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="rt-tbl" colspan="2" rowspan="2">프로필</th>
-                                            <th class="rt-tbl" colspan="2">아이디</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="2">별점</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="4">상품제목</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="4" rowspan="2">사진들</td>
-                                        </tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="4">댓글내용</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div style="float: left; margin-left: 61px;">
-                                <table class="review-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="rt-tbl" colspan="2" rowspan="2">프로필</th>
-                                            <th class="rt-tbl" colspan="2">아이디</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="2">별점</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="4">상품제목</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="4" rowspan="2">사진들</td>
-                                        </tr>
-                                        <tr></tr>
-                                        <tr>
-                                            <td class="rt-tbl" colspan="4">댓글내용</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                        <jsp:include page="myshopReviewList.jsp"></jsp:include>
                 </div>
             </div>
            

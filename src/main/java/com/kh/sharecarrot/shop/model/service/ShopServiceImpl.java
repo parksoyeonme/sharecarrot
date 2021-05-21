@@ -83,17 +83,14 @@ public class ShopServiceImpl implements ShopService{
 	}
 
 
-
 	@Override
-	public List<Product> selectProductList(String shopId) {
+	public List<Product> selectshopProductList(String shopId) {
 		// TODO Auto-generated method stub
-		return shopDao.selectProductList(shopId);
+		return shopDao.selectshopProductList(shopId);
 	}
-
-
 
 	
 
-
+	
 	
 }
