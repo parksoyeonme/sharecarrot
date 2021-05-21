@@ -26,7 +26,8 @@ public class ProductDaoImpl implements ProductDao {
 	public List<Product> searchTitle(String productName) {
 		return session.selectList("product.searchTitle", productName);
 	}
-
+	
+	
 	@Override
 	public ProductDetail selectProduct(String productId) {
 		return session.selectOne("product.selectProduct", productId);

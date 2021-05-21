@@ -50,102 +50,6 @@
 		where product_id like '%' ||  #{productName} || '%'
 	</select>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-=======
 	<resultMap type="productImage" id="productImgMap">
 		<id column="product_img_no" property="productImgNo"/>
 			<result column="product_img_origin" property="productImgOrigin"/>
@@ -168,7 +72,6 @@
 		<collection property="productImage" resultMap="productImgMap"/>
 	</resultMap>
 
->>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 	<select id="selectProduct" resultMap="productMap">
 		select pd.*, 
 		        i.product_img_no,
@@ -240,5 +143,4 @@
 		#{memberId}
 	)
 	</insert>
->>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 </mapper>

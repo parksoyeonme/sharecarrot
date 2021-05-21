@@ -27,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.searchTitle(productName);
 	}
 
+
 	@Override
 	public ProductDetail selectProduct(String productId) {
 		return productDao.selectProduct(productId);

@@ -22,6 +22,7 @@ public interface ProductDao {
 	List<Product> searchLocation(String locName);
 
 	List<Product> searchTitle(String productName);
+	
 
 	ProductDetail selectProduct(String productId);
 
