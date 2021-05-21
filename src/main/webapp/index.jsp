@@ -47,7 +47,7 @@
               <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
               <option value="" disabled selected>지역명</option>
     	  		<c:forEach items="${locationList}" var="location">
-	  				<option value="${location.locCode}">${location.locName}</option>
+	  				<option value="${location.locCode}" ${loginMember.locCode eq location.locCode ? 'selected' : ''} >${location.locName}</option>
 	  			</c:forEach>
             </select>
           </div>
@@ -59,10 +59,6 @@
 	  				<option value="${category.categoryCode}">${category.categoryName}</option>
 	  			</c:forEach>
             </select>
-          </div>
-          <div class="search-form">
-            <!-- 폼 제출 방식 :  버튼? 엔터? -->
-            <input type="text"  placeholder="검색어 입력">
           </div>
         </div>
         </div>
