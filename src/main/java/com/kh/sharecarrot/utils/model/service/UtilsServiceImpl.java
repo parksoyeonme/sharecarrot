@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.sharecarrot.utils.model.dao.UtilsDao;
 import com.kh.sharecarrot.utils.model.vo.Category;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
 
 @Service
@@ -22,6 +23,11 @@ public class UtilsServiceImpl implements UtilsService {
 	@Override
 	public List<Category> selectCategoryList() {
 		return utilsDao.selectCategoryList();
+	}
+
+	@Override
+	public List<JjimList> selectJjimList(String memberId) {
+		return utilsDao.selectJjimList(memberId);
 	}
 
 }

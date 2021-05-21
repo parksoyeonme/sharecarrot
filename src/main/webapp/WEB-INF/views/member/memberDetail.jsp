@@ -6,10 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<% 
-   /* List.contains메소드를 사용하기 위해 String[] => List로 형변환함.  */
-   Member member = (Member)session.getAttribute("loginMember");
-%>
+
 <script>
 	console.log()
 </script>
@@ -32,12 +29,13 @@ div#update-container input, div#update-container select {margin-bottom:10px;}
 	</div>
 
 
-   <form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do" method="post"><%--       <input type="text" class="form-control" placeholder="아이디 (4글자이상)" name="id" id="id" value="${loginMember.id}" readonly required/> --%>
+   <form:form name="memberUpdateFrm" action="${pageContext.request.contextPath}/member/memberUpdate.do?${_csrf.parameterName}=${_csrf.token}" 
+   			method="post" enctype="multipart/form-data">
       <table style="margin:0 auto">
       	<tr>
       		<th>프로필</th>
-            <td><input type="file" name="upProfile" id="upProfile" ></td>
-            <td><img id="profileImg" src="" style="max-width:80px; max-height:80px;"></td>
+            <td><input type="file" name="upfile" id="upfile" ></td>
+            <td><img id="profileImg" src='${pageContext.request.contextPath}/resources/upload/member/<sec:authentication property="principal.profileRenamed"/>' style="max-width:80px; max-height:80px;"></td>
      	</tr>
       	<tr>
 			<th>아이디</th>
@@ -84,9 +82,9 @@ div#update-container input, div#update-container select {margin-bottom:10px;}
 </div>
 
 <script>
-$('#upProfile').change(function(){
+$('#upfile').change(function(){
     setProfile(this, '#profileImg');
-    if(!/([^\s]+(?=\.(jpg|gif|png))\.\2)/.test($("#upProfile").val())){
+    if(!/([^\s]+(?=\.(jpg|gif|png))\.\2)/.test($("#upfile").val())){
         alert('프로필사진은 jpg|png|gif 형식의 파일만 가능합니다.');
         return false;
     }

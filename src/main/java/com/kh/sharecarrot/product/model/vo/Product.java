@@ -1,6 +1,7 @@
 package com.kh.sharecarrot.product.model.vo;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -25,11 +26,18 @@ public class Product {
 		private String productId;
 		private String productName;
 		private int productPrice;
+<<<<<<< HEAD
 		private boolean productYnh;
 		@JsonFormat(pattern="yyyy-MM-dd")
+=======
+		private String productYnh;
+>>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 		private Date productRegDate;
 		private String productContent;
-		private boolean productDelFlag;
+		private String productDelFlag;
 		private String shopId;
 		private String categoryCode;
+		
+		private List<ProductImage> productIamgeList;
+		private String locName;
 }

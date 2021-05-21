@@ -24,15 +24,15 @@
 	
 	<form 
 		name="memberEnrollFrm" 
-		action="${pageContext.request.contextPath}/member/memberEnroll.do" 
-		method="post">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+		action="${pageContext.request.contextPath}/member/memberEnroll.do?${_csrf.parameterName}=${_csrf.token}" 
+		method="post"
+		enctype="multipart/form-data"> 
 		<table>
 			<tr>
 			</tr>
 			<tr>
                 <th>프로필사진</th>
-                <td><input type="file" name="upProfile" id="upProfile" ></td>
+                <td><input type="file" name="upfile" id="upfile" ></td>
                 <td><img id="profileImg" src="" style="max-width:150px; max-height:80px;"></td>
             </tr>
 			<tr>
@@ -81,7 +81,7 @@
 				<td>		
 					<input type="date" class="form-control" name="birthday" id="birthday"/>
 				</td>
-			</tr> 
+			</tr>
 			<tr>
 				<th>이메일</th>
 				<td>	
@@ -128,25 +128,20 @@
 	</form>
 </div>
 <script>
-
 // 이메일 인증용 코드
 var code = "";  
-
 $(() => {
 	$(".guide").hide();
 });
-
 // 도로명주소
 function execPostCode() {
     new daum.Postcode({
         oncomplete: function(data) {
            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
            // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
            var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
            var extraRoadAddr = ''; // 도로명 조합형 주소 변수
-
            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
@@ -164,10 +159,9 @@ function execPostCode() {
            if(fullRoadAddr !== ''){
                fullRoadAddr += extraRoadAddr;
            }
-
            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-           console.log(data.zonecode);
-           console.log(fullRoadAddr);
+//            console.log(data.zonecode);
+//            console.log(fullRoadAddr);
            
            
            $("[name=address1]").val(data.zonecode);
@@ -179,10 +173,8 @@ function execPostCode() {
        }
     }).open();
 }
-
 $('[name=emailbutton]').click(function(){
 	// 이메일 유효성 검사
-	console.log("test");
 	var email = $("#email").val();
 	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	
@@ -213,7 +205,6 @@ $('[name=emailbutton]').click(function(){
     });
 	
 });
-
 $('[name=emailconfirmbutton]').click(function(){
 	var emailconfirm = $("#emailconfirm").val();
 	var $emailValid = $("#emailValid");
@@ -247,11 +238,10 @@ $('#id').keyup(e => {
 		data: {id}, //변수 이름을 속성명으로 쓰고 싶을 때
 		success: data => {
 			$(".guide").show();
-			console.log(data);
+// 			console.log(data);
 			if(data.usable){
 				$result.show();
  			    $result.html("아이디가 사용 가능합니다.");
-
 				$idValid.val(1);
 			}else{
  			    $result.html("이미 존재하는 아이디입니다.");
@@ -263,7 +253,6 @@ $('#id').keyup(e => {
 		}
 	});
 });
-
 $("#passwordCheck").blur(function(){
 	var $password = $("#password"), $passwordCheck = $("#passwordCheck");
 	if($password.val() != $passwordCheck.val()){
@@ -276,7 +265,6 @@ $("#passwordCheck").blur(function(){
  * 회원 등록 유효성검사
  */
 $("[name=memberEnrollFrm]").submit(function(){
-
 	var $id = $("#id");
 	if(/^\w{4,}$/.test($id.val()) == false) {
 		alert("아이디는 최소 4자리이상이어야 합니다.");
@@ -299,15 +287,13 @@ $("[name=memberEnrollFrm]").submit(function(){
 	
 	return true;
 });
-
-$('#upProfile').change(function(){
+$('#upfile').change(function(){
     setProfile(this, '#profileImg');
-    if(!/([^\s]+(?=\.(jpg|gif|png))\.\2)/.test($("#upProfile").val())){
+    if(!/([^\s]+(?=\.(jpg|gif|png))\.\2)/.test($("#upfile").val())){
         alert('프로필사진은 jpg|png|gif 형식의 파일만 가능합니다.');
         return false;
     }
 });
-
 function setProfile(input, profileImg){
     if(input.files && input.files[0]){
         var reader = new FileReader();

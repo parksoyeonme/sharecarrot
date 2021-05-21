@@ -5,8 +5,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <jsp:include page="/WEB-INF/views/common/history.jsp" />
+<<<<<<< HEAD
 
 <!--Custom CSS-->
+=======
+>>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 
 <div class="sub_title">
 	<h1>공지사항</h1>

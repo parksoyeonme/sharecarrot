@@ -10,4 +10,9 @@
 	<select id="selectCategoryList" resultType="category">
 		select * from category
 	</select>
+	
+	<select id="selectJjimList" resultType="jjimList">
+		select * from jjim_list
+		where member_id = #{memberId}
+	</select>
 </mapper>

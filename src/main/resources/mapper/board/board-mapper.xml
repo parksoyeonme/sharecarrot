@@ -21,8 +21,20 @@
 		        and b.board_category = #{boardCategory}
 		 	</if>
 	    </where>
-	 	order by
-		    b.board_no desc
+	    <choose>
+	    	<when test='code.equals("L")'>
+	    		order by
+	    			b.board_enroll_date desc
+	    	</when>
+	    	<when test='code.equals("H")'>
+	    		order by
+	    			b.board_like desc
+	    	</when>
+	    	<otherwise>
+	    		order by
+	    			b.board_enroll_date desc
+	    	</otherwise>
+	    </choose>
 	</select>
 	
 	<resultMap type="board" id="boardCollectionMap">
@@ -138,4 +150,38 @@
 		delete from board_like
 		where board_no = #{boardNo}
 	</delete>
+	
+	<insert id="insertBoardComment">
+		insert into board_comment values
+		(
+			seq_board_comment_no.nextval,
+			#{boardCommentContent},
+			#{boardCommentLevel},
+			#{boardCommentRef},
+			sysdate,
+			default,
+			#{boardNo},
+			#{memberId}
+		)
+	</insert>
+	
+	<select id="selectBoardCommentList" resultType='boardComment'>
+		select * from board_comment 
+		where board_no = #{boardNo} and BOARD_COMMENT_DEL_FLAG = 'N'
+		start with board_comment_level=1 
+		connect by prior board_comment_id = board_comment_ref order by board_comment_id
+	</select>
+	
+	<update id="boardCommentUpdate">
+		update board_comment set
+			BOARD_COMMENT_CONTENT = #{boardCommentContent},
+			BOARD_COMMENT_ENROLL_DATE = sysdate
+		where BOARD_COMMENT_ID = #{boardCommentId}
+	</update>
+	
+	<update id="boardCommentDelete">
+		update board_comment set
+			board_comment_del_flag = 'Y'
+		where board_comment_id = #{boardCommentId}
+	</update>
 </mapper>
