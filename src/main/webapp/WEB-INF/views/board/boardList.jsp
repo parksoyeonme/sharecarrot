@@ -353,7 +353,9 @@
 					
 					
 					var enDate = getFormetDate(new Date(elem.boardCommentEnrollDate));
+					<sec:authorize access="isAuthenticated()">
 					var loginMemberId = "<sec:authentication property='principal.username'/>";
+					</sec:authorize>
 					if(level == 1){ // 댓글영역
 						html += `<li class='list-group-item d-flex' id='commentLevel\${boardCommentRef}'>`;
 						html += `<div><b>\${elem.memberId}</b>&nbsp;</div>`;
@@ -362,10 +364,12 @@
 						
 						
 						html += `<div style='font-size:12px;'>&nbsp;\${enDate} <br> &nbsp;&nbsp;`;
+						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == loginMemberId){
 							html += `<a class='updelBtn' onclick='loginCheck();' data-bs-toggle="collapse" href="#update\${elem.boardCommentId}" role="button" aria-expanded="false" aria-controls="update\${elem.boardCommentId}">수정&nbsp;&nbsp;&nbsp;</a>`; 
 							html += `<span class='updelBtn' onclick="commentDelete('\${elem.boardCommentId}', '\${elem.boardNo}', '\${elem.memberId}')">삭제</span>`;
 						}
+						</sec:authorize>
 						html += `</div>`;
 						html += "</li>";
 						
@@ -383,10 +387,12 @@
 						
 						
 						html += `<div style='font-size:12px;'>&nbsp;\${enDate} <br> &nbsp;&nbsp;`;
+						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == loginMemberId){
 							html += `<a class='updelBtn' onclick='loginCheck();' data-bs-toggle="collapse" href="#update\${elem.boardCommentId}" role="button" aria-expanded="false" aria-controls="update\${elem.boardCommentId}">수정&nbsp;&nbsp;&nbsp;</a>`; 
 							html += `<span class='updelBtn' onclick="commentDelete('\${elem.boardCommentId}', '\${elem.boardNo}', '\${elem.memberId}')">삭제</span>`;
 						}
+						</sec:authorize>
 						html += `</div>`;
 						html += "</li>";
 						
@@ -439,12 +445,6 @@
 			return;
 		</sec:authorize>
 		
-		var loginMemberId = "<sec:authentication property='principal.username'/>";
-		if(loginMemberId != memberId){
-			alert('본인의 댓글만 삭제가 가능합니다!');
-			return;
-		}
-		
 		//댓글을 입력하지 않았으면 조기리턴
 		if(!commentUpdateText.val()){
 			alert('내용을 입력해주세요.');
@@ -478,7 +478,7 @@
 			return;
 		</sec:authorize>
 		
-		var loginMemberId = "<sec:authentication property='principal.username'/>";
+
 		
 		//다른사람껄 삭제하려하면
 		if(loginMemberId != memberId){
