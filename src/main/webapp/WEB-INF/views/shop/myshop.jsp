@@ -33,7 +33,8 @@
                                <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
                             </div>
                             <div style="border: 1px solid red; float: left; width: 11%;">
-                                 ${shop.shopTotalScore}일
+<%--                                  ${shop.shopTotalScore}일 --%>
+                                 ${openday}일
                             </div>
                             <div style="border: 1px solid blue; float: left; width: 22%; color: #223465; font-weight: bold;">
                                 <i class="fas fa-users" style="font-size:23px;"></i>상점방문수

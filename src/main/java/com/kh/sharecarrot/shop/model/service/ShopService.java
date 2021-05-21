@@ -64,4 +64,7 @@ public interface ShopService {
 	List<Product> selectshopProductList(String shopId);
 
 
+	int selectOpenDay(String memberId);
+
+
 }

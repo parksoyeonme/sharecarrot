@@ -84,8 +84,13 @@ public class ShopController {
 		//loginmember로 정보 받아오기
 		System.out.println("##############"+memberId);
 		Shop shop = shopService.selectShopOne(memberId);
-
-
+		
+		//나중에 shop_id 받아서 하는거로 할거임
+		//지금 위에 shop을 가져왔으니,
+		//저 shop_id를 이용해서 member를 가져와서
+		//그 member를 사용해서 처리하게끔.
+		
+		
 		//프로필
 		//Member profile = shopService.selectProfilOne(memberId);
 		//model.addAttribute("loginMember", authentication.getPrincipal());
@@ -101,6 +106,9 @@ public class ShopController {
 		String shopId = shop.getShopId();
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
+		int openday = shopService.selectOpenDay(memberId);
+		
+		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);
 		//model.addAttribute("profile", profile);
 	}

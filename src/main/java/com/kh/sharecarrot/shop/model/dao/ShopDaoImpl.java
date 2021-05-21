@@ -92,4 +92,10 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectList("shop.selectshopProductList", shopId);
 	}
 
+	@Override
+	public int selectOpenDay(String memberId) {
+		// TODO Auto-generated method stub
+		return session.selectOne("shop.selectOpenDay", memberId);
+	}
+
 }
