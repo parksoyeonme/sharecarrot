@@ -88,7 +88,6 @@
 		
 		$("#selectHottest").change(function(e){
 			const code = e.target.value;
-			console.log(code);
 			readBoardList(1, code);
 		});
 		
@@ -105,8 +104,7 @@
 				},
 				url: "${pageContext.request.contextPath}/board/searchBoardList.do?${_csrf.parameterName}=${_csrf.token}",
 				success: function(data){
-					console.log(data);
-					displayList(data);
+					displayList(data,code);
 				},
 				error:function(request,status,error){
 		            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -115,8 +113,8 @@
 		}
 		
 		
-		function displayList(data){
-			$(boardList).html('');
+		function displayList(data, code){
+			if(code) $(boardList).html('');
 			$.each(data, function(index, elem){
 				<%-- 유저 지역 검색 --%>
 				var loc = "";
