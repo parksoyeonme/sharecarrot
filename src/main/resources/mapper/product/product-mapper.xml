@@ -22,6 +22,7 @@
 		where product_id like '%' ||  #{productName} || '%'
 	</select>
 
+<<<<<<< HEAD
 
 
 
@@ -114,4 +115,77 @@
 
 
 
+=======
+	<select id="selectProduct" resultMap="productMap">
+		select pd.*, 
+		        i.product_img_no,
+		        i.product_img_origin,
+		        i.product_img_renamed,
+		        i.product_id
+		from 
+		(
+		    select ps.*, m.profile_renamed
+		    from
+		        (
+		        select s.shop_visit_count,s.shop_total_score, s.member_id, p.*
+		        from shop s
+		            join product p
+		                on s.shop_id = p.shop_id
+		                    where product_id = '20210521013107'
+		        ) ps
+		    join member m
+		        on ps.member_id = m.member_id
+		) pd
+		    left join product_image i
+		        on pd.product_id = i.product_id
+	</select>
+	<resultMap type="productDetail" id="productMap">
+		<id column="product_id" property='productId' />
+		<result column="product_name" property="productName" />
+		<result column="product_price" property="productPrice" />
+		<result column="product_ynh" property="productYnh" />
+		<result column="product_reg_date" property="productRegDate" />
+		<result column="product_content" property="productContent" />
+		<result column="product_del_flag" property="productDelFlag" />
+		<result column="shop_id" property="shopId" />
+		<result column="category_code" property="categoryCode" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="member_id" property="memberId" />
+		<collection property="productIamgeList" ofType="productImage">
+			<id column="product_img_no" property="productImgNo" />
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectLocCode" resultType="string">
+	select loc_name
+		from
+		    (
+		    select loc_code
+		        from
+		        (
+		            select * 
+		            from product p
+		                join shop s
+		                    on s.shop_id = p.shop_id
+		            where product_id = '20210521013107'
+		        ) ps
+		        join member m
+		            on ps.member_id = m.member_id
+		    ) a
+		join location l 
+		    on l.loc_code = a.loc_code
+	</select>
+	
+	<insert id="insertJjim">
+	insert into jjim_list values(
+		seq_jjim_list_no.nextval,
+		#{productId},
+		#{memberId}
+	)
+	</insert>
+>>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 </mapper>
