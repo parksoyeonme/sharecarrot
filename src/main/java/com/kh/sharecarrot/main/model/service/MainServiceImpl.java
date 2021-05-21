@@ -8,6 +8,4 @@ import com.kh.sharecarrot.main.model.dao.MainDao;
 @Service
 public class MainServiceImpl implements MainService {
 
-	@Autowired
-	private MainDao mainDao;
 }

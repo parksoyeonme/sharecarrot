@@ -65,7 +65,7 @@ public class HomeController {
 		List<Category> categoryList = utilsService.selectCategoryList();
 //		logger.info("locList={}, cateList={}", locationList, categoryList);
 //
-////		List<MainProduct> productList = mainService.selectProductList(param);
+//		List<MainProduct> productList = mainService.selectProductList(param);
 //		
 ////		model.addAttribute("productList", productList);
 ////		
