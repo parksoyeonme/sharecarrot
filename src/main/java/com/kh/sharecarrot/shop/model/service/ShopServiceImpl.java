@@ -89,6 +89,13 @@ public class ShopServiceImpl implements ShopService{
 		return shopDao.selectshopProductList(shopId);
 	}
 
+
+	@Override
+	public int selectOpenDay(String memberId) {
+		// TODO Auto-generated method stub
+		return shopDao.selectOpenDay(memberId);
+	}
+
 	
 
 	

@@ -60,4 +60,7 @@ public interface ShopDao {
 
 	List<Product> selectshopProductList(String shopId);
 
+
+	int selectOpenDay(String memberId);
+
 }
