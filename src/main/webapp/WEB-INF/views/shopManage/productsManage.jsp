@@ -4,6 +4,60 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	//탭 초기화
+	$('#productManageNav').on('shown.bs.tab',function(){
+		selectProductList();
+	});
+	
+	function selectProductList(search){
+		$.ajax({
+			url : "selectPoductList.do"
+			, type : "POST"
+			, data : search
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            }
+			, success : function(result){
+				var tbody = $('#productListTbody');
+				var tbodyHtml = '';
+				$.each(result,function(index,item){
+					tbodyHtml += '<tr>';
+					tbodyHtml += '<td><img class="img-thumbnail" style="object-fit:cover;" width="250" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
+					tbodyHtml += '<td><select class="form-select">';
+					if(item.productYnh == 'N'){
+						tbodyHtml += '<option value="N" selected>판매중</option>';
+						tbodyHtml += '<option value="H">예약중</option>';
+						tbodyHtml += '<option value="Y">판매완료</option>';
+					}else if(item.productYnh == 'H'){
+						tbodyHtml += '<option value="N">판매중</option>';
+						tbodyHtml += '<option value="H" selected>예약중</option>';
+						tbodyHtml += '<option value="Y">판매완료</option>';
+					}else if(item.productYnh == 'Y'){
+						tbodyHtml += '<option value="N">판매중</option>';
+						tbodyHtml += '<option value="H">예약중</option>';
+						tbodyHtml += '<option value="Y" selected>판매완료</option>';
+					}
+					tbodyHtml += '</select></td>';
+					tbodyHtml += '<td>' + item.productName + '</td>';
+					tbodyHtml += '<td>' + item.productPrice + '</td>';
+					tbodyHtml += '<td>찜/댓글</td>';
+					tbodyHtml += '<td>' + item.productRegDate + '</td>';
+					tbodyHtml += '<td>';
+					tbodyHtml += '<button class="btn btn-primary modifyBtn">수정</button>';
+					tbodyHtml += '<button class="btn btn-danger deleteBtn">삭제</button>';
+					tbodyHtml += '</td>';
+					tbodyHtml += '</tr>';
+				});
+				tbody.append(tbodyHtml);
+				
+			}
+			, error : function(jqXHR){
+				alert('로딩 실패');
+				return;
+			}
+		});
+	}
+	
 });
 </script>
 
@@ -14,24 +68,20 @@ $(document).ready(function(){
 			<button type="button" class="btn btn-outline-primary">검색</button>
 		</div>
 	</div>
-	<div class="col-md-1">
-		<select class="form-select">
-			<option>옵션1</option>
-			<option>옵션2</option>
-			<option>옵션3</option>
-			<option>옵션4</option>
+	<div class="col-md-2">
+		<select class="form-select" id="productYnhSelect">
+			<option value="N">판매중</option>
+			<option value="H">예약중</option>
+			<option value="Y">판매완료</option>
 		</select>
 	</div>
-	<div class="col-md-1">
-		<select class="form-select">
-			<option>옵션1</option>
-			<option>옵션2</option>
-			<option>옵션3</option>
-			<option>옵션4</option>
+	<div class="col-md-2">
+		<select class="form-select" id="categoryCode2">
 		</select>
 	</div>
 	<div class="col-md-1">
 		<button type="button" class="btn btn"></button>
+		<img style="obhce" alt="" src="">
 	</div>
 </div>
 <div class="row mx-3 mt-5">
@@ -48,7 +98,7 @@ $(document).ready(function(){
 					<th scope="col">수정/삭제</th>		
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="productListTbody" style="table-layout: fixed;">
 			
 			
 			</tbody>

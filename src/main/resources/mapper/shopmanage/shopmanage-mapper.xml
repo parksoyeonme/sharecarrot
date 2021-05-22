@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopmanage">
+
+	<insert id="productEnroll" parameterType="com.kh.sharecarrot.product.model.vo.Product">
+		insert into product
+		values
+		(
+			#{productId}
+			, #{productName}
+			, #{productPrice}
+			, default
+			, sysdate
+			, #{productContent}
+			, default
+			, #{shopId}
+			, #{categoryCode}
+		)
+	</insert>
+	
+	<insert id="productImageEnroll" parameterType="com.kh.sharecarrot.product.model.vo.ProductImage">
+		insert into product_image
+		values
+		(
+			seq_product_image_no.nextval
+			, #{productImgOrigin}
+			, #{productImgRenamed}
+			, #{productId}
+		)
+	</insert>
+	
+	<select id="selectShopInfo" parameterType="String" resultType="com.kh.sharecarrot.shop.model.vo.Shop">
+		select 	*
+		from 	shop
+		where 	member_id = #{memberId}
+	</select>
+	
+	<select id="selectProductList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.Product">
+		select 	*
+		from 	product
+		where 	shop_id = #{shopId}
+	</select>
+	
+	<select id="selectProductImageList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.ProductImage">
+		select *
+		from 	product_image
+		where 	product_id = #{productId}
+	</select>
+
+</mapper>

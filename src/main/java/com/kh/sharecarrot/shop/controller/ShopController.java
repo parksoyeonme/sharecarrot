@@ -52,27 +52,6 @@ public class ShopController {
 	private StoreReviewsService storeReviewsService;
 	@Autowired
 	private TransactionHistoryService transactionHistoryService;
-	
-	@RequestMapping(value="/enroll.do")
-	public ModelAndView productReg() {
-		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
-		mav.addObject("tab","productEnroll");
-		return mav;
-	}
-	
-	@RequestMapping(value="/manage.do")
-	public ModelAndView productManage() {
-		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
-		mav.addObject("tab","productManage");
-		return mav;
-	}
-	
-	@RequestMapping(value="/transactionHistory.do")
-	public ModelAndView transactionHistory() {
-		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
-		mav.addObject("tab","transactionHistory");
-		return mav;
-	}
 
 	@GetMapping("/myshop.do")
 	public void mystore(Member member, Model model) {
