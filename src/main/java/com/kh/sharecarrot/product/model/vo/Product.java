@@ -37,6 +37,6 @@ public class Product {
 		private String shopId;
 		private String categoryCode;
 		
-		private List<ProductImage> productIamgeList;
+		private List<ProductImage> productImageList;
 		private String locName;
 }

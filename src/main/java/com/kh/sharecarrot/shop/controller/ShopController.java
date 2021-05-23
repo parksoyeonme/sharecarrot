@@ -55,6 +55,7 @@ public class ShopController {
 	private StoreReviewsService storeReviewsService;
 	@Autowired
 	private TransactionHistoryService transactionHistoryService;
+
 	
 	@Autowired
 	private ReviewCommentService reviewCommentService;

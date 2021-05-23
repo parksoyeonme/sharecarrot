@@ -8,12 +8,58 @@
 $(document).ready(function(){
 	var initTab = '${tab}';
 	
+	getCode();
+	
 	if(initTab){
 		$('.nav-link').removeClass('active');
 		$('#'+ initTab +'Nav').addClass('active');
 		$('.tab-pane').removeClass('show active');
 		$('#'+ initTab).addClass('show active');
-	}	
+	}
+	
+	$('#productEnrollNav').on('show.bs.tab',function(){
+		history.pushState(null,null,"enroll.do");
+		$('#productRegForm')[0].reset();
+		getCode();
+	});
+	
+	$('#productManageNav').on('show.bs.tab',function(){
+		history.pushState(null,null,"manage.do");
+		getCode();
+	});
+	
+	$('#transactionHistoryNav').on('show.bs.tab',function(){
+		history.pushState(null,null,"transactionHistory.do");
+	});
+	
+	//카테고리, 지역
+	function getCode(){
+		$('#categoryCode').empty();
+		$('#categoryCode2').empty();
+		$('#locationCode').empty();
+		
+		$.ajax({
+			url : "getCode.do"
+			, type : "POST"
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            }
+			, success : function(result){
+				var category = '';
+				$.each(result.category,function(index, item){
+					category += '<option value="' + item.categoryCode +'">'+ item.categoryName + '</option>';
+				});
+				$('#categoryCode').append(category);
+				$('#categoryCode2').append(category);
+				
+				var location = '';
+				$.each(result.location,function(index, item){
+					location += '<option value="' + item.locCode +'">'+ item.locName + '</option>';
+				});
+				$('#locationCode').append(location);
+			}
+		});
+	}
 	
 	
 });
