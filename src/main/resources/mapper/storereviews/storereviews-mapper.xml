@@ -13,7 +13,15 @@ where product_id in (select product_id from product where shop_id = #{shopId})
 	<select id= "selectReviewImageList" resultType="ReviewImage">
 		select * from review_image where review_no = #{reviewNo}
 	</select>
-			
+	
+	<select id="getTotalContents" resultType="_int">
+	 select
+         count(*)
+      from
+          store_reviews
+          where product_id in (select product_id from product where shop_id = #{shopId})
+	
+	</select>
 	<resultMap type="shop" id="shopMap">
 		<id column="shop_id" property="shopId" />
 		<result column="shop_total_score" property="shopTotalScore" />

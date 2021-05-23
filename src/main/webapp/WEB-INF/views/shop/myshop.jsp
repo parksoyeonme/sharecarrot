@@ -86,6 +86,7 @@
                     </div>
                     <div id="tab2" data-tab-content class="itemss">
                         <jsp:include page="myshopReviewList.jsp"></jsp:include>
+                     </div>
                 </div>
             </div>
            

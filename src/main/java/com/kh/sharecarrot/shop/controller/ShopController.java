@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,8 @@ import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.service.ProductService;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
+import com.kh.sharecarrot.reviewcomment.model.service.ReviewCommentService;
+import com.kh.sharecarrot.reviewcomment.model.vo.ReviewComment;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.storereviews.model.service.StoreReviewsService;
@@ -52,6 +55,9 @@ public class ShopController {
 	private StoreReviewsService storeReviewsService;
 	@Autowired
 	private TransactionHistoryService transactionHistoryService;
+	
+	@Autowired
+	private ReviewCommentService reviewCommentService;
 	
 	@RequestMapping(value="/enroll.do")
 	public ModelAndView productReg() {
@@ -180,11 +186,19 @@ public class ShopController {
 	@RequestMapping(value="/myshopReviewList.do", method=RequestMethod.GET,
 			produces ="application/text; charset=utf8")
 //	@GetMapping("/myshopProductList.do")
-	public String myshopReviewList(@RequestParam String shopId,
+	public String myshopReviewList(@RequestParam(defaultValue ="1") int cPage,
+			@RequestParam String shopId,
 			Model model,
-			HttpServletResponse response) throws IOException {
-
-		List<StoreReviews> reviewList = storeReviewsService.selectStoreReviewsList(shopId);
+			HttpServletResponse responset,HttpServletRequest request) throws IOException {
+	
+		//1. 사용자입력값
+		int numPerPage = 2;
+		log.debug("cPage = {}", cPage);
+		Map<String, Object> param = new HashMap<>();
+		param.put("numPerPage", numPerPage);
+		param.put("cPage", cPage);
+		
+		List<StoreReviews> reviewList = storeReviewsService.selectStoreReviewsList(shopId,param);
 		List<ReviewImage> reviewImageList = new ArrayList<>();
 		List<Member> buyerList = new ArrayList<>();
 
@@ -199,6 +213,12 @@ public class ShopController {
 			buyerList.addAll(bList);
 			reviewImageList.addAll(imgList);
 		}
+		
+		int totalContents = storeReviewsService.getTotalContents(shopId);
+		String url = request.getRequestURI();
+		log.debug("totalContents = {}",totalContents);
+		log.debug("url = {}", url);
+		String pageBar2 = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
 	
 //		log.info("reviewList : {}", reviewList);
 //		log.info("reviewImageList : {}", reviewImageList);
@@ -214,8 +234,20 @@ public class ShopController {
 		obj.put("reviewImageList", reviewImageList);
 		obj.put("reviewListSize", reviewListSize);
 		obj.put("buyerList", buyerList);
+		obj.put("pageBar2", pageBar2);
 		String resp = obj.toString();
-//				
+//		
 		return resp;
+	}
+	
+	@RequestMapping(value="/reviewComment.do", method= {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	 public void reviewComment(@ModelAttribute ReviewComment reviewComment,
+			 HttpServletRequest request, HttpServletResponse response) {
+		log.info("reviewComment = {}", reviewComment);
+		
+		int result = reviewCommentService.insertReviewComment(reviewComment);
+	
+	
 	}
 }

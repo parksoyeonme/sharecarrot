@@ -33,7 +33,7 @@ $(document).ready(function(){
 			var html = "";
 			console.log(data);
 			//나중에 페이징 처리 후에 2에서 data.reviewListSize로 바꾸기
-			for(var i = 0; i < 2; i++){
+			for(var i = 0; i < data.reviewListSize; i++){
 				if(i == 0){
 					html += "<div class='see-review'>";
 				}
@@ -55,27 +55,31 @@ $(document).ready(function(){
 				
 				
 				//나중에 페이징 처리 후에 data.reviewListSize-1로 바꿔주기
-				if(i == (1)){
+				if(i == (data.reviewListSize-1)){
 					html += "</div>";
 				}
 			}
-			
 			$('#review-list').append(html);
 			console.log(html);
+			
+			console.log("@@pagebar2 : " + data.pageBar2);
+			$('#pagebar2').append(data.pageBar2);
 	}
+	 
+	
+	
 });
+
+
+
 
 </script>
 
 <div class="div-division2">
-                            <div class="left2">
-                                상점후기
-                            </div>
-                            <div id = "reviewCount" class="right2">
-                                00개
-                            </div>
-                        </div>
-                        <div id="review-list" class="see-review">
+	<div class="left2">상점후기</div>
+	<div id = "reviewCount" class="right2">00개</div>
+</div>
+           <div id="review-list" class="see-review">
 <!--                             <div style="float: left; margin-left: 5px;"> -->
 <!--                                 <table class="review-table"> -->
 <!--                                     <thead> -->
@@ -126,5 +130,7 @@ $(document).ready(function(){
 <!--                                     </tbody> -->
 <!--                                 </table> -->
 <!--                             </div> -->
+
                         </div>
-                    </div>
+                        
+<div id="pagebar2" style="margin-top: 275px;"></div>
