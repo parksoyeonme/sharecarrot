@@ -42,12 +42,84 @@
 		   WHERE REPORT_NO = #{no}
 	</select>
 	
+	<select id="selectReprotImageDetail" resultType="reportImage">
+		     SELECT A.REPORT_NO
+		          , B.REPORT_IMG_ID
+		          , B.REPORT_IMG_ORIGIN
+		          , B.REPORT_IMG_REAMED AS REPORT_IMG_RENAMED
+		       FROM REPORT_BOARD A
+	      LEFT JOIN REPORT_IMAGE B
+		         ON A.REPORT_NO = B.REPORT_NO
+		      WHERE A.REPORT_NO = #{no}
+		   ORDER BY B.REPORT_IMG_ID ASC
+	</select>
+<!-- 
+	<resultMap type="reportImage" id="reportImageListMap">
+		<id column="REPORT_NO" property="reportNo" />
+		<result column="REPORT_IMG_ID" property="reportImgId" />
+		<result column="REPORT_IMG_ORIGIN" property="reportImgOrigin" />
+		<result column="REPORT_IMG_REAMED" property="reportImgRenamed" />
+	</resultMap>
+ -->
 	<update id="updateReportYn">
 		UPDATE REPORT_BOARD
            SET REPORT_PROCESS_YN = 'Y'
+             , REPORT_PROCESSING_DATE = SYSDATE
          WHERE REPORT_NO = #{no}
 	</update>
 	
+	<select id="getTotalContents" resultType="_int">
+		SELECT COUNT(1)
+		  FROM REPORT_BOARD
+	</select>
 	
-</mapper>
+	<insert id="insertReport">
+		INSERT INTO REPORT_BOARD 
+		          ( REPORT_NO
+				  , REPORT_TITLE
+				  , REPORT_DATE
+				  , REPORT_CONTENT
+				  , REPORT_REPORTED
+				  , REPORT_PROCESSING_DATE
+				  , REPORT_PROCESS_YN
+				  , MEMBER_ID
+				  , SHOP_ID
+        ) VALUES (SEQ_REPORT_BOARD_NO.NEXTVAL
+        	   , #{reportTitle}
+        	   , SYSDATE
+        	   , #{reportContent}
+        	   , (SELECT MEMBER_ID FROM SHOP WHERE SHOP_ID = #{shopId})
+        	   , null
+        	   , 'N'
+        	   , #{memberId}
+        	   , #{shopId}
+        )
+	<!-- 방금 insert된 report객체의 no컬럼(pk)값을  report.no에 대입 -->
+	<selectKey resultType="_int" keyProperty="reportNo" order="AFTER">
+		select
+			SEQ_REPORT_BOARD_NO.currval
+		from
+			dual
+	</selectKey>
+	</insert>
+	<insert id="insertReportImg">
+		insert into
+			REPORT_IMAGE
+		values (
+			SEQ_REPORT_IMAGE_NO.nextval,
+			#{reportImgOrigin},
+			#{reportImgRenamed},
+			#{reportNo}
+		)
+	</insert>
+	
+	<select id="selectOneReportImage" resultType="reportImage">
+		 SELECT REPORT_NO
+		      , REPORT_IMG_ID
+		      , REPORT_IMG_ORIGIN
+		      , REPORT_IMG_REAMED AS REPORT_IMG_RENAMED
+		   FROM REPORT_IMAGE
+		  WHERE REPORT_IMG_ID = #{no}
+	</select>
 
+</mapper>
