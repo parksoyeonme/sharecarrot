@@ -30,4 +30,9 @@ public class UtilsDaoImpl implements UtilsDao {
 		return session.selectList("utils.selectJjimList", memberId);
 	}
 
+	@Override
+	public int selectTotalJjimNo(String memberId) {
+		return session.selectOne("utils.selectTotalJjimNo", memberId);
+	}
+
 }

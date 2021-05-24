@@ -72,8 +72,12 @@
 		<collection property="product" resultMap="productMap"/>
 		<collection property="productImage" resultMap="productImgMap"/>
 	</resultMap>
-
-	<select id="selectProduct" resultMap="productMap">
+	<select id="selectProduct" resultType="product">
+		select *
+		from product
+		where product_id = #{productId}
+	</select>
+	<select id="selectProductDetail" resultMap="productMap">
 		select pd.*, 
 		        i.product_img_no,
 		        i.product_img_origin,

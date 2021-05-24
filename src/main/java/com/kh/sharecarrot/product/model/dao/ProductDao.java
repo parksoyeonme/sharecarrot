@@ -24,13 +24,15 @@ public interface ProductDao {
 	List<Product> searchTitle(String productName);
 	
 
-	ProductDetail selectProduct(String productId);
+	ProductDetail selectProductDetail(String productId);
 
 	String selectLocCode(String productId);
 
 	int insertJjim(Map<String, Object> param);
 
 	int getTotalContents(String shopId);
+
+	Product selectProduct(String productId);
 
 
 	
