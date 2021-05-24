@@ -19,18 +19,15 @@
 <!-- Img Slider 영역 -->
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
-<<<<<<< HEAD
     <div class="carousel-item active">
       <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="..."> <!-- ${product.productImageList[0]} -->
     </div>
     <c:forEach items="${product.productImageList}" var="image">
 	    <div class="carousel-item">
 	      <img src="${pageContext.request.contextPath}/resources/upload/product/${image.productImgRenamed}" class="d-block w-100" alt="...">
-=======
     <c:if test="${product.productImageList ne null}">
 	    <div class="carousel-item active">
 	      <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
->>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 	    </div>
 	    <c:forEach items="${product.productImageList}" var="image">
 		    <div class="carousel-item">
