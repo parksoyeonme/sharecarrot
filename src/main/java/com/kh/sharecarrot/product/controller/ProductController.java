@@ -56,9 +56,7 @@ public class ProductController {
 		List<JjimList> jjimList = null;
 		if(principal != null) {
 			String memberId = principal.getName();
-			
 			jjimList = utilsService.selectJjimList(memberId);
-			log.info("jjimList = {}", jjimList);
 		}
 		
 		model.addAttribute("product", product);
