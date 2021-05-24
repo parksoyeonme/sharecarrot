@@ -38,30 +38,30 @@
         </div>
         <!-- 배너 끝 -->
         <!-- 검색 시작 -->
-        <div class="search">
-          <div style="display: flex">
-
-
-          <div class="location-nav">
-            <select>
-              <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
-              <option value="" disabled selected>지역명</option>
-    	  		<c:forEach items="${locationList}" var="location">
-	  				<option value="${location.locCode}" ${loginMember.locCode eq location.locCode ? 'selected' : ''} >${location.locName}</option>
-	  			</c:forEach>
-            </select>
+        <form:form>
+          <div class="search">
+            <div style="display: flex">
+              <div class="location-nav">
+                <select id="select-location" onchange="changeOption()">
+                  <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
+                  <option value="" disabled selected>지역명</option>
+                  <c:forEach items="${locationList}" var="location">
+                    <option value="${location.locCode}" ${loginMember.locCode eq location.locCode ? 'selected' : ''} >${location.locName}</option>
+                  </c:forEach>
+                </select>
+              </div>
+              <div class="category-nav">
+                <select id="select-category" onchange="changeOption()">
+                  <!-- 카테고리명 불러오기 -->
+                  <option value="" disabled selected>카테고리</option>
+                  <c:forEach items="${categoryList}" end="4" var="category">
+                    <option value="${category.categoryCode}">${category.categoryName}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="category-nav">
-            <select>
-              <!-- 카테고리명 불러오기 -->
-              <option value="" disabled selected>카테고리</option>
-              	<c:forEach items="${categoryList}" var="category">
-	  				<option value="${category.categoryCode}">${category.categoryName}</option>
-	  			</c:forEach>
-            </select>
-          </div>
-        </div>
-        </div>
+        </form:form>
         <!-- 검색 끝 -->
         <!-- 상품 리스트 시작 -->
         <!-- 조건에 맞는 상품 정보 불러오기 -->
@@ -97,7 +97,6 @@
       </div>
     </div>
     <script src="./resources/js/index.js"></script>
-
 
 
 
