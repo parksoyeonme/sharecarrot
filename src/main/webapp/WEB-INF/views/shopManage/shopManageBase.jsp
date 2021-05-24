@@ -50,6 +50,8 @@ $(document).ready(function(){
 					category += '<option value="' + item.categoryCode +'">'+ item.categoryName + '</option>';
 				});
 				$('#categoryCode').append(category);
+				
+				category = '<option value="">전체</option>' + category;
 				$('#categoryCode2').append(category);
 				
 				var location = '';
