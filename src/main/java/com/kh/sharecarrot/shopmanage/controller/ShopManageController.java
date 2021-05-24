@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ public class ShopManageController {
 	@RequestMapping(value="")
 	public ModelAndView shopManage() {
 		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
+		mav.addObject("tab","productManage");
 		return mav;
 	}
 	
@@ -51,7 +53,7 @@ public class ShopManageController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/getCode.do")
+	@RequestMapping(value="/getCode.do")
 	public ModelMap getCode(){
 		ModelMap map = new ModelMap();
 		map.addAttribute("category",utilsService.selectCategoryList());
@@ -73,9 +75,21 @@ public class ShopManageController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/selectPoductList.do")
+	@RequestMapping(value="/selectProductList.do")
 	public List<Product> selectPoductList(Product product){
 		return shopManageService.selectProductList(product);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/updateProductYnh.do")
+	public int updateProductYnh(Product product) {
+		return shopManageService.updateProductYnh(product);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/deleteProduct.do")
+	public int deleteProduct(Product product) {
+		return shopManageService.deleteProduct(product);
 	}
 	
 	@RequestMapping(value="/transactionHistory.do")
