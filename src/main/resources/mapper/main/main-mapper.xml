@@ -19,6 +19,19 @@
 			on GI.img_id = i2.product_img_no
 			) i3
 			on D.product_id = i3.product_id
+			left join shop s 
+                                on D.shop_id = s.shop_id
+                                    left join member m
+                                    on s.member_id = m.member_id
+		<where>
+			d.product_ynh = 'N' and d.product_del_flag = 'N'
+		 	<if test="categoryCode != '' and categoryCode != null">
+		        and d.category_code = #{categoryCode}
+		 	</if>
+			<if test="locCode != '' and locCode != null">
+		        and m.loc_code = #{locCode}
+		 	</if>
+		</where>
 	</select>
 	
 	<resultMap type="mainProduct" id="mainCollectionMap">
