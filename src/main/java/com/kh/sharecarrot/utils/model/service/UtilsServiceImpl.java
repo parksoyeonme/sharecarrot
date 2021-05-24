@@ -30,4 +30,9 @@ public class UtilsServiceImpl implements UtilsService {
 		return utilsDao.selectJjimList(memberId);
 	}
 
+	@Override
+	public int selectTotalJjimNo(String memberId) {
+		return utilsDao.selectTotalJjimNo(memberId);
+	}
+
 }

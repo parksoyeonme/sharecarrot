@@ -30,8 +30,8 @@ public class ProductDaoImpl implements ProductDao {
 	
 	
 	@Override
-	public ProductDetail selectProduct(String productId) {
-		return session.selectOne("product.selectProduct", productId);
+	public ProductDetail selectProductDetail(String productId) {
+		return session.selectOne("product.selectProductDetail", productId);
 	}
 
 	@Override
@@ -80,6 +80,11 @@ public class ProductDaoImpl implements ProductDao {
 	public int getTotalContents(String shopId) {
 		// TODO Auto-generated method stub
 		return session.selectOne("product.getTotalContents", shopId);
+	}
+
+	@Override
+	public Product selectProduct(String productId) {
+		return session.selectOne("product.selectProduct", productId);
 	}
 
 	

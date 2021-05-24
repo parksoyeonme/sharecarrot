@@ -171,12 +171,12 @@ public class MemberController {
 			//2. 다시 spring container에 던질 것.
 			throw e;
 		}
+		redirectAttr.addFlashAttribute("msg", "회원가입 성공");
 		return "redirect:/";
 	}
 	
 	@GetMapping("/checkIdDuplicate.do")
-//	public ResponseEntity<Map<String, Object>> checkIdDuplicate4(@RequestParam String id){
-	public ResponseEntity<?> checkIdDuplicate4(@RequestParam String id){
+	public ResponseEntity<?> checkIdDuplicate(@RequestParam String id){
 		//업무 로직
 		Member member = memberService.selectOneMember(id);
 		boolean usable = (member == null);

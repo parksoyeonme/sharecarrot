@@ -29,8 +29,8 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public ProductDetail selectProduct(String productId) {
-		return productDao.selectProduct(productId);
+	public ProductDetail selectProductDetail(String productId) {
+		return productDao.selectProductDetail(productId);
 	}
 
 	@Override
@@ -77,6 +77,11 @@ public class ProductServiceImpl implements ProductService {
 	public int getTotalContents(String shopId) {
 		// TODO Auto-generated method stub
 		return productDao.getTotalContents(shopId);
+	}
+
+	@Override
+	public Product selectProduct(String productId) {
+		return productDao.selectProduct(productId);
 	}
 
 	

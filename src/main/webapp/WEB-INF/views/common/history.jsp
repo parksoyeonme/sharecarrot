@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <style>
 	.history-box{
     position: fixed;
@@ -94,6 +95,33 @@
     }
     /* TOP 버튼 CSS 끝 */
 </style>
+
+<sec:authorize access="isAuthenticated()">
+<script>
+var totalJjim;
+$(() => {
+	$.ajax({
+        type : "GET",
+		url: "${pageContext.request.contextPath}/product/getTotalJjimNo.do",
+		dataType : "json",
+        contentType : "application/json; charset:UTF-8",
+	    success: function(data){
+			console.log(data);
+			
+			$('#jjim_count').val(totalJjim);
+		},
+		error: (request, status, err) =>{
+			 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+err);
+	       
+
+		}
+	});
+	
+
+});
+</script>
+</sec:authorize>
+
 <div class="history-box">
     <div class="history-box-container">
       <!-- 찜 상품 목록 시작-->
@@ -103,7 +131,7 @@
             <!-- 찜한 상품 생길 시 count ++, 색상 변경(red)-->
             <div class="jjim-count">
               <span>♥</span>
-              <span>0</span>
+              <span id="jjim_count">0</span>
             </div>
           </div>
         </div>
