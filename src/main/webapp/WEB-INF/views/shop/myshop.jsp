@@ -21,7 +21,7 @@
      <div class="container">
             <div class="row">
                 <div class="col-lg-3" style="background-color: red; height: 220px;">
-                    <div>프로필넣을것</div>
+                    <div>${profile}</div>
                 </div>
                 <div class="col-lg-7" style="background-color: #faad4a; height: 220px;">
                     <ul class="amount">
@@ -64,7 +64,10 @@
                     
                     </div>
                 </div>
-                <div class="mystore-btn" style="margin-top: 10px;" >
+                <div class="mystore-btn" style="margin-top: 10px; float: left;" >
+                    <a href="#" class="gomystore-button">내상점관리</a>
+                </div>
+                <div class="report-btn" style="margin-top: 10px;" >
                     <a href="#" class="gomystore-button">내상점관리</a>
                 </div>
             </div>
@@ -86,6 +89,7 @@
                     </div>
                     <div id="tab2" data-tab-content class="itemss">
                         <jsp:include page="myshopReviewList.jsp"></jsp:include>
+                     </div>
                 </div>
             </div>
            

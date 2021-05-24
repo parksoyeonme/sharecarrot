@@ -24,7 +24,13 @@
 	</update>
 	
 	<select id= "selectShopOne" resultMap="shopMap">
-	select * from shop where member_id = #{memberId}
+	select * from shop where 1=1
+	<if test="memberId == null || memberId.equals('')">
+	and shop_id = #{shopId}
+	</if>
+	<if test="memberId != null || !memberId.equals('')">
+	and member_id = #{memberId}
+	</if>
 	</select>
 <!--  
 	<select id="selectshopProductList" resultMap="shopProductMap">
@@ -45,6 +51,16 @@
 	member
 	where member_id = #{memberId}
 	</select>
+	
+	
+	<!--  
+	<select id="selectProfilOne" resultMap="shopMap">
+		select m.profile_renamed from shop s join member m
+	       on s.member_id = m.member_id
+	       where shop_id = #{myshopId}
+		</select>
+	-->
+	
 	
 	<resultMap type="product" id="productMap">
 		<id column="product_id" property="productId"/>
@@ -82,12 +98,14 @@
 		<result column="email" property="email"/>
 		<result column="phone" property="phone"/>
 		<result column="member_enroll_date" property="memberEnrollDate"/>
+		<result column="profile_original" property="profileOriginal"/>
+		<result column="profile_renamed" property="profileRenamed"/>
+		<result column="member_addr" property="memberAddr"/>
+		<result column="loc_code" property="locCode"/>
 		<result column="enabled" property="enabled"/>
+		<result column="quit_yn" property="quitYn"/>
 	</resultMap>
 	
-	<resultMap type="ShopProduct" id="shopProductMap">
-		<collection property="product" resultMap="productMap"/>
-		<collection property="productImage" resultMap="productImgMap"/>
-	</resultMap>
+
 	
 </mapper>

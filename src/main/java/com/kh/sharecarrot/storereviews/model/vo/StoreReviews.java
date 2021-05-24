@@ -23,4 +23,8 @@ public class StoreReviews {
 	private boolean reviewDelFlag;
 	private String productId;
 	
+	
+	private String reviewCommentText;
+	private String reviewCommentNo;
+	
 }

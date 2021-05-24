@@ -39,7 +39,8 @@
 }
 .content-mystorepro {
     border: 2px solid black;
-    height: 360px;
+    height: 500px;
+    overflow-y:scroll;
     margin-left: 20px;
   
 }
@@ -92,6 +93,7 @@
     position: relative;
     top: 1px;
 }
+
 /*전체*/
 .div-division > .left {
     width: 8%;
@@ -137,13 +139,13 @@ div.box {
     box-sizing: border-box;
     background: #ece6cc;
 }
-.review-table {
+/*상점후기*/
+.tg {
     border-collapse: collapse;
     border-spacing: 0;
-    margin-right: 42px;
+    margin-top: 42px;
 }
-
-.review-table td {
+.tg td {
     border-color: black;
     border-style: solid;
     border-width: 1px;
@@ -153,7 +155,8 @@ div.box {
     padding: 10px 5px;
     word-break: normal;
 }
-.review-table th {
+.tg th {
+    width: 387px;
     border-color: black;
     border-style: solid;
     border-width: 1px;
@@ -164,16 +167,12 @@ div.box {
     padding: 10px 5px;
     word-break: normal;
 }
-.review-table .rt-tbl {
-    border-color: inherit;
+.tg .tg-0lax {
     text-align: left;
-    vertical-align: top;
-    width: 146px;
+    vertical-align: top
 }
-.see-review {
-    margin-left: 35px;
-    padding-top: 39px;
-}
+
+
 #sidebar {
     float: right;
     padding: 10px;

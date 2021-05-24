@@ -8,6 +8,18 @@
 	<select id= "selectProductList" resultMap="productMap2">
 		select product_id, product_name, product_price from product
 		where shop_id = #{shopId}
+		<choose>
+			<when test="btnValue != null and btnValue.equals('cu')">
+			order by product_reg_date asc
+			</when>
+			<when test="btnValue != null and btnValue.equals('row')">
+			order by product_price asc
+			</when>
+			<when test="btnValue != null and btnValue.equals('hig')">
+			order by product_price desc
+			</when>
+		
+		</choose>
 	</select>
 	
 	<select id= "selectProductListSize" resultType="_int">
