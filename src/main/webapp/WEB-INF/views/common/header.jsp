@@ -114,4 +114,7 @@ function search_button_click() {
         </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </ul>
     </header>
+    
+    <!-- 공백 -->
+    <br/><br/><br/>
 <section>
