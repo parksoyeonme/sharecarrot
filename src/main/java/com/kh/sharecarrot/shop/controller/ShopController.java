@@ -38,6 +38,7 @@ import com.kh.sharecarrot.storereviews.model.vo.ReviewImage;
 import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.service.TransactionHistoryService;
 
+import jdk.internal.org.jline.utils.Log;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
@@ -82,7 +83,7 @@ public class ShopController {
 	}
 
 	@GetMapping("/myshop.do")
-	public void mystore(Member member, Model model) {
+	public void mystore(Member member, Model model,Map<String, Object> param) {
 		//shop_id로 정보 받아오기-아이디, 프로필
 		//Shop shop = shopService.selectShopOne(shopId);
 
@@ -90,7 +91,14 @@ public class ShopController {
 	    String memberId = ((UserDetails) principal).getUsername(); 		
 		//loginmember로 정보 받아오기
 		System.out.println("##############"+memberId);
-		Shop shop = shopService.selectShopOne(memberId);
+		
+		//Map<String, Object> param = new HashMap<>();
+		param.put("memberId", memberId);
+		param.put("shopId", "p9");
+//		상품상세에서 shopId로 넘겨받으면됨
+//		param.put("shopId", shopId);
+		Shop shop = shopService.selectShopOne(param);
+	
 		
 		//나중에 shop_id 받아서 하는거로 할거임
 		//지금 위에 shop을 가져왔으니,
@@ -99,7 +107,6 @@ public class ShopController {
 		
 		
 		//프로필
-		//Member profile = shopService.selectProfilOne(memberId);
 		//model.addAttribute("loginMember", authentication.getPrincipal());
 
 		//shop_id에 해당하는 상품 가져오기
@@ -110,22 +117,23 @@ public class ShopController {
 
 		//판매횟수
 
-		String shopId = shop.getShopId();
+		String myshopId = shop.getShopId();
+//		Member profile = shopService.selectProfilOne(myshopId);
 		//방문자수(조회수)
-		int result = shopService.updateVisitCount(shopId);
+		int result = shopService.updateVisitCount(myshopId);
 		int openday = shopService.selectOpenDay(memberId);
 		
 		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);
-		//model.addAttribute("profile", profile);
+//		model.addAttribute("profile", profile);
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/myshopProductList.do", method=RequestMethod.GET,
+	@RequestMapping(value="/myshopProductList.do", method={RequestMethod.POST,RequestMethod.GET},
 			produces ="application/text; charset=utf8")
 //	@GetMapping("/myshopProductList.do")
-	public String myshopProductList(@RequestParam(defaultValue="p9") String shopId,
-			@RequestParam(defaultValue ="1") int cPage,
+	public String myshopProductList(@RequestParam String shopId,
+			@RequestParam(defaultValue ="1" ) int cPage,@RequestParam Map<String,Object> param,
 			Model model,			
 			HttpServletResponse response, HttpServletRequest request) throws IOException {
 //		response.setCharacterEncoding("UTF-8");
@@ -133,13 +141,14 @@ public class ShopController {
 		
 		int numPerPage = 5;
 		log.debug("cPage = {}", cPage);
-		Map<String, Object> param = new HashMap<>();
+		//Map<String, Object> param = new HashMap<>();
 			param.put("numPerPage", numPerPage);
 			param.put("cPage", cPage);
+			param.put("shopId", shopId);
 			
 			
 			
-		List<Product> productList = productService.selectProductList(shopId,param);
+		List<Product> productList = productService.selectProductList(param);
 		int productListSize = productService.selectProductListSize(shopId);
 		
 //		Product product = productlist.get(0);
@@ -241,14 +250,18 @@ public class ShopController {
 		return resp;
 	}
 	
+	//댓글등록
 	@RequestMapping(value="/reviewComment.do", method= {RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
-	 public void reviewComment(@ModelAttribute ReviewComment reviewComment,
-			 HttpServletRequest request, HttpServletResponse response) {
-		log.info("reviewComment = {}", reviewComment);
-		
-		int result = reviewCommentService.insertReviewComment(reviewComment);
-	
+	 public void reviewComment(HttpServletRequest request, HttpServletResponse response ,@RequestParam Map<String,Object> param) {
+		System.out.println(param);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+		String memberId = ((UserDetails) principal).getUsername(); 	
+		param.put("memberId", memberId);
+		int result = reviewCommentService.insertReviewComment(param);
 	
 	}
+	
+
+	
 }

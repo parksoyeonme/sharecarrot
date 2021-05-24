@@ -7,31 +7,46 @@
 <script>
 $(document).ready(function() {
 	console.log('shopId ', tempParam.shopId);
-       $.ajax({
-              url:"${pageContext.request.contextPath}/shop/myshopProductList.do?shopId=" + tempParam.shopId,
-              type: "GET",
-              contentType : "application/json; charset:UTF-8",
+	productListFn();
+	
+	$(document).on("click",".btngropu4",function (){ 
+		var btnValue = $(this).val();
+		productListFn(btnValue);
+		alert($(this).val());
+	});
+	
+	function productListFn(btnValue){
+	   $.ajax({
+	          url:"${pageContext.request.contextPath}/shop/myshopProductList.do?shopId=" + tempParam.shopId,
+	          type: "GET",
+	          contentType : "application/json; charset:UTF-8",
 			dataType : "json",
-		
+			data: {
+            	"btnValue" : btnValue
+            },
 			error:function(request,status,error){
 	            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-           },
-            success: function(data){
-// 	              	console.log(data);
-// 					console.log(data);
-   //찍어주는 법
-// 	console.log(data.productlist[0].product);
-// 	console.log(data.productlist[0].productImage);
+	       },
+	        success: function(data){
+//		              	console.log(data);
+//						console.log(data);
+	//찍어주는 법
+//		console.log(data.productlist[0].product);
+//		console.log(data.productlist[0].productImage);
 
-// 	              	console.log(data.productlistsize);
-// 	              	console.log(data[1]);
- 					$('#totalDiv').html(data.productListSize + "개");
+//		              	console.log(data.productlistsize);
+//		              	console.log(data[1]);
+						$('#totalDiv').html(data.productListSize + "개");
 					displayList(data);
-             }
-       });
+	         }
+	   });
+	};
 });
 
+
 function displayList(data){
+	$('#product-list *').remove();
+	$('#pagebar *').remove();
 //   	$.each(data, function(index, elem) { 
 //      if (key == "productlist") {
 //         for (var i = 0; i < value.length; i++) {
@@ -88,10 +103,18 @@ function displayList(data){
 		$('#pagebar').append(data.pageBar);
 }
 
+
+	
+	
 </script>
 <div class="div-division">
 	<div class="left">전체</div>
 	<div class="right" id="totalDiv">00개</div>
+	<div id='btn_group'>
+		<button id='btncurrent' value='cu' onclick='btn_group()' class='btngropu4'>최신</button>
+		<button id='btnrowprice' value='row' onclick='btn_group()' class='btngropu4'>저가</button>
+		<button id='btnhighprice' value='hig' onclick='btn_group()' class='btngropu4'>고가</button>
+	</div>
 </div>
 <div id = "product-list">
 <!-- 	 <div class="wrap-pro"> -->

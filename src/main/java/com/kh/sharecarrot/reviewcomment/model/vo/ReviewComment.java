@@ -28,4 +28,5 @@ public class ReviewComment {
 	private String memeberId;
 	private int reviewNo;
 	
+	
 }
