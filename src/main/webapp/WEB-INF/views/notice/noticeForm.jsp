@@ -7,8 +7,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시글 작성" name="title"/>
 </jsp:include>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
 div#board-container{width:400px; margin:0 auto; text-align:center;}
 div#board-container input{margin-bottom:15px;}
@@ -17,21 +15,6 @@ div#board-container label.custom-file-label{text-align:left;}
 
 </style>
 <script>
-
-var i = 1;
-
-$(() => {
-	$("#addImgBtn").click(function(){
-		i++;
-		if(i > 10) {
-			alert("이미지 파일은 최대 10개까지만 등록이 가능합니다.");
-			return;
-		}
-		$("#imgContainer").append("<input type='file' class='form-control' id='upfile"+i+"' name='upfile'>");
-	});
-	
-});
-
 function reportValidate(){
 	var $reportTitle = $("[name=reportTitle]");
 	var $reportContent = $("[name=reportContent]");
@@ -47,6 +30,7 @@ function reportValidate(){
 	}
 	return true;
 }
+
 </script>
 <div id="board-container">
 	<form 
@@ -56,12 +40,31 @@ function reportValidate(){
 		enctype="multipart/form-data" 
 		onsubmit="return reportValidate();">
 		<input type="text" class="form-control" placeholder="제목" name="reportTitle" id="reportTitle" required>
-		<input type="button" class="btn btn-primary" id="addImgBtn" value="이미지 등록"/>
-	    <div class="input-group" id="imgContainer">
-	      <input type="file" class="form-control" id="upfile1" name="upfile">
-	    </div>
 		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
 		<input type="text" class="form-control" name="shopId" id="shopId" value="t8" readonly required>
+		<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input 
+		<div class="input-group mb-3" style="padding:0px;">
+		  <div class="input-group-prepend" style="padding:0px;">
+		    <span class="input-group-text">첨부파일1</span>
+		  </div>
+		  <div class="custom-file">
+		    <input type="file" class="custom-file-input" name="upFile" id="upFile1">
+		    <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
+		  </div>
+		</div>
+		<div class="input-group mb-3" style="padding:0px;">
+		  <div class="input-group-prepend" style="padding:0px;">
+		    <span class="input-group-text">첨부파일2</span>
+		  </div>
+		  <div class="custom-file">
+		    <input type="file" class="custom-file-input" name="upFile" id="upFile2" >
+		    <label class="custom-file-label" for="upFile2">파일을 선택하세요</label>
+		  </div>
+		</div>
+		-->
+		
+		
+		
 	    <textarea class="form-control" name="reportContent" placeholder="내용" required></textarea>
 		<br />
 		<input type="submit" value="글등록" >
