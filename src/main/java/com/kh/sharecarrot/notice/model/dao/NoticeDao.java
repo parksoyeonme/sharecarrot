@@ -1,5 +1,16 @@
 package com.kh.sharecarrot.notice.model.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.kh.sharecarrot.notice.model.vo.Notice;
+
 public interface NoticeDao {
+
+	List<Notice> selectNoticetList(Map<String, Object> param);
+
+	int getTotalContents();
+
+	Notice selectOneNoticeDetail(int no);
 
 }

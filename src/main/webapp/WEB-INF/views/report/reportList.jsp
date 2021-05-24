@@ -16,6 +16,10 @@
  }
 </style>
 <script>
+function goReportForm(){
+	location.href = "${pageContext.request.contextPath}/report/reportForm.do";
+}
+
 $(() => {
 	$("tr[data-no]").click(e => {
 		var $tr = $(e.target).parent();
@@ -100,6 +104,7 @@ $(() => {
 		
 	</table>
 	${pageBar}
+	<input type="button" value="신고하기" id="btn-add" class="btn btn-outline-success" onclick="goReportForm();"/>
 </section> 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
