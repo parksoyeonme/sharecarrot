@@ -14,4 +14,6 @@ public interface UtilsDao {
 
 	List<JjimList> selectJjimList(String memberId);
 
+	int selectTotalJjimNo(String memberId);
+
 }

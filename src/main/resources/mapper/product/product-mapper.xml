@@ -72,8 +72,12 @@
 		<collection property="product" resultMap="productMap"/>
 		<collection property="productImage" resultMap="productImgMap"/>
 	</resultMap>
-
-	<select id="selectProduct" resultMap="productMap">
+	<select id="selectProduct" resultType="product">
+		select *
+		from product
+		where product_id = #{productId}
+	</select>
+	<select id="selectProductDetail" resultMap="productMap">
 		select pd.*, 
 		        i.product_img_no,
 		        i.product_img_origin,
@@ -109,7 +113,7 @@
 		<result column="shop_visit_count" property="shopVisitCount" />
 		<result column="shop_total_score" property="shopTotalScore" />
 		<result column="member_id" property="memberId" />
-		<collection property="productIamgeList" ofType="productImage">
+		<collection property="productImageList" ofType="productImage">
 			<id column="product_img_no" property="productImgNo" />
 			<result column="product_img_origin" property="productImgOrigin"/>
 			<result column="product_img_renamed" property="productImgRenamed"/>

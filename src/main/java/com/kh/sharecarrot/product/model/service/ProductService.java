@@ -13,7 +13,7 @@ public interface ProductService {
 
 	List<Product> searchTitle(String productName);
 
-	ProductDetail selectProduct(String productId);
+	ProductDetail selectProductDetail(String productId);
 
 	String selectLocCode(String productId);
 
@@ -32,6 +32,8 @@ public interface ProductService {
 	int selectProductListSize(String shopId);
 
 	int getTotalContents(String shopId);
+
+	Product selectProduct(String productId);
 
 
 
