@@ -42,19 +42,25 @@
       <a class="nav-link ${param.boardCategory eq 'C5'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5${!empty param.locCode ? '&locCode='+=param.locCode : '' }">회사생활</a>
     </li>
   </ul>
-	<div class='mb-2 mt-2'>
-	<select class="col-md-2" id="selectLocation" required>
-	  <option selected value="">전체지역</option>
-	  <c:forEach items="${locationList}" var="location">
-	  	<option value="${location.locCode}" ${param.locCode eq location.locCode ? 'selected' : ''}>${location.locName}</option>
-	  </c:forEach>
-	</select>
-	<select class="col-md-2" id="selectHottest" required>
-	  <option value="L" selected>최신순</option>
-	  <option value="H">인기순</option>
-	</select>
-	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
-	</div>
+  <div class='container mt-3'>
+  	<div class="row justify-content-between">
+		<div class='col-4'>
+			<select id="selectLocation" required>
+			  <option selected value="">전체지역</option>
+			  <c:forEach items="${locationList}" var="location">
+			  	<option value="${location.locCode}" ${param.locCode eq location.locCode ? 'selected' : ''}>${location.locName}</option>
+			  </c:forEach>
+			</select>
+			<select id="selectHottest" required>
+			  <option value="L" selected>최신순</option>
+			  <option value="H">인기순</option>
+			</select>
+		</div>
+		<div class='col-4 mb-3'>
+			<input type="button" value="글쓰기" id="btn-add" class="btn btn-sm btn-outline-success" onclick="goBoardForm();"/>
+		</div>
+  	</div>
+  </div>
 	
 	<div id="boardList">
 	</div>
@@ -127,15 +133,17 @@
 				var enDate = getFormetDate(new Date(elem.boardEnrollDate));
 				
 				
+				<%--회원정보 헤더--%>
 				var html = "<div class='m-3'>";
 						html = "<table class='table'>";
 						html += "<tr class='table-dark'>";
 							html += "<td>"+elem.memberId+"</td>";
-							html += "<th colspan='2'>"+elem.boardTitle+"</th>";
-							html += "<td>"+enDate+"</td>";
-							html += "<td>"+loc+"</td>";
+							html += "<th colspan='2'>["+elem.boardTitle+"]</th>";
+							html += "<td align='right'>"+enDate+"</td>";
+							html += "<td align='right'>"+loc+"</td>";
 						html += "</tr>";
 						
+						<%--이미지--%>
 						html += "<tr id='boardImage-tr' class='table-secondary'>";
 							html += "<th colspan='5' style='margin: 0 auto;'>";	
 								$.each(elem.boardImageList, function(index, img){
@@ -143,7 +151,9 @@
 								});
 							html += "</th>";
 						html += "</tr>";
-						html += "<tr class='table-secondary'><td colspan='5'>"+elem.boardContent+"</td></tr>";
+						
+						<%--게시글 내용--%>
+						html += "<tr class='table-secondary'><td colspan='5' height='200'>"+elem.boardContent+"</td></tr>";
 						
 						<%--좋아요 버튼--%>
 						<%-- 좋아요테이블에 해당게시물의 번호가 포함되어있는지 확인 --%>
@@ -195,13 +205,11 @@
 						//로그인 한경우 수정/삭제버튼 추가
 						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == "<sec:authentication property='principal.username'/>"){
-							html += "<tr><td></td><td></td><td></td>";
-							html += "<td>";
-							html += `<input type='button' class='btn btn-danger' onclick="location.href='${pageContext.request.contextPath}/board/boardUpdate.do?boardNo=\${elem.boardNo}';" value='수정'/>`;
-							html += "</td>";
-							html += "<td>";
-							html += `<form name='deleteF' id='deleteFrm\${elem.boardNo}' action='${pageContext.request.contextPath}/board/boardDelete.do?${_csrf.parameterName}=${_csrf.token}' method='POST'>`;
-							html += `<button onclick='deleteFrm();' type='button' class='btn btn-danger d-inline'>삭제</button>`;
+							html += "<tr><td></td><td></td><td></td><td></td>";
+							html += "<td align='right'>";
+							html += `<input type='button' class='btn btn-sm btn-secondary" d-inline' onclick="location.href='${pageContext.request.contextPath}/board/boardUpdate.do?boardNo=\${elem.boardNo}';" value='수정'/>|`;
+							html += `<form class='d-inline' name='deleteF' id='deleteFrm\${elem.boardNo}' action='${pageContext.request.contextPath}/board/boardDelete.do?${_csrf.parameterName}=${_csrf.token}' method='POST'>`;
+							html += `<button onclick='deleteFrm();' type='button' class='btn btn-sm btn-secondary" d-inline'>삭제</button>`;
 							html += `<input name='boardNo' type='hidden' value='\${elem.boardNo}'/>`;
 							html += "</form>";
 							html += "</td>";
