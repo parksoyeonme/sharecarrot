@@ -100,7 +100,7 @@ public class MemberController {
 			@RequestParam(value = "name") String memberName,
 			@RequestParam(value = "phone") String phone,
 			@RequestParam(value = "email") String email,
-			@RequestParam(value = "birthday") Date birthday,
+			@RequestParam(value = "birthday") String _birthday,
 			@RequestParam(value = "address2") String addr2,
 			@RequestParam(value = "address3") String addr3,
 			@RequestParam(value="upfile", required= false) MultipartFile upFile,
@@ -131,7 +131,7 @@ public class MemberController {
 					break;
 				}
 			}
-			
+			Date birthday = java.sql.Date.valueOf(_birthday);
 			Member member = new Member(memberId, memberPassword, memberName,
 					birthday, email, phone, true, 'n', null, null, null, address, locCode, null);
 			log.info("member = {}", member);
