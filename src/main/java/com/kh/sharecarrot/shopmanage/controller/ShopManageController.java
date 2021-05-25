@@ -37,7 +37,7 @@ public class ShopManageController {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@RequestMapping(value="")
+	@RequestMapping(value="/shopManageBase.do", method = RequestMethod.GET)
 	public ModelAndView shopManage() {
 		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		return mav;
