@@ -11,7 +11,7 @@ public interface ShopService {
 
 	void shopEnroll(Shop shop);
 	
-	int updateVisitCount(String myshopId);
+	int updateVisitCount(String myShopId);
 
 	Shop selectShopOne(Map<String, Object> param);
 
@@ -20,7 +20,13 @@ public interface ShopService {
 
 	int selectOpenDay(String memberId);
 
+	String selectMemberId(String shopId);
+
+	Shop selectShop(String shopId);
+
 //	Member selectProfilOne(String myshopId);
+
+
 
 
 }

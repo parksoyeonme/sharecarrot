@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,12 +24,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.sharecarrot.common.ShareCarrotUtils;
+import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.service.ProductService;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.reviewcomment.model.service.ReviewCommentService;
-import com.kh.sharecarrot.reviewcomment.model.vo.ReviewComment;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.storereviews.model.service.StoreReviewsService;
@@ -38,7 +37,6 @@ import com.kh.sharecarrot.storereviews.model.vo.ReviewImage;
 import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.service.TransactionHistoryService;
 
-import jdk.internal.org.jline.utils.Log;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 
@@ -50,6 +48,8 @@ public class ShopController {
 	
 	@Autowired
 	private ShopService shopService;
+	@Autowired
+	private MemberService memberService;
 	@Autowired
 	private ProductService productService;
 	@Autowired
@@ -84,44 +84,31 @@ public class ShopController {
 
 	@GetMapping("/myshop.do")
 	public void mystore(Member member, Model model,Map<String, Object> param) {
-		//shop_id로 정보 받아오기-아이디, 프로필
-		//Shop shop = shopService.selectShopOne(shopId);
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
-	    String memberId = ((UserDetails) principal).getUsername(); 		
+		//로그인한 memberId
+	    String loginMemberId = ((UserDetails) principal).getUsername();		
 		//loginmember로 정보 받아오기
-		System.out.println("##############"+memberId);
-		
-		//Map<String, Object> param = new HashMap<>();
-		param.put("memberId", memberId);
-		param.put("shopId", "p9");
-//		상품상세에서 shopId로 넘겨받으면됨
-//		param.put("shopId", shopId);
-		Shop shop = shopService.selectShopOne(param);
-	
-		
-		//나중에 shop_id 받아서 하는거로 할거임
-		//지금 위에 shop을 가져왔으니,
-		//저 shop_id를 이용해서 member를 가져와서
-		//그 member를 사용해서 처리하게끔.
-		
-		
-		//프로필
-		//model.addAttribute("loginMember", authentication.getPrincipal());
+		System.out.println("##############"+loginMemberId);
 
-		//shop_id에 해당하는 상품 가져오기
-		//List<Product> Productlist = shopService.selectProductOne(shopId);
-		//shop_id에 해당하는 상점후기 가져오기
-		//List<StoreReview> Reviewlist = shopService.selectReviewtOne(shopId);
-		//상점오픈일- 회원가입시 shop_id가 생기니깐 그날로부터 하면되지않을까?
+		//넘어온 shopId 임시로 적어둠
+		String shopId = "p9";
+		//현재 상점 주인의 memberId
+//		String memberId = shopService.selectMemberId(shopId);
+//		
+//		if(loginMemberId.equals(memberId)) {
+//			//상점 주인이 로그인한 경우
+//		}else {
+//			//구매자가 들어온 경우
+//		}
+		
+		//현재 상점 id로 현재 shop 객체 받아옴
+		Shop shop = shopService.selectShop(shopId);
+//		Member profile = memberService.selectOneMember(memberId);
 
-		//판매횟수
-
-		String myshopId = shop.getShopId();
-//		Member profile = shopService.selectProfilOne(myshopId);
 		//방문자수(조회수)
-		int result = shopService.updateVisitCount(myshopId);
-		int openday = shopService.selectOpenDay(memberId);
+		int result = shopService.updateVisitCount(shopId);
+		int openday = shopService.selectOpenDay(loginMemberId);
 		
 		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);

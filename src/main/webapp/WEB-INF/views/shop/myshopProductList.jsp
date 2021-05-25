@@ -33,7 +33,6 @@ $(document).ready(function() {
 	//찍어주는 법
 //		console.log(data.productlist[0].product);
 //		console.log(data.productlist[0].productImage);
-
 //		              	console.log(data.productlistsize);
 //		              	console.log(data[1]);
 						$('#totalDiv').html(data.productListSize + "개");
@@ -42,8 +41,6 @@ $(document).ready(function() {
 	   });
 	};
 });
-
-
 function displayList(data){
 	$('#product-list *').remove();
 	$('#pagebar *').remove();
@@ -102,8 +99,6 @@ function displayList(data){
 		console.log("@@pagebar : " + data.pageBar);
 		$('#pagebar').append(data.pageBar);
 }
-
-
 	
 	
 </script>
@@ -111,9 +106,9 @@ function displayList(data){
 	<div class="left">전체</div>
 	<div class="right" id="totalDiv">00개</div>
 	<div id='btn_group'>
-		<button id='btncurrent' value='cu' onclick='btn_group()' class='btngropu4'>최신</button>
-		<button id='btnrowprice' value='row' onclick='btn_group()' class='btngropu4'>저가</button>
-		<button id='btnhighprice' value='hig' onclick='btn_group()' class='btngropu4'>고가</button>
+		<button id='btncurrent' value='cu' onclick='btn_group()' class='btngropu4'>최신 |</button>
+		<button id='btnrowprice' value='row' onclick='btn_group()' class='btngropu4'>저가 |</button>
+		<button id='btnhighprice' value='hig' onclick='btn_group()' class='btngropu4'>고가 |</button>
 	</div>
 </div>
 <div id = "product-list">

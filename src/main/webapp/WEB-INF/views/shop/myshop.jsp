@@ -20,16 +20,16 @@
         <hr />
      <div class="container">
             <div class="row">
-                <div class="col-lg-3" style="background-color: red; height: 220px;">
+                <div class="col-lg-3" style="height: 220px; border: 2px solid #FA8440;">
                     <div>${profile}</div>
                 </div>
-                <div class="col-lg-7" style="background-color: #faad4a; height: 220px;">
+                <div class="col-lg-7" style="width: 590px;background-color: #faad4a; height: 220px;" border: 2px solid #faad4a;>
                     <ul class="amount">
                         <li>
                             <div style="font-size: 36px; font-weight: bold;">
                                 ${shop.memberId}
                             </div>
-                            <div style="border: 1px solid gold; float: left; width: 22%; color: #ffffff; font-weight: bold;">
+                            <div style="border: 1px solid gold; float: left; width: 22%; font-weight: bold;">
                                <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
                             </div>
                             <div style="border: 1px solid red; float: left; width: 11%;">
@@ -50,9 +50,14 @@
                             </div>
                         </li>
                     </ul>
-                    <div style="margin-top: 41px; margin-left: 28px; height: 113px; border: 1px solid;"}>
+                    <div style="margin-top: 41px; margin-left: 28px; height: 72px; border: 1px solid;"}>
                     	${shop.shopMemo}
                     </div>
+                    
+                     <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
+                    <a href="#" class="gomystore-button">내상점관리</a>
+                    <a href="#" class="gomystore-button">신고하기</a>
+                		</div>
                     <script>
                     	const tempParam = {
                     			shopId: "${shop.shopId}",
@@ -64,17 +69,14 @@
                     
                     </div>
                 </div>
-                <div class="mystore-btn" style="margin-top: 10px; float: left;" >
-                    <a href="#" class="gomystore-button">내상점관리</a>
-                </div>
-                <div class="report-btn" style="margin-top: 10px;" >
-                    <a href="#" class="gomystore-button">내상점관리</a>
-                </div>
+               
+            
+               
             </div>
             <br>
-            <div class="col-lg-10">
+            <div class="col-lg-9" style="margin-left: 55px;">
                 <div class="main">
-                    <div class="tabs" style="margin-left: 21px;">
+                    <div class="tabs" style="margin-left: 20px;">
                         <div class="tab" data-tab-target="#tab1">
                             <p>상품</p>
                         </div>

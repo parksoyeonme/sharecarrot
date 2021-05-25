@@ -19,7 +19,6 @@ $(document).ready(function(){
 //찍어주는 법
 //	console.log(data.productlist[0].product);
 //	console.log(data.productlist[0].productImage);
-
 	              	console.log(data.reviewList);
 	              	console.log(data.reviewImageList);
 					$('#reviewCount').html(data.reviewListSize + "개");
@@ -54,7 +53,6 @@ $(document).ready(function(){
 			html += "<tr><td class='tg-0lax' colspan='4'><div id='commentList"+i+"'>답글 : "+ data.reviewList[i].reviewCommentText +"</div></td></tr>"
 			html += "<tr style='display:none' id='commentText"+i+"'><td class='tg-0lax' colspan='4'> <input type='text' id='updateContent"+i+"' class='updateContent'><button type='button' id='BtnGoUpdate' onclick='update_review("+ data.reviewList[i].reviewNo +","+i+")' class='btn btn-primary'>댓글등록</button></td></tr>";
 			html += "</thead></table></div>";
-
 				
 				
 			
@@ -74,7 +72,6 @@ $(document).ready(function(){
 	
 	 	
 });
-
 /*
  * 댓글 등록하기(Ajax)
  */
@@ -93,7 +90,6 @@ function reply_review(commentText,reviewNo){
 //         return false;
 // 	}
 }
-
 	//댓글등록
     function update_review(reviewNo,i){
 		var reviewNo = reviewNo;
@@ -103,7 +99,6 @@ function reply_review(commentText,reviewNo){
 		alert("후기번호 : " + reviewNo);
 		alert("댓글 : " + updateContent);
 		alert(tempParam.shopId);
-
         
          $.ajax({
             type:'POST',
@@ -133,7 +128,6 @@ function reply_review(commentText,reviewNo){
    
 	
 	
-
 </script>
 
 <div class="div-division2">
