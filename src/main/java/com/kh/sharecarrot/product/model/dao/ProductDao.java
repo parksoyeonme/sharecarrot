@@ -34,6 +34,8 @@ public interface ProductDao {
 
 	Product selectProduct(String productId);
 
+	List<Product> selectProductList(String categoryCode);
+
 
 	
 }

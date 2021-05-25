@@ -87,5 +87,10 @@ public class ProductDaoImpl implements ProductDao {
 		return session.selectOne("product.selectProduct", productId);
 	}
 
+	@Override
+	public List<Product> selectProductList(String categoryCode) {
+		return session.selectList("product.selectProductListByCategory",categoryCode);
+	}
+
 	
 }
