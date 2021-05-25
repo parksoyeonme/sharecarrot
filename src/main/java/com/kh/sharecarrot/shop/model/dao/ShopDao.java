@@ -22,7 +22,12 @@ public interface ShopDao {
 	int selectOpenDay(String memberId);
 
 
+	String selectMemberId(String shopId);
 
-	//Member selectProfilOne(String myshopId);
 
+	Shop selectShop(String shopId);
+
+
+//	Member selectProfilOne(String myshopId);
 }
+

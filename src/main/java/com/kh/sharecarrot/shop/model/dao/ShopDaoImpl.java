@@ -23,9 +23,9 @@ public class ShopDaoImpl implements ShopDao{
 	}
 
 	@Override
-	public int updateVisitCount(String myshopId) {
+	public int updateVisitCount(String myShopId) {
 		// TODO Auto-generated method stub
-		return session.update("shop.updateVisitCount", myshopId);
+		return session.update("shop.updateVisitCount", myShopId);
 	}
 
 
@@ -48,12 +48,22 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectOne("shop.selectOpenDay", memberId);
 	}
 
+	@Override
+	public String selectMemberId(String shopId) {
+		return session.selectOne("shop.selectMemberId", shopId);
+	}
+
+	@Override
+	public Shop selectShop(String shopId) {
+		return session.selectOne("shop.selectShop", shopId);
+	}
 
 //	@Override
 //	public Member selectProfilOne(String myshopId) {
 //		// TODO Auto-generated method stub
 //		return session.selectOne("shop.selectProfilOne", myshopId);
 //	}
+
 
 
 }
