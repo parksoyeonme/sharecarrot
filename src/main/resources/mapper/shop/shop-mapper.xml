@@ -28,7 +28,7 @@
 	where shop_id =#{myShopId}
 	</update>
 	
-	<select id= "selectShopOne" resultMap="shop">
+	<select id= "selectShopOne" resultMap="shopMap">
 	select * from shop where 1=1
 	<if test="memberId == null || memberId.equals('')">
 	and shop_id = #{shopId}
@@ -57,23 +57,24 @@
 	where member_id = #{memberId}
 	</select>
 	
-	<select id="selectMemberId" resultType="shop">
+	<select id="selectMemberId" resultType="String">
 	select member_id
 	from shop
 	where shop_id = #{shopId}
 	</select>
 
-	<!--  
-	<select id="selectProfilOne" resultMap="shopMap">
+	  
+	<select id="selectProfilOne" resultMap="shopmemberMap">
 		select profile_renamed
 		 from shop s join member m
 	       on s.member_id = m.member_id
 	       where shop_id =#{shopId}
 	</select>
-	-->
+	
 	
 
-	<resultMap type="shop" id="shopMap">
+ 
+	<resultMap type="shop" id="shopmemberMap">
 		<id column="shop_id" property="shopId" />
 		<result column="shop_total_score" property="shopTotalScore" />
 		<result column="shop_visit_count" property="shopVisitCount" />
@@ -98,8 +99,9 @@
 		</collection>
 		
 	</resultMap>
-	
-	<resultMap type="shop" id="shop">
+
+
+	<resultMap type="shop" id="shopMap">
 		<id column="shop_id" property="shopId" />
 		<result column="shop_total_score" property="shopTotalScore" />
 		<result column="shop_visit_count" property="shopVisitCount" />

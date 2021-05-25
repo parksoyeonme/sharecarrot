@@ -21,7 +21,7 @@
      <div class="container">
             <div class="row">
                 <div class="col-lg-3" style="height: 220px; border: 2px solid #FA8440;">
-                    <div>${profile}</div>
+                    <div><img id="profileImg" src='${pageContext.request.contextPath}/resources/upload/member/${profile}' style="width: 281px; height: 217px; margin-left: -12px;"></div>
                 </div>
                 <div class="col-lg-7" style="width: 590px;background-color: #faad4a; height: 220px;" border: 2px solid #faad4a;>
                     <ul class="amount">
@@ -51,7 +51,7 @@
                         </li>
                     </ul>
                     <div style="margin-top: 41px; margin-left: 28px; height: 72px; border: 1px solid;"}>
-                       ${shop.shopMemo}
+                     
                     	${shop.shopMemo}
                     </div>
                     
@@ -59,9 +59,7 @@
                     <a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
                     <a href="#" class="gomystore-button">신고하기</a>
                       </div>
-                    <a href="#" class="gomystore-button">내상점관리</a>
-                    <a href="#" class="gomystore-button">신고하기</a>
-                		</div>
+                  
                     <script>
                        const tempParam = {
                              shopId: "${shop.shopId}",

@@ -26,9 +26,9 @@ public class ShopServiceImpl implements ShopService{
 
 	
 	@Override
-	public int updateVisitCount(String myshopId) {
+	public int updateVisitCount(String shopId) {
 		// TODO Auto-generated method stub
-		return shopDao.updateVisitCount(myshopId);
+		return shopDao.updateVisitCount(shopId);
 	}
 
 	
@@ -65,11 +65,11 @@ public class ShopServiceImpl implements ShopService{
 	}
 
 
-//	@Override
-//	public Member selectProfilOne(String myshopId) {
-//		// TODO Auto-generated method stub
-//		return shopDao.selectProfilOne(myshopId);
-//	}
+	@Override
+	public Member selectProfilOne(String shopId) {
+		// TODO Auto-generated method stub
+		return shopDao.selectProfilOne(shopId);
+	}
 
 
 	

@@ -32,4 +32,9 @@ public class MemberDaoImpl implements MemberDao{
 	public int setAuthority(Authority auth) {
 		return session.insert("member.setAuthority", auth);
 	}
+
+	@Override
+	public String selectShopMember(String memberId) {
+		return session.selectOne("member.selectShopMember", memberId);
+	}
 }

@@ -66,7 +66,7 @@ function displayList(data){
 				html += "<tr>";
 			}
 			html += "<td><div class='box box1 boxC' onclick='productDetail(" + data.productList[i].productId + ")'>"
-// 			+ "<img id='profileImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>"
+			+ "<img id='profileImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>"
 	        + "</div>";
 			html += "<div class='pro-title'>"+ data.productList[i].productName +"</div>";
 			html += "<div class='pro-price'>"+ data.productList[i].productPrice +"</div>";

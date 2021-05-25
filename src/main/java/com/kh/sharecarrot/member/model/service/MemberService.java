@@ -14,5 +14,6 @@ public interface MemberService extends UserDetailsService {
 	Member selectOneMember(String id);
 	int memberUpdate(Member updateMember);
 	int setAuthority(Authority auth);
+	String selectShopMember(String memberId);
 
 }
