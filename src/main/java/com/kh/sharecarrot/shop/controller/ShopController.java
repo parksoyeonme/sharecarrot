@@ -93,8 +93,12 @@ public class ShopController {
 
 		//넘어온 shopId 임시로 적어둠
 		String shopId = "p9";
+		
+		Shop shop = shopService.selectShop(shopId);
+		log.info("shop = {}", shop);
+		
 		//현재 상점 주인의 memberId
-//		String memberId = shopService.selectMemberId(shopId);
+		String memberId = shopService.selectMemberId(shopId);
 //		
 //		if(loginMemberId.equals(memberId)) {
 //			//상점 주인이 로그인한 경우
@@ -103,8 +107,8 @@ public class ShopController {
 //		}
 		
 		//현재 상점 id로 현재 shop 객체 받아옴
-		Shop shop = shopService.selectShop(shopId);
-//		Member profile = memberService.selectOneMember(memberId);
+		
+		String profile = memberService.selectShopMember(memberId);
 
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
@@ -112,7 +116,7 @@ public class ShopController {
 		
 		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);
-//		model.addAttribute("profile", profile);
+		model.addAttribute("profile", profile);
 	}
 	
 	@ResponseBody
@@ -149,11 +153,10 @@ public class ShopController {
 			productImageList.addAll(proimgList);
 		}
 
-		log.info("productList : {}", productList);
-		log.info("productImageList : {}", productImageList);
-		log.info("productListSize : {}", productListSize);
-//		log.info("productlist = {}", productlist);
-	//	log.info("productImageList = {}", productImageList);
+//		log.info("productList : {}", productList);
+//		log.info("productImageList : {}", productImageList);
+//		log.info("productListSize : {}", productListSize);
+
 		
 		//pagebar
 		int totalContents = productService.getTotalContents(shopId);
@@ -199,7 +202,7 @@ public class ShopController {
 		List<ReviewImage> reviewImageList = new ArrayList<>();
 		List<Member> buyerList = new ArrayList<>();
 
-		log.info("storeReviews = {}", reviewList);
+//		log.info("storeReviews = {}", reviewList);
 		int reviewListSize = reviewList.size();
 
 		Iterator<StoreReviews> iter = reviewList.iterator();

@@ -12,7 +12,7 @@ public interface ShopDao {
 	void shopEnroll(Shop shop);
 
 
-	int updateVisitCount(String myshopId);
+	int updateVisitCount(String shopId);
 
 	Shop selectShopOne(Map<String, Object> param);
 
@@ -28,6 +28,9 @@ public interface ShopDao {
 	Shop selectShop(String shopId);
 
 
-//	Member selectProfilOne(String myshopId);
+	Member selectProfilOne(String shopId);
+
+
+
 }
 

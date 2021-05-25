@@ -13,4 +13,6 @@ public interface MemberDao {
 
 	int setAuthority(Authority auth);
 
+	String selectShopMember(String memberId);
+
 }
