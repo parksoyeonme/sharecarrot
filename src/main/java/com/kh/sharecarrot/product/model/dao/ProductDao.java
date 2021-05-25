@@ -11,7 +11,7 @@ public interface ProductDao {
 
 
 
-	List<Product> selectProductList(String shopId, Map<String, Object> param);
+	List<Product> selectProductList(Map<String, Object> param);
 
 //	List<ProductImage> selectProductImageList(Product productId);
 
@@ -33,6 +33,8 @@ public interface ProductDao {
 	int getTotalContents(String shopId);
 
 	Product selectProduct(String productId);
+
+	List<Product> selectProductList(String categoryCode);
 
 
 	

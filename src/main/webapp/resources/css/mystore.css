@@ -15,11 +15,7 @@
     box-sizing: border-box;
 }
 /*=====지우기=====*/
-#header-nav {
-    background-color: rgb(247, 247, 247);
-    border-bottom: 1px solid rgb(209, 209, 209);
-    padding-top: 10px;
-}
+
 /*=====지우기=====*/
 .tabs {
     display: flex;
@@ -27,19 +23,20 @@
 .tabs .tab {
     text-align: center;
     line-height: 30px;
-    width: 390px;
+    width: 216px;
     height: 35px;
     cursor: pointer;
-    background-color: rgb(243, 243, 243);
+    background-color: #FA8440;
     color: rgb(20, 19, 19);
     position: relative;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border: 2px solid black;
+    border-top-right-radius: 34px;
+    border-top-left-radius: 6px;
+    border: 2px solid #9e9e9e;
 }
 .content-mystorepro {
     border: 2px solid black;
-    height: 360px;
+    height: 500px;
+    overflow-y:scroll;
     margin-left: 20px;
   
 }
@@ -52,7 +49,7 @@
 .itemss::before {
     content: "";
     position: absolute;
-    top: -4px;
+    /*top: -4px;*/
     left: 0;
     width: 386px;
     height: 4px;
@@ -60,7 +57,7 @@
 }
 .itemss:nth-child(2)::before {
     left: 390px;
-    top: -4px;
+ 	/*top: -4px;*/
     background-color: rgb(255, 255, 255);
 }
 .itemss:nth-child(3)::before {
@@ -92,19 +89,49 @@
     position: relative;
     top: 1px;
 }
+
 /*전체*/
 .div-division > .left {
-    width: 8%;
+    width: 40px;
     float: left;
     box-sizing: border-box;
-    background: #8977ad;
+    font-size: 20px;
+    
 }
+
 .div-division > .right {
-    width: 92%;
+    width: 94%;
     float: right;
     box-sizing: border-box;
-    background: #ece6cc;
+    font-size: 20px;
+
 }
+#btn_group{
+	float: right;
+	margin-top: -17px;
+}
+#btncurrent{
+    width: 37px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    
+    }
+    #btnrowprice{
+    width: 37px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    
+    }
+    #btnhighprice{
+    width: 37px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    
+    }
+
 /*상품나열하기*/
 .wrap-pro {
     float: left;
@@ -114,9 +141,10 @@ div.box {
     margin: 21px 5px 5px;
 }
 .box1 {
-    background: #ff3131;
+   
     height: 99px;
     width: 140px;
+    border: 1px solid;
 }
  .pro-title {
     margin-left: 20px;
@@ -137,13 +165,13 @@ div.box {
     box-sizing: border-box;
     background: #ece6cc;
 }
-.review-table {
+/*상점후기*/
+.tg {
     border-collapse: collapse;
     border-spacing: 0;
-    margin-right: 42px;
+    margin-top: 42px;
 }
-
-.review-table td {
+.tg td {
     border-color: black;
     border-style: solid;
     border-width: 1px;
@@ -153,7 +181,8 @@ div.box {
     padding: 10px 5px;
     word-break: normal;
 }
-.review-table th {
+.tg th {
+    width: 387px;
     border-color: black;
     border-style: solid;
     border-width: 1px;
@@ -164,16 +193,12 @@ div.box {
     padding: 10px 5px;
     word-break: normal;
 }
-.review-table .rt-tbl {
-    border-color: inherit;
+.tg .tg-0lax {
     text-align: left;
-    vertical-align: top;
-    width: 146px;
+    vertical-align: top
 }
-.see-review {
-    margin-left: 35px;
-    padding-top: 39px;
-}
+
+
 #sidebar {
     float: right;
     padding: 10px;

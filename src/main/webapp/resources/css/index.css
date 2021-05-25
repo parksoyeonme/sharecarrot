@@ -76,7 +76,7 @@
 
 .location-nav,
 .category-nav {
-  width: 100px;
+  width: 100%;
   margin-right: 10px;
 }
 .search-form {
@@ -121,7 +121,7 @@
   display: flex;
   flex-wrap: wrap;
   background-color: white;
-  justify-content: center;
+  justify-content: space-between;
 }
 .item {
   position: relative;

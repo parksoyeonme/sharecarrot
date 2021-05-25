@@ -1,10 +1,12 @@
 package com.kh.sharecarrot.report.model.vo;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.kh.sharecarrot.board.model.vo.BoardImage;
 import com.kh.sharecarrot.member.model.vo.Member;
 
 import lombok.AllArgsConstructor;
@@ -36,4 +38,5 @@ public class Report {
 		private String memberId;
 		private String shopId;
 	
+		private List<ReportImage> reportImageList;
 }

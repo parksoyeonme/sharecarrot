@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.sharecarrot.common.ShareCarrotUtils;
+import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.service.ProductService;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
+import com.kh.sharecarrot.reviewcomment.model.service.ReviewCommentService;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.storereviews.model.service.StoreReviewsService;
@@ -47,57 +49,78 @@ public class ShopController {
 	@Autowired
 	private ShopService shopService;
 	@Autowired
+	private MemberService memberService;
+	@Autowired
 	private ProductService productService;
 	@Autowired
 	private StoreReviewsService storeReviewsService;
 	@Autowired
 	private TransactionHistoryService transactionHistoryService;
 
+	
+	@Autowired
+	private ReviewCommentService reviewCommentService;
+	
+	@RequestMapping(value="/enroll.do")
+	public ModelAndView productReg() {
+		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
+		mav.addObject("tab","productEnroll");
+		return mav;
+	}
+	
+	@RequestMapping(value="/manage.do")
+	public ModelAndView productManage() {
+		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
+		mav.addObject("tab","productManage");
+		return mav;
+	}
+	
+	@RequestMapping(value="/transactionHistory.do")
+	public ModelAndView transactionHistory() {
+		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
+		mav.addObject("tab","transactionHistory");
+		return mav;
+	}
+
 	@GetMapping("/myshop.do")
-	public void mystore(Member member, Model model) {
-		//shop_id로 정보 받아오기-아이디, 프로필
-		//Shop shop = shopService.selectShopOne(shopId);
+	public void mystore(Member member, Model model,Map<String, Object> param) {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
-	    String memberId = ((UserDetails) principal).getUsername(); 		
+		//로그인한 memberId
+	    String loginMemberId = ((UserDetails) principal).getUsername();		
 		//loginmember로 정보 받아오기
-		System.out.println("##############"+memberId);
-		Shop shop = shopService.selectShopOne(memberId);
-		
-		//나중에 shop_id 받아서 하는거로 할거임
-		//지금 위에 shop을 가져왔으니,
-		//저 shop_id를 이용해서 member를 가져와서
-		//그 member를 사용해서 처리하게끔.
-		
-		
-		//프로필
-		//Member profile = shopService.selectProfilOne(memberId);
-		//model.addAttribute("loginMember", authentication.getPrincipal());
+		System.out.println("##############"+loginMemberId);
 
-		//shop_id에 해당하는 상품 가져오기
-		//List<Product> Productlist = shopService.selectProductOne(shopId);
-		//shop_id에 해당하는 상점후기 가져오기
-		//List<StoreReview> Reviewlist = shopService.selectReviewtOne(shopId);
-		//상점오픈일- 회원가입시 shop_id가 생기니깐 그날로부터 하면되지않을까?
+		//넘어온 shopId 임시로 적어둠
+		String shopId = "p9";
+		//현재 상점 주인의 memberId
+//		String memberId = shopService.selectMemberId(shopId);
+//		
+//		if(loginMemberId.equals(memberId)) {
+//			//상점 주인이 로그인한 경우
+//		}else {
+//			//구매자가 들어온 경우
+//		}
+		
+		//현재 상점 id로 현재 shop 객체 받아옴
+		Shop shop = shopService.selectShop(shopId);
+//		Member profile = memberService.selectOneMember(memberId);
 
-		//판매횟수
-
-		String shopId = shop.getShopId();
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
-		int openday = shopService.selectOpenDay(memberId);
+		int openday = shopService.selectOpenDay(loginMemberId);
 		
 		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);
-		//model.addAttribute("profile", profile);
+//		model.addAttribute("profile", profile);
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/myshopProductList.do", method=RequestMethod.GET,
+	@RequestMapping(value="/myshopProductList.do", method={RequestMethod.POST,RequestMethod.GET},
 			produces ="application/text; charset=utf8")
 //	@GetMapping("/myshopProductList.do")
-	public String myshopProductList(@RequestParam(defaultValue="p9") String shopId,
-			@RequestParam(defaultValue ="1") int cPage,
+	public String myshopProductList(@RequestParam String shopId,
+			@RequestParam(defaultValue ="1" ) int cPage,@RequestParam Map<String,Object> param,
 			Model model,			
 			HttpServletResponse response, HttpServletRequest request) throws IOException {
 //		response.setCharacterEncoding("UTF-8");
@@ -105,13 +128,14 @@ public class ShopController {
 		
 		int numPerPage = 5;
 		log.debug("cPage = {}", cPage);
-		Map<String, Object> param = new HashMap<>();
+		//Map<String, Object> param = new HashMap<>();
 			param.put("numPerPage", numPerPage);
 			param.put("cPage", cPage);
+			param.put("shopId", shopId);
 			
 			
 			
-		List<Product> productList = productService.selectProductList(shopId,param);
+		List<Product> productList = productService.selectProductList(param);
 		int productListSize = productService.selectProductListSize(shopId);
 		
 //		Product product = productlist.get(0);
@@ -159,11 +183,19 @@ public class ShopController {
 	@RequestMapping(value="/myshopReviewList.do", method=RequestMethod.GET,
 			produces ="application/text; charset=utf8")
 //	@GetMapping("/myshopProductList.do")
-	public String myshopReviewList(@RequestParam String shopId,
+	public String myshopReviewList(@RequestParam(defaultValue ="1") int cPage,
+			@RequestParam String shopId,
 			Model model,
-			HttpServletResponse response) throws IOException {
-
-		List<StoreReviews> reviewList = storeReviewsService.selectStoreReviewsList(shopId);
+			HttpServletResponse responset,HttpServletRequest request) throws IOException {
+	
+		//1. 사용자입력값
+		int numPerPage = 2;
+		log.debug("cPage = {}", cPage);
+		Map<String, Object> param = new HashMap<>();
+		param.put("numPerPage", numPerPage);
+		param.put("cPage", cPage);
+		
+		List<StoreReviews> reviewList = storeReviewsService.selectStoreReviewsList(shopId,param);
 		List<ReviewImage> reviewImageList = new ArrayList<>();
 		List<Member> buyerList = new ArrayList<>();
 
@@ -178,6 +210,12 @@ public class ShopController {
 			buyerList.addAll(bList);
 			reviewImageList.addAll(imgList);
 		}
+		
+		int totalContents = storeReviewsService.getTotalContents(shopId);
+		String url = request.getRequestURI();
+		log.debug("totalContents = {}",totalContents);
+		log.debug("url = {}", url);
+		String pageBar2 = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
 	
 //		log.info("reviewList : {}", reviewList);
 //		log.info("reviewImageList : {}", reviewImageList);
@@ -193,8 +231,24 @@ public class ShopController {
 		obj.put("reviewImageList", reviewImageList);
 		obj.put("reviewListSize", reviewListSize);
 		obj.put("buyerList", buyerList);
+		obj.put("pageBar2", pageBar2);
 		String resp = obj.toString();
-//				
+//		
 		return resp;
 	}
+	
+	//댓글등록
+	@RequestMapping(value="/reviewComment.do", method= {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	 public void reviewComment(HttpServletRequest request, HttpServletResponse response ,@RequestParam Map<String,Object> param) {
+		System.out.println(param);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+		String memberId = ((UserDetails) principal).getUsername(); 	
+		param.put("memberId", memberId);
+		int result = reviewCommentService.insertReviewComment(param);
+	
+	}
+	
+
+	
 }

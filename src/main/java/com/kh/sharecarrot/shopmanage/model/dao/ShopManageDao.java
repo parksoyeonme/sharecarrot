@@ -18,4 +18,8 @@ public interface ShopManageDao {
 	
 	List<ProductImage> selectProductImageList(Product product);
 
+	int updateProductYnh(Product product);
+
+	int deleteProduct(Product product);
+
 }

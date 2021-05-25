@@ -101,6 +101,11 @@ public class ShopManageServiceImpl implements ShopManageService{
 		return productList;
 	}
 	
+	@Override
+	public int updateProductYnh(Product product) {
+		return shopManageDao.updateProductYnh(product);
+	}
+	
 	//샵정보
 	public Shop getShopInfo() {
 		Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -109,5 +114,12 @@ public class ShopManageServiceImpl implements ShopManageService{
 		
 		return shopManageDao.selectShopInfo(memberId);
 	}
+
+	@Override
+	public int deleteProduct(Product product) {
+		return shopManageDao.deleteProduct(product);
+	}
+
+	
 
 }

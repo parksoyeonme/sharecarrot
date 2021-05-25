@@ -15,16 +15,27 @@
 			#{memberId}
 		)
 	</insert>
-
+	
+	<select id="selectShop" resultType="shop">
+	select *
+	from shop
+	where shop_id = #{shopId}
+	</select>
 
 	<update id="updateVisitCount" parameterType="String">
 	update shop set
 	shop_visit_count = shop_visit_count + 1
-	where shop_id =#{shopId}
+	where shop_id =#{myShopId}
 	</update>
 	
-	<select id= "selectShopOne" resultMap="shopMap">
-	select * from shop where member_id = #{memberId}
+	<select id= "selectShopOne" resultMap="shop">
+	select * from shop where 1=1
+	<if test="memberId == null || memberId.equals('')">
+	and shop_id = #{shopId}
+	</if>
+	<if test="memberId != null || !memberId.equals('')">
+	and member_id = #{memberId}
+	</if>
 	</select>
 <!--  
 	<select id="selectshopProductList" resultMap="shopProductMap">
@@ -46,24 +57,22 @@
 	where member_id = #{memberId}
 	</select>
 	
-	<resultMap type="product" id="productMap">
-		<id column="product_id" property="productId"/>
-			<result column="product_name" property="productName"/>
-			<result column="product_price" property="productPrice"/>
-			<result column="product_ynh" property="productYnh"/>
-			<result column="product_reg_date" property="productRegDate"/>
-			<result column="product_content" property="productContent"/>
-			<result column="product_del_flag" property="productDelFlag"/>
-			<result column="shop_id" property="shopId"/>
-			<result column="category_code" property="categoryCode"/>
-	</resultMap>
-			
-	<resultMap type="productImage" id="productImgMap">
-		<id column="product_img_no" property="productImgNo"/>
-			<result column="product_img_origin" property="productImgOrigin"/>
-			<result column="product_img_renamed" property="productImgRenamed"/>
-			<result column="product_id" property="productId"/>
-	</resultMap>
+	<select id="selectMemberId" resultType="shop">
+	select member_id
+	from shop
+	where shop_id = #{shopId}
+	</select>
+
+	<!--  
+	<select id="selectProfilOne" resultMap="shopMap">
+		select profile_renamed
+		 from shop s join member m
+	       on s.member_id = m.member_id
+	       where shop_id =#{shopId}
+	</select>
+	-->
+	
+
 	<resultMap type="shop" id="shopMap">
 		<id column="shop_id" property="shopId" />
 		<result column="shop_total_score" property="shopTotalScore" />
@@ -71,23 +80,35 @@
 		<result column="shop_sell_count" property="shopSellCount" />
 		<result column="shop_memo" property="shopMemo" />
 		<result column="member_id" property="memberId" />
+		<collection property="member" ofType="member">
+			<id column="member_id" property="memberId"/>
+				<result column="member_password" property="memberPassword"/>
+				<result column="member_name" property="memberName"/>
+				<result column="birthday" property="birthday"/>
+				<result column="email" property="email"/>
+				<result column="phone" property="phone"/>
+				<result column="enabled" property="enabled"/>
+				<result column="quit_yn" property="quitYn"/>
+				<result column="member_enroll_date" property="memberEnrollDate"/>
+				<result column="profile_original" property="profileOriginal"/>
+				<result column="profile_renamed" property="profileRenamed"/>
+				<result column="member_addr" property="memberAddr"/>
+				<result column="loc_code" property="locCode"/>
+
+		</collection>
 		
 	</resultMap>
 	
-	<resultMap type="member" id="memberMap">
-		<id column="member_id" property="memberId"/>
-		<result column="member_password" property="memberPassword"/>
-		<result column="member_name" property="memberName"/>
-		<result column="birthday" property="birthday"/>
-		<result column="email" property="email"/>
-		<result column="phone" property="phone"/>
-		<result column="member_enroll_date" property="memberEnrollDate"/>
-		<result column="enabled" property="enabled"/>
+	<resultMap type="shop" id="shop">
+		<id column="shop_id" property="shopId" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_sell_count" property="shopSellCount" />
+		<result column="shop_memo" property="shopMemo" />
+		<result column="member_id" property="memberId" />
 	</resultMap>
+
 	
-	<resultMap type="ShopProduct" id="shopProductMap">
-		<collection property="product" resultMap="productMap"/>
-		<collection property="productImage" resultMap="productImgMap"/>
-	</resultMap>
 	
+
 </mapper>

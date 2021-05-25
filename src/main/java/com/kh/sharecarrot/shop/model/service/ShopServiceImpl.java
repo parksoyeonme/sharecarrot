@@ -1,10 +1,12 @@
 package com.kh.sharecarrot.shop.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shop.model.dao.ShopDao;
 import com.kh.sharecarrot.shop.model.vo.Shop;
@@ -23,63 +25,17 @@ public class ShopServiceImpl implements ShopService{
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
-	public int updateVisitCount(String shopId) {
+	public int updateVisitCount(String myshopId) {
 		// TODO Auto-generated method stub
-		return shopDao.updateVisitCount(shopId);
+		return shopDao.updateVisitCount(myshopId);
 	}
 
+	
 	@Override
-	public Shop selectShopOne(String memberId) {
+	public Shop selectShopOne(Map<String, Object> param) {
 		// TODO Auto-generated method stub
-		return shopDao.selectShopOne(memberId);
+		return shopDao.selectShopOne(param);
 	}
 
 
@@ -96,8 +52,25 @@ public class ShopServiceImpl implements ShopService{
 		return shopDao.selectOpenDay(memberId);
 	}
 
-	
 
-	
+	@Override
+	public String selectMemberId(String shopId) {
+		return shopDao.selectMemberId(shopId);
+	}
+
+
+	@Override
+	public Shop selectShop(String shopId) {
+		return shopDao.selectShop(shopId);
+	}
+
+
+//	@Override
+//	public Member selectProfilOne(String myshopId) {
+//		// TODO Auto-generated method stub
+//		return shopDao.selectProfilOne(myshopId);
+//	}
+
+
 	
 }

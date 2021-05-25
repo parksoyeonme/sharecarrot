@@ -32,21 +32,56 @@
 	</insert>
 	
 	<select id="selectShopInfo" parameterType="String" resultType="com.kh.sharecarrot.shop.model.vo.Shop">
-		select 	*
+		select 	shop_id
+				, shop_total_score
+				, shop_visit_count
+				, shop_sell_count
+				, shop_memo
+				, member_id
 		from 	shop
 		where 	member_id = #{memberId}
 	</select>
 	
 	<select id="selectProductList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.Product">
-		select 	*
+		select 	product_id
+				, product_name
+				, product_price
+				, product_ynh
+				, product_reg_date
+				, product_content
+				, product_del_flag
+				, shop_id
+				, category_code
 		from 	product
 		where 	shop_id = #{shopId}
+		and 	product_del_flag = 'N'
+		<if test="productName != '' and productName != null">
+		and 	product_name like '%' || #{productName} || '%'
+		</if>
+		<if test="productYnh != '' and productYnh != null">
+		and 	product_ynh = #{productYnh}
+		</if>
+		<if test="categoryCode != '' and categoryCode != null">
+		and 	category_code = #{categoryCode}
+		</if>
 	</select>
 	
 	<select id="selectProductImageList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.ProductImage">
-		select *
+		select  *
 		from 	product_image
 		where 	product_id = #{productId}
 	</select>
+	
+	<update id="updateProductYnh" parameterType="com.kh.sharecarrot.product.model.vo.Product">
+		update 	product
+		set 	product_ynh = #{productYnh}
+		where 	product_id = #{productId}
+	</update>
+	
+	<update id="deleteProduct" parameterType="com.kh.sharecarrot.product.model.vo.Product">
+		update 	product
+		set 	product_del_flag = 'Y'
+		where 	product_id = #{productId}
+	</update>
 
 </mapper>

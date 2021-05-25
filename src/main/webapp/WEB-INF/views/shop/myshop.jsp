@@ -52,12 +52,16 @@
                     </ul>
                     <div style="margin-top: 41px; margin-left: 28px; height: 72px; border: 1px solid;"}>
                        ${shop.shopMemo}
+                    	${shop.shopMemo}
                     </div>
                     
                      <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
                     <a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
                     <a href="#" class="gomystore-button">신고하기</a>
                       </div>
+                    <a href="#" class="gomystore-button">내상점관리</a>
+                    <a href="#" class="gomystore-button">신고하기</a>
+                		</div>
                     <script>
                        const tempParam = {
                              shopId: "${shop.shopId}",
