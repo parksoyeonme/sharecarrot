@@ -27,7 +27,7 @@ public class ProductController {
 	@Autowired
 	private UtilsService utilsService;
 
-	@GetMapping("/productDetail.do")
+	@GetMapping("/product.do")
 	public void product() {
 		
 	}
