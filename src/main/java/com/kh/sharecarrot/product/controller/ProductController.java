@@ -44,13 +44,21 @@ public class ProductController {
 	private UtilsService utilsService;
 
 	@GetMapping("/productDetail.do")
-	public void productDetail(@RequestParam String productId, Principal principal,Model model, 
+	public String productDetail(@RequestParam String productId, Principal principal,Model model, 
 			HttpServletRequest request, HttpServletResponse response) {
-		Product product = productService.selectProduct(productId);
+		
+		
+		//ProductDetail 세팅
 		ProductDetail productDetail = productService.selectProductDetail(productId);
 		String locCode = productService.selectLocCode(productId);
 		productDetail.setLocName(locCode);
 		
+		
+		//Shop_Product_Count 세팅
+		int shopProductCount = productService.getTotalContents(productDetail.getShopId());
+		productDetail.setShopProductCount(shopProductCount);
+		
+		//Category 셋팅
 		List<Category> categoryList = utilsService.selectCategoryList();
 		
 		String category = "";
@@ -60,6 +68,11 @@ public class ProductController {
 			}
 		}
 		
+		
+		//연관상품 불러오기
+		List<Product> productList = productService.selectProductList(productDetail.getCategoryCode());
+		
+		
 		//로그인 회원에 한해서 찜목록 불러오기
 		List<JjimList> jjimList = null;
 		if(principal != null) {
@@ -67,25 +80,25 @@ public class ProductController {
 			jjimList = utilsService.selectJjimList(memberId);
 		}
 		
-		Cookie[] cookies = request.getCookies();
-		log.info("cookie length : {}", cookies.length);
-        if(cookies.length == 3) {
-        	cookies[0] = new Cookie("latest0",
-                    cookies[1].toString());
-        	cookies[1] = new Cookie("latest1",
-        			cookies[2].toString());
-        	cookies[2] = new Cookie("latest2",
-        			product.toString());
-        }else if(cookies.length == 2) {
-        	cookies[2] = new Cookie("latest2",
-        			product.toString());
-        }else if(cookies.length == 1) {
-        	cookies[1] = new Cookie("latest1",
-        			product.toString());
-        }else if(cookies.length == 0) {
-        	cookies[0] = new Cookie("latest0",
-        			product.toString());
-        }
+//		Cookie[] cookies = request.getCookies();
+//		log.info("cookie length : {}", cookies.length);
+//        if(cookies.length == 3) {
+//        	cookies[0] = new Cookie("latest0",
+//                    cookies[1].toString());
+//        	cookies[1] = new Cookie("latest1",
+//        			cookies[2].toString());
+//        	cookies[2] = new Cookie("latest2",
+//        			product.toString());
+//        }else if(cookies.length == 2) {
+//        	cookies[2] = new Cookie("latest2",
+//        			product.toString());
+//        }else if(cookies.length == 1) {
+//        	cookies[1] = new Cookie("latest1",
+//        			product.toString());
+//        }else if(cookies.length == 0) {
+//        	cookies[0] = new Cookie("latest0",
+//        			product.toString());
+//        }
 		
 //		Cookie latestProductCookie = new Cookie("latest2", mall.getGender());
 
@@ -100,6 +113,9 @@ public class ProductController {
 		model.addAttribute("product", productDetail);
 		model.addAttribute("category", category);
 		model.addAttribute("jjimList", jjimList);
+		model.addAttribute("productList", productList);
+		
+		return "/product/productDetail";
 	}
 	
 	@GetMapping("/getTotalJjimNo.do")
