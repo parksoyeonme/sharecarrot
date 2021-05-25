@@ -41,6 +41,11 @@ $(document).ready(function() {
 	   });
 	};
 });
+
+function productDetail(productId){
+	location.href = "${pageContext.request.contextPath}/product/productDetail.do?productId="+productId;
+}
+
 function displayList(data){
 	$('#product-list *').remove();
 	$('#pagebar *').remove();
@@ -60,7 +65,7 @@ function displayList(data){
 				html += "<table>";
 				html += "<tr>";
 			}
-			html += "<td><div class='box box1 boxC'>"
+			html += "<td><div class='box box1 boxC' onclick='productDetail(" + data.productList[i].productId + ")'>"
 // 			+ "<img id='profileImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>"
 	        + "</div>";
 			html += "<div class='pro-title'>"+ data.productList[i].productName +"</div>";

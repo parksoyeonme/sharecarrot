@@ -46,12 +46,16 @@ public class ProductController {
 	@GetMapping("/productDetail.do")
 	public String productDetail(@RequestParam String productId, Principal principal,Model model, 
 			HttpServletRequest request, HttpServletResponse response) {
+
+		Product pd = productService.selectProduct(productId);
+		ProductDetail product = productService.selectProductDetail(productId);
+
 		
 		
 		//ProductDetail 세팅
 		ProductDetail productDetail = productService.selectProductDetail(productId);
 		String locCode = productService.selectLocCode(productId);
-		productDetail.setLocName(locCode);
+		product.setLocName(locCode);
 		
 		
 		//Shop_Product_Count 세팅
@@ -63,7 +67,7 @@ public class ProductController {
 		
 		String category = "";
 		for(Category c : categoryList) {
-			if(c.getCategoryCode().equals(productDetail.getCategoryCode())) {
+			if(c.getCategoryCode().equals(product.getCategoryCode())) {
 				category = c.getCategoryName();
 			}
 		}
@@ -80,6 +84,9 @@ public class ProductController {
 			jjimList = utilsService.selectJjimList(memberId);
 		}
 		
+		Cookie[] cookies = request.getCookies();
+		log.info("cookie length : {}", cookies.length);
+		log.info("cookie length : {}", cookies[0]);
 //		Cookie[] cookies = request.getCookies();
 //		log.info("cookie length : {}", cookies.length);
 //        if(cookies.length == 3) {
@@ -100,17 +107,25 @@ public class ProductController {
 //        			product.toString());
 //        }
 		
-//		Cookie latestProductCookie = new Cookie("latest2", mall.getGender());
-
-//        if(mall.isCookieDel()) {
-//        genderCookie.setMaxAge(0);
-//        mall.setGender(null);
-//        } else {
-//        genderCookie.setMaxAge(60*60*24*30);
+//		if(cookies.length == 4) {
+//        	response.addCookie(new Cookie("latest0",
+//                    cookies[2].toString()));
+//        	response.addCookie(new Cookie("latest1",
+//        			cookies[3].toString()));
+//        	response.addCookie(new Cookie("latest2",
+//        			product.toString()));
+//        }else if(cookies.length == 3) {
+//        	response.addCookie(new Cookie("latest2",
+//        			product.toString()));
+//        }else if(cookies.length == 2) {
+//        	response.addCookie(new Cookie("latest1",
+//        			product.toString()));
+//        }else if(cookies.length == 1) {
+//        	response.addCookie(new Cookie("latest0",
+//        			product.toString()));
 //        }
-//        response.addCookie(genderCookie);
-		
-		model.addAttribute("product", productDetail);
+        
+		model.addAttribute("product", product);
 		model.addAttribute("category", category);
 		model.addAttribute("jjimList", jjimList);
 		model.addAttribute("productList", productList);
@@ -132,11 +147,9 @@ public class ProductController {
 		}
 		
 		JSONObject obj = new JSONObject();
-		
 		//	model.addAttribute("productListSize", productListSize);
 			//data: 뒤에 들어갈 값인 jArray 생성
 		obj.put("totalJjim", totalJjim);
-//		obj.put("pageBar", pageBar);
 		String str = obj.toString();
 		log.info("@@test = {}",str);	
 		return str;

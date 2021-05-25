@@ -103,7 +103,6 @@ $(() => {
 	$.ajax({
         type : "GET",
 		url: "${pageContext.request.contextPath}/product/getTotalJjimNo.do",
-		dataType : "json",
         contentType : "application/json; charset:UTF-8",
 	    success: function(data){
 			console.log(data);
