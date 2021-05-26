@@ -62,7 +62,7 @@ public class HomeController {
 			logger.info("session ={}", request.getSession().getAttribute("loginMember"));
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			String locCode = loginMember.getLocCode();
-			logger.info("locCde={}", locCode);
+			logger.info("locCode={}", locCode);
 			//locCode 공백제거
 			locCode = locCode.trim();
 			param.put("locCode", locCode);
@@ -85,7 +85,7 @@ public class HomeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/search/mainProductList.do", method = RequestMethod.GET)
+	@RequestMapping(value="/search/mainProductList.do", method = RequestMethod.POST)
 	public List<MainProduct> mainProductList(
 					@RequestParam(defaultValue = "1") int cPage,
 					@RequestParam(defaultValue = "") String locCode,
