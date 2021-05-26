@@ -75,8 +75,14 @@ public class ShopManageController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value="/selectProduct.do")
+	public Product selectProduct(Product product) {
+		return shopManageService.selectProduct(product);
+	}
+	
+	@ResponseBody
 	@RequestMapping(value="/selectProductList.do")
-	public List<Product> selectPoductList(Product product){
+	public List<Product> selectProductList(Product product){
 		return shopManageService.selectProductList(product);
 	}
 	
