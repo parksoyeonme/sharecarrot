@@ -99,7 +99,7 @@
 <sec:authorize access="isAuthenticated()">
 <script>
 var totalJjim;
-$(() => {
+(() => {
 	$.ajax({
         type : "GET",
 		url: "${pageContext.request.contextPath}/product/getTotalJjimNo.do",
