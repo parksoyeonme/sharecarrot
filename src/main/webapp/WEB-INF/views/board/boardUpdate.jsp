@@ -38,12 +38,13 @@
     <div class="mb-3">
       <textarea class="form-control" id="boardContent" name="boardContent" rows="3" placeholder="내용을 입력해주세요">${board.boardContent}</textarea>
     </div>
-    <input type="button" class="btn btn-primary" id="addImgBtn" value="이미지 등록"/>
-    <div class="input-group" id="imgContainer">
-      <input type="file" class="form-control" id="upfile1" name="upfile">
+    <div class="" id="imgContainer">
+      <input type="file" class="form-control" id="upfile0" name="upfile">
     </div>
+    <input type="button" class="btn btn-primary form-control mt-1" id="addImgBtn" value="이미지 추가 등록"/>
     <div class='mt-5'>
     <h2>업로드 이미지</h2>
+    <div id='uploadImg'>
     	<c:forEach items='${board.boardImageList}' var='img'>
     	<div id='board${img.boardImgId}' class="d-inline" style="position:relative;">
     		<input type='button' style='position:absolute' value='삭제' onclick='deleteImg(${img.boardImgId});' />
@@ -51,24 +52,32 @@
     	</div>
     	</c:forEach> 
     </div>
+    </div>
     <hr />
     <button class="btn btn-primary form-control">수정</button>
   </form:form>
   <script>
-    var imgIndex = 1;
+    var index = $("#uploadImg img").length +1;
+    console.log(index);
     $("#addImgBtn").click(function(){
-      imgIndex++;
-      if(i > 10) {
+      if(index >= 10) {
         alert("이미지 파일은 최대 10개까지만 등록이 가능합니다.");
         return;
       }
-      $("#imgContainer").append("<input type='file' class='form-control' id='upfile"+i+"' name='upfile'>");
+      setIndex(1);
+      $("#imgContainer").append("<input type='file' class='form-control' id='upfile"+index+"' name='upfile'>");
     });
     
     function deleteImg(boardImgId){
+    	setIndex(-1);
     	$(`#board\${boardImgId}`).remove();
     	var delImgHidden = `<input type='hidden' name='boardImgId' value='\${boardImgId}' />`;
     	$(updateFrm).append(delImgHidden);
+    }
+    
+    function setIndex(i){
+    	index = index + i;
+    	console.log(index);
     }
   </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
