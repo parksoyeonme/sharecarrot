@@ -53,8 +53,13 @@
 				, shop_id
 				, category_code
 		from 	product
-		where 	shop_id = #{shopId}
-		and 	product_del_flag = 'N'
+		where 	product_del_flag = 'N'
+		<if test="shopId != '' and shopId != null">
+		and 	shop_id = #{shopId}
+		</if>
+		<if test="productId != '' and productId != null">
+		and 	product_id = #{productId}
+		</if>
 		<if test="productName != '' and productName != null">
 		and 	product_name like '%' || #{productName} || '%'
 		</if>
