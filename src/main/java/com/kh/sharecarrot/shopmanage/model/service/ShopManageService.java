@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.sharecarrot.product.model.vo.Product;
-import com.kh.sharecarrot.shop.model.vo.ShopProduct;
 
 public interface ShopManageService {
 
 	//상품등록
 	int productEnroll(HttpServletRequest request, HttpServletResponse response, Product product, List<MultipartFile> list);
+
+	//상품 불러오기
+	Product selectProduct(Product product);
 
 	//상품 리스트 불러오기
 	List<Product> selectProductList(Product product);
@@ -23,4 +25,5 @@ public interface ShopManageService {
 
 	//상품 삭제
 	int deleteProduct(Product product);
+
 }

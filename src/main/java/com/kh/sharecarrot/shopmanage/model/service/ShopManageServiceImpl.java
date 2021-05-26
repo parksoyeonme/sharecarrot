@@ -82,6 +82,11 @@ public class ShopManageServiceImpl implements ShopManageService{
 		
 		return rtn;
 	}
+	
+	@Override
+	public Product selectProduct(Product product) {
+		return shopManageDao.selectProductList(product).get(0);
+	}
 
 	@Override
 	public List<Product> selectProductList(Product product) {
@@ -119,6 +124,8 @@ public class ShopManageServiceImpl implements ShopManageService{
 	public int deleteProduct(Product product) {
 		return shopManageDao.deleteProduct(product);
 	}
+
+	
 
 	
 
