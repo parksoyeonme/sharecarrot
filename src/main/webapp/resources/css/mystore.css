@@ -296,4 +296,13 @@ div.box {
       outline: none;
     }
     /* TOP 버튼 CSS 끝 */
-
+#productImg{
+    height: 119px;
+    width: 140px;
+    margin-top: -56px;
+    margin-left: -57px;
+	
+}
+#starcolor{
+	color: #CCCC00;
+}

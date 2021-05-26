@@ -24,6 +24,8 @@ $(document).ready(function(){
 					$('#reviewCount').html(data.reviewListSize + "개");
 					console.log(data.buyerList);
 					displayList(data);
+	
+		
           }
   	});
 	
@@ -43,14 +45,17 @@ $(document).ready(function(){
 			html += "<thead> <tr> <th class='tg-0lax' colspan='2' rowspan='5' style= width='132px' text-align='center'><img id='profileImg' style= width= '100px' height= '100px' src='${pageContext.request.contextPath}/resources/upload/member/" + data.buyerList[i].profileRenamed + "'></th></tr>";
 			html += "<tr><th class='tg-0lax' colspan='4'>아이디 : " + data.buyerList[i].memberId +"</th> </tr>";
 			html += "<input type='hidden' value='" + data.reviewList[i].reviewNo +"'  id='reviewNo' >";
-			html += "<tr> <td class='tg-0lax' colspan='4'>별점 : " + data.reviewList[i].reviewScore + "</td> </tr>";
+			html += "<tr> <td class='tg-0lax' colspan='4'><i class='fas fa-star fa-2x fa-spin' style='color= Dodgerblue' id='starcolor'></i>" + data.reviewList[i].reviewScore + "</td> </tr>";
 			
 			html += "<tr> <td class='tg-0lax' colspan='4'>" + data.reviewList[i].reviewTitle + "</td> </tr>"	
 // 			+ "<img id='profileImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.reviewImageList[i].reviewImgRenamed + "'>"	
 			
 			html += "<tr> <td class='tg-0lax' colspan='4' style= 'width= 463px height: 213px'><img id='profileImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.reviewImageList[i].reviewImgRenamed + "'></td></tr>";																												
-			html += "<tr> <td class='tg-0lax' colspan='4'style='height= 100px'>댓글내용 : " + data.reviewList[i].reviewContent +"<button type='button' id='BtnGoWrite' onclick='reply_review(commentText"+i+","+ data.reviewList[i].reviewNo +")' class='btn btn-primary'>댓글쓰기</button></td></tr>";
-			html += "<tr><td class='tg-0lax' colspan='4'><div id='commentList"+i+"'>답글 : "+ data.reviewList[i].reviewCommentText +"</div></td></tr>"
+			
+			html += "<tr> <td class='tg-0lax' colspan='4'style='height= 100px'>댓글내용 : " + data.reviewList[i].reviewContent+"</th> </tr>";
+			
+			html +="<tr> <td class='tg-0lax' colspan='4'style='height= 100px'><button type='button' id='BtnGoWrite' onclick='reply_review(commentText"+i+","+ data.reviewList[i].reviewNo +")' class='btn btn-primary'>댓글쓰기</button></td></tr>";
+			html += "<tr><td class='tg-0lax' colspan='4'><div id='commentList"+i+"'><i class='fas fa-reply fa-2x fa-rotate-180'></i>댓글 : "+ data.reviewList[i].reviewCommentText +"</div></td></tr>"
 			html += "<tr style='display:none' id='commentText"+i+"'><td class='tg-0lax' colspan='4'> <input type='text' id='updateContent"+i+"' class='updateContent'><button type='button' id='BtnGoUpdate' onclick='update_review("+ data.reviewList[i].reviewNo +","+i+")' class='btn btn-primary'>댓글등록</button></td></tr>";
 			html += "</thead></table></div>";
 				
@@ -72,6 +77,8 @@ $(document).ready(function(){
 	
 	 	
 });
+
+
 /*
  * 댓글 등록하기(Ajax)
  */
@@ -82,7 +89,7 @@ function reply_review(commentText,reviewNo){
 	    $(commentText).show();
 	    //console.log(comment_id);
 	    
-    
+   
 //     var chk = document.getElementById('BtnGoUpdate');
 //     var boxs = document.getElementById('box');
 //     if (boxs.style.display == 'none') {
@@ -125,9 +132,7 @@ function reply_review(commentText,reviewNo){
             
         });
     }
-   
-	
-	
+ 
 </script>
 
 <div class="div-division2">
@@ -135,64 +140,9 @@ function reply_review(commentText,reviewNo){
 	<div id = "reviewCount" class="right2">00개</div>
 </div>
            <div id="review-list" class="see-review">
-                          <!-- <div style="float: left; margin-left: 5px;">
-								<<table class="tg">
-                                <thead>
-                                  <tr>
-                                    <th class="tg-0lax" colspan="2" rowspan="5" style="width: 132px; text-align: center;">
-                                        <img src="./resources/images/slide1.jpg" alt="" style="width: 100px; height: 100px; ">
-                                    </th>
-                                    <th class="tg-0lax" colspan="4">아이디</th>
-                                  </tr>
-                                  <tr>
-                                    <td class="tg-0lax" colspan="4">별점</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="tg-0lax" colspan="4">상품명</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="tg-0lax" colspan="4" style="width: 463px; height: 213px;">
-                                    <img src="./resources/images/slide2.jpg" alt=""style="width: 180px; height: 180px; ">
-                                    <img src="./resources/images/slide3.jpg" alt=""style="width: 180px; height: 180px; ">
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="tg-0lax" colspan="4" style="height: 100px;">댓글</td>
-                                  </tr>
-                                </thead>
-                                </table>
-                             </div>  -->
+                     
 
                         </div>
                         
-                        <div class="container" id="box" style="display:none">
-    <form id="commentForm" name="commentForm" method="post">
-    <br><br>
-        <div>
-            <div>
-                <span><strong>Comments</strong></span> <span id="cCnt"></span>
-            </div>
-            <div>
-                <table class="table">                    
-                    <tr>
-                        <td>
-                            <textarea style="width: 1100px" rows="3" cols="30" id="comment" name="comment" placeholder="댓글을 입력하세요"></textarea>
-                            <br>
-                            <div>
-                                <a href='#' onClick="fn_comment('$')" class="btn pull-right btn-success">등록</a>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <input type="hidden" id="b_code" name="b_code" value="" />        
-    </form>
-</div>
-<div class="container">
-    <form id="commentListForm" name="commentListForm" method="post">
-        <div id="commentList">
-        </div>
-    </form>
-</div>
-<div id="pagebar2" style="margin-top: 550px;"></div>
+
+<div id="pagebar2" style="margin-top: 780px;"></div>
