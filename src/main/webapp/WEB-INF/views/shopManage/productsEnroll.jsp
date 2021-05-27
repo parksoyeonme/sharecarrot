@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -104,7 +103,6 @@ $(document).ready(function(){
 		var imgList = imgFileList;
 		
 		formData.append("productName", $('#productName').val());
-		console.log(imgList);
 		
 		for(var i = 0; i < imgList.length; i++){
 			formData.append("productImage", imgList[i]);
@@ -203,12 +201,11 @@ $(document).ready(function(){
 			<div class="mb-3 row">
 				<label class="col-1 col-form-label fw-bold">카테고리</label>
 				<div class="col-2"> 
-					<select class="form-select" id="categoryCode">
-				    </select>
+					<select class="form-select" id="categoryCode"></select>
 				</div>
 			</div>
 			<hr/>
-			<div class="mb-3 row">
+			<!-- <div class="mb-3 row">
 				<label class="col-1 col-form-label fw-bold">상품 상태</label>
 				<div class="col-2 form-check">
 					<input class="form-check-input" type="radio" name="product_status" checked="checked">
@@ -219,7 +216,7 @@ $(document).ready(function(){
 					<label class="form-check-label">새 상품</label>
 				</div>
 			</div>
-			<hr/>
+			<hr/> -->
 			<div class="mb-3 row">
 				<label class="col-1 col-form-label fw-bold">상품 가격</label>
 				<div class="col-2">

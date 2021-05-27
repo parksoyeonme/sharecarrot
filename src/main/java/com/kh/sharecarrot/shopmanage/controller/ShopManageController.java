@@ -11,9 +11,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.vo.Product;
+import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shopmanage.model.service.ShopManageService;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 
@@ -75,9 +78,12 @@ public class ShopManageController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/selectProduct.do")
-	public Product selectProduct(Product product) {
-		return shopManageService.selectProduct(product);
+	@RequestMapping(value="/selectProductInfo.do")
+	public ModelMap selectProduct(Product product) {
+		ModelMap map = new ModelMap();
+		map.addAttribute("product", shopManageService.selectProduct(product));
+		map.addAttribute("image", shopManageService.selectProductImageList(product));
+		return map;
 	}
 	
 	@ResponseBody
@@ -103,6 +109,18 @@ public class ShopManageController {
 		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		mav.addObject("tab","transactionHistory");
 		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/updateProduct.do", method = RequestMethod.POST)
+	public int updateProduct(HttpServletRequest request
+							, HttpServletResponse response
+							, MultipartHttpServletRequest multi
+							, @ModelAttribute Product product) {
+		//return shopManageService.updateProductYnh(product, imgList);
+		System.out.println(product.toString());
+		
+		return 0;
 	}
 
 }
