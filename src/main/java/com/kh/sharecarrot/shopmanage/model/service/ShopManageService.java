@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.sharecarrot.product.model.vo.Product;
+import com.kh.sharecarrot.product.model.vo.ProductImage;
 
 public interface ShopManageService {
 
@@ -25,5 +26,8 @@ public interface ShopManageService {
 
 	//상품 삭제
 	int deleteProduct(Product product);
+
+	//상품 이미지 리스트
+	List<ProductImage> selectProductImageList(Product product);
 
 }

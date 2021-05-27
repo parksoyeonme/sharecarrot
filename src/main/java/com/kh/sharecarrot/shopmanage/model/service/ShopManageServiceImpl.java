@@ -125,6 +125,11 @@ public class ShopManageServiceImpl implements ShopManageService{
 		return shopManageDao.deleteProduct(product);
 	}
 
+	@Override
+	public List<ProductImage> selectProductImageList(Product product) {
+		return shopManageDao.selectProductImageList(product);
+	}
+
 	
 
 	
