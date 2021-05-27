@@ -35,8 +35,9 @@
          </div>
         </div>
         <!-- 배너 끝 -->
+
         <!-- 검색 시작 -->
-        <form:form>
+        <!-- <form:form> -->
           <div class="search">
             <div style="display: flex">
               <div class="location-nav">
@@ -61,7 +62,7 @@
               </div>
             </div>
           </div>
-        </form:form>
+        <!-- </form:form> -->
         <!-- 검색 끝 -->
         <!-- 상품 리스트 시작 -->
         <!-- 조건에 맞는 상품 정보 불러오기 -->
@@ -89,7 +90,7 @@
           <!-- 버튼 시작-->
           <!-- 버튼 클릭 시 상품 목록 불러오기 (10개씩)-->
             
-          <div class="button-more">
+          <div class="button-more" id="button-more">
             <button type="button" class="btn-more btn-large">더보기</button>
             <input type="hidden" id="btn-plus" value="2">
           </div>
@@ -100,47 +101,68 @@
     <script src="./resources/js/index.js"></script>
 <!-- jQuery ajax script-->
   <script>
+    const list_div = document.getElementById("item-list");
+    const btnMore = document.getElementById("button-more");
 
+    /* 상품 목록 없을 때 함수*/
+    const noItemList = () => {
+      // const wrapper = document.querySelector(".item-wrapper");
+      btnMore.className = "btn-nomore";
+      
 
+      const item = document.createElement("div");
+      list_div.append(item);
+      item.className="no-item";
+      const noItemText = document.createElement("p");
+      item.appendChild(noItemText);
+      noItemText.innerText="등록된 상품이 없습니다.";
+
+      // wrapper.removeChild(btnMore);
+
+      return item;
+    };
+    /* 상품 목록 없을 때 함수 끝 */
+
+    /* 상품 리스트 생성 함수 */
     function makeItem({productId,productName,productPrice,productImgRenamed}) {          
-        let item = document.createElement("div");
+        const item = document.createElement("div");
         item.className = "item";
         item.addEventListener("click", function(e) {
           location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productId;
         })
         
-        let item_photo = document.createElement("div");
+        const item_photo = document.createElement("div");
         item.appendChild(item_photo);
         item_photo.className ="item-photo"
         
-        let item_photo_img = document.createElement("img");
+        const item_photo_img = document.createElement("img");
         item_photo_img.src = "./resources/upload/product/" + productImgRenamed;
         item_photo.appendChild(item_photo_img);
         
-        let item_detail = document.createElement("div");
+        const item_detail = document.createElement("div");
         item.appendChild(item_detail);
         item_detail.className ="item-detail";
-        let item_name = document.createElement("div");
+        const item_name = document.createElement("div");
         item_detail.appendChild(item_name);
         item_name.className ="item-name";
         item_name.innerText = productName;
-        let item_price = document.createElement("div");
+        const item_price = document.createElement("div");
         item_detail.appendChild(item_price);
         item_price.className ="item-price"
         
-        let amount = document.createElement("strong");
+        const amount = document.createElement("strong");
         amount.innerText = productPrice;
         amount.className ="amount";
         item_price.appendChild(amount);
         
-        let currency = document.createElement("span");
-        currency.innerText = "원";
+        const currency = document.createElement("span");
+        currency.innerText = " 원";
         currency.className = "currency"
         item_price.appendChild(currency);
         
         return item;
     }
-
+    /* 상품 리스트 생성 함수끝*/
 
     const $locationOption = $("#select-location");
     const $categoryOption = $("#select-category");
@@ -149,6 +171,7 @@
 
     const itemList = document.getElementById("item-list");
 
+    /* 지역 선택시 Ajax 요청 */
     $locationOption.on("change", function(){
       console.log($locationOption.val());
       // var locCode = this.value;
@@ -158,12 +181,17 @@
         type:"POST",
         dataType:"JSON",
         data:{
-          locCode : $locationOption.val()
+          locCode : $locationOption.val(),
         },
         url:"${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
         success: data =>{
           console.log(data);
-          let list_div = document.getElementById("item-list");
+          const list_div = document.getElementById("item-list");
+          list_div.className= "items";
+          btnMore.className= "button-more";
+          
+          // $categoryOption.find('option:first').attr('selected');
+          $('#select-category option:eq(0)').prop('selected', true);  // 지역 선택시 카테고리 옵션 초기화
 
           while ( list_div.hasChildNodes() ) { 
             list_div.removeChild( list_div.firstChild ); 
@@ -174,36 +202,25 @@
             let item = makeItem(data[i]);
             list_div.appendChild(item);
           }
-        },
-          
-          
-          
-          /*
-          <div class="item" onclick="location.href='/sharecarrot/product/productDetail.do?productId=20210522232524'">
-            <div class="item-photo">
-              <img src="./resources/upload/product/20210522232524_4b9c60bf-7644-4799-b710-5e17a9ee1b89jpg" alt="상품이미지">
-            </div>
-            <div class="item-detail">
-              <div class="item-name">test</div>
-              <div class="item-price">
-                <strong class="amount">1231</strong>
-                <span class="currency">원</span>
-              </div>
-            </div>
-          </div>
-*/
 
-        
+          if(data.length == 0){
+            list_div.className ="no-item-list";
+            noItemList();
+          }
+
+        },
         error: (request, status, error) =>{
           console.log(request, status, error);
         },
       })
     })
+    /* 지역 선택시 Ajax 요청 끝*/         
+  
+    /* 카테고리 선택시 Ajax 요청 */     
     $categoryOption.on("change", function(){ 
       if($locationOption.val() == null){
+        //지역 선택 없이 카테고리 선택 못하게
         alert("지역을 먼저 선택해주세요");
-
-
           return false;
       }
         console.log($locationOption.val(), $categoryOption.val());
@@ -219,6 +236,8 @@
         success: data =>{
           console.log(data);
           let list_div = document.getElementById("item-list");
+          list_div.className= "items";
+          btnMore.className= "button-more";
 
           while ( list_div.hasChildNodes() ) { 
             list_div.removeChild( list_div.firstChild ); 
@@ -230,13 +249,20 @@
             list_div.appendChild(item);
           }
 
+          if(data.length === 0){
+            list_div.className ="no-item-list"; // 상품 없을 경우 버튼 display: none
+            noItemList();
+          }
+
         },
         error: (request, status, error) =>{
           console.log(request, status, error);
         },
       })
     })
-
+    /* 카테고리 선택시 Ajax 요청 끝*/
+    
+    /* 더보기 버튼 클릭시 Ajax 요청 */  
     button_more.addEventListener("click", e =>{
       // alert("눌림");
       $.ajax({
@@ -272,9 +298,9 @@
         },
       })
     })
-
+    /* 더보기 버튼 클릭시 Ajax 요청 끝*/  
   </script>
-      
-  <!-- jQuery ajax script 끝-->
+<!-- jQuery ajax script 끝-->
+
 <!--메인 페이지 작업영역 끝 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
