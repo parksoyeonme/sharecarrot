@@ -30,4 +30,45 @@
 		 WHERE BOARD_CATEGORY = 'C6'
 	</select>
 
+	<select id="selectOneNoticeDetail" resultType="notice">
+		  SELECT BOARD_NO
+		       , BOARD_TITLE
+		       , BOARD_ENROLL_DATE
+		       , BOARD_CONTENT
+		       , MEMBER_ID
+		   FROM BOARD
+		   WHERE BOARD_CATEGORY = 'C6'
+		   AND BOARD_NO = #{no}
+	</select>
+	
+	<update id="updatenoticeYn">
+		UPDATE BOARD
+           SET "BOARD_UPDATE_DATE = SYSDATE
+        WHERE BOARD_CATEGORY = 'C6'
+	</update>
+	
+	<insert id="insertNotice">
+		INSERT INTO BOARD 
+		          ( BOARD_NO
+				  , BOARD_TITLE
+				  , BOARD_ENROLL_DATE
+				  , BOARD_DELETE_YN
+				  , BOARD_CONTENT
+				  , BOARD_CATEGORY
+				  , MEMBER_ID
+        ) VALUES (SEQ_BOARD_NO.NEXTVAL
+        	   , #{boardTitle}
+        	   , SYSDATE
+        	   , DEFAULT
+        	   , #{boardContent}
+        	   , 'C6'
+        	   , #{memberId}
+        )
+		
+		<selectKey resultType="_int" keyProperty="boardNo" order="AFTER">
+			select seq_Board_no.currval
+			from dual
+		</selectKey>
+	</insert>
+  
 </mapper>

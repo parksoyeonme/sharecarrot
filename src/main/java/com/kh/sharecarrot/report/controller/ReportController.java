@@ -1,6 +1,7 @@
 package com.kh.sharecarrot.report.controller;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.sharecarrot.common.ShareCarrotUtils;
+import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.report.model.exception.ReportException;
 import com.kh.sharecarrot.report.model.service.ReportService;
 import com.kh.sharecarrot.report.model.vo.Report;
@@ -142,13 +144,6 @@ public class ReportController {
 		return "redirect:/report/reportList.do";
 	}
 	
-	
-	
-	
-	
-	
-	
-
 	@GetMapping(
 			value = "/fileDownload.do", 
 			produces = "application/octet-stream;charset=utf-8"
