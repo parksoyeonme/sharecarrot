@@ -30,9 +30,14 @@ function chatting_popup(){
 // 	var loginUser = <sec:authentication property="principal.memberId"/>;
 // 	var shopId = ${product.shopId};
 	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
-	// 팝업을 띄우게 되면 기존 세션이 끊어지게 되므로,
-	// 다음과 같이 부모 window 객체를 통해서 팝업을 열어야 함.
-	window.open(url, "chat", "width=700, height=700").focus();
+
+	var popupWidth = 500;
+	var popupHeight = 400;
+	var popupX = (window.screen.width / 2) - (popupWidth / 2);
+	// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
+	var popupY= (window.screen.height / 2) - (popupHeight / 2) - 50;
+	// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
+	window.open(url, "chat", "width=" + popupWidth + ", height=" + popupHeight + ", left="+popupX+", top=" + popupY).focus();
 }
 
 </script>

@@ -9,10 +9,24 @@
 		where room_buyer_id = #{roomBuyerId} and room_seller_id = #{roomSellerId}
 	</select>
 	
-	<select id="selectMessageList" resultType="chattingmessage">
+	<select id="selectMessageList" resultMap="chattingmessageMap">
 		select *
 		from chatting_message
 		where room_no = #{roomNo}
+		order by message_date
 	</select>
+	
+	<insert id="insertChattingRoom">
+		insert into chatting_room
+		values(seq_chatting_room_no.nextval,#{roomBuyerId}, #{roomSellerId})
+	</insert>
+	
+	<resultMap type="chattingmessage" id="chattingmessageMap">
+		<result column="message_text" property="messageText"/>
+		<result column="message_date" property="messageDate"/>
+		<result column="room_no" property="roomNo"/>
+		<result column="room_buyer_id" property="roomBuyerId"/>
+		<result column="room_seller_id" property="roomSellerId"/>
+	</resultMap>
 	
 </mapper>
