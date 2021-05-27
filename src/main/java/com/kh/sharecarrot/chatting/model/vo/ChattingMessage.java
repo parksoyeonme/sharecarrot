@@ -1,6 +1,7 @@
 package com.kh.sharecarrot.chatting.model.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class ChattingMessage {
 //	ROOM_BUYER_ID  NOT NULL VARCHAR2(20)  
 //	ROOM_SELLER_ID NOT NULL VARCHAR2(20) 
 	private String messageText;
-	private Date messageDate;
+	private Timestamp messageDate;
 	private int roomNo;
 	private String roomBuyerId;
 	private String roomSellerId;

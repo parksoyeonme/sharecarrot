@@ -29,4 +29,10 @@ public class ChattingServiceImpl implements ChattingService{
 		return chattingDao.selectRoomNo(param);
 	}
 
+
+	@Override
+	public int insertChattingRoom(Map<String, Object> param) {
+		return chattingDao.insertChattingRoom(param);
+	}
+
 }
