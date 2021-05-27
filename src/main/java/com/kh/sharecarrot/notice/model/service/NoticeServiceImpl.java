@@ -30,6 +30,20 @@ public class NoticeServiceImpl implements NoticeService {
 	public Notice selectOneNoticeDetail(int no) {
 		return noticeDao.selectOneNoticeDetail(no);
 	}
+
+	@Override
+	public int updatenoticeYn(int no) {
+		return noticeDao.updatenoticeYn(no);
+	}
+
+	@Override
+	public int insertNotice(Notice notice) {
+		int result = 0;
+		//1. board객체 등록
+		result = noticeDao.insertNotice(notice);
+		return result;
+	}
+
 	
 
 }

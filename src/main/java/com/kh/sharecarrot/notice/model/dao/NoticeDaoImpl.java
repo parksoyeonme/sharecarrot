@@ -35,9 +35,21 @@ public class NoticeDaoImpl implements NoticeDao {
 
 	@Override
 	public Notice selectOneNoticeDetail(int no) {
-//		return session.selectOne("notice.selectOneNoticeDetail", no);
-		return null;
+		return session.selectOne("notice.selectOneNoticeDetail", no);
+		
 	}
+
+	@Override
+	public int updatenoticeYn(int no) {
+		return session.update("notice.updatenoticeYn", no);
+	}
+
+	@Override
+	public int insertNotice(Notice notice) {
+			return session.insert("notice.insertNotice", notice);
+	}
+
+	
 
 	
 	
