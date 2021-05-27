@@ -53,15 +53,19 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, 
 			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam(defaultValue = "") String locCode,
+			@RequestParam(defaultValue = "") String category,
 			HttpServletRequest request) { 
 			
 		/* 더 보기 페이징*/
 		param.put("limit", limit);
 		param.put("cPage", cPage);
+		param.put("categoryCode", category);
+		param.put("locCode", locCode);
 		if(request.getSession().getAttribute("loginMember") != null) {
 			logger.info("session ={}", request.getSession().getAttribute("loginMember"));
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
-			String locCode = loginMember.getLocCode();
+			locCode = loginMember.getLocCode();
 			logger.info("locCode={}", locCode);
 			//locCode 공백제거
 			locCode = locCode.trim();
