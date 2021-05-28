@@ -16,4 +16,6 @@ public interface ChattingService {
 
 	int insertChattingRoom(Map<String, Object> param);
 
+	List<ChattingRoom> selectRoomList(String loginMemberId);
+
 }

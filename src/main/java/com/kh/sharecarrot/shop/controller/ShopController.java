@@ -96,11 +96,11 @@ public class ShopController {
 		//넘어온 shopId 임시로 적어둠
 		String shopId1 = "p9";
 		
-		Shop shop = shopService.selectShop(shopId1);
+		Shop shop = shopService.selectShop(shopId);
 		log.info("shop = {}", shop);
 		
 		//현재 상점 주인의 memberId
-		String memberId = shopService.selectMemberId(shopId1);
+		String memberId = shopService.selectMemberId(shopId);
 //		
 //		if(loginMemberId.equals(memberId)) {
 //			//상점 주인이 로그인한 경우
@@ -113,7 +113,7 @@ public class ShopController {
 		String profile = memberService.selectShopMember(memberId);
 
 		//방문자수(조회수)
-		int result = shopService.updateVisitCount(shopId1);
+		int result = shopService.updateVisitCount(shopId);
 		int openday = shopService.selectOpenDay(loginMemberId);
 		
 		model.addAttribute("openday", openday);

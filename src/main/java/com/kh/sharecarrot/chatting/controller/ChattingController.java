@@ -31,6 +31,7 @@ public class ChattingController {
 	@Autowired
 	private ShopService shopService;
 	
+	//구매자 입장에서의 채팅룸
 	@GetMapping("/chattingRoom.do")
 	private void chattingRoom(@RequestParam String roomBuyerId, @RequestParam String shopId, Model model) {
 //		log.info("@@chatting buyer : {}, shop : {}", roomBuyerId, shopId);
@@ -91,11 +92,10 @@ public class ChattingController {
 		//로그인한 memberId
 	    String loginMemberId = ((UserDetails) principal).getUsername();
 	    String shopId = shopService.selectShopId(loginMemberId);
-		log.info("@@chattingManagement - shopId : {}", shopId);
-	    
-		List<ChattingRoom> chattingRoomList = chattingService.selectRoomList();
+		List<ChattingRoom> chattingRoomList = chattingService.selectRoomList(loginMemberId);
 		
-		model.addAttribute("chattingRoomList", chattingRoomList)
+		model.addAttribute("chattingRoomList", chattingRoomList);
+		model.addAttribute("shopId", shopId);
 	}
 	
 }
