@@ -47,6 +47,19 @@ function search_button_click() {
     location.href = "${pageContext.request.contextPath}/product/headerSearch.do?searchkeyword="+searchkeyword;
 }
 
+function myshop_head_click(){
+
+	 $.ajax({
+	        type:"GET",
+	        url:"${pageContext.request.contextPath}/shop/myshopHead.do",
+	        success:function(data){
+				console.log(data);
+	        	location.href="${pageContext.request.contextPath}/shop/myshop.do?shopId=" + data;
+
+	        }                
+	});
+}
+
 </script>
 <c:if test="${not empty msg}">
 <script>
@@ -89,7 +102,7 @@ function search_button_click() {
                		<form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
 					    <button class="btn btn-light my-2 my-sm-0" type="submit">로그아웃</button>
 	                </form:form>
-	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/shop/myshop.do';">내상점</button>
+	                <button type="button" class="btn btn-light" onclick=" myshop_head_click();">내상점</button>
 	                <button type="button" class="btn btn-light">판매하기</button>
                 </sec:authorize>
                 

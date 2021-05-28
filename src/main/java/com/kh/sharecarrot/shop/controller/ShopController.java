@@ -57,35 +57,32 @@ public class ShopController {
 	private StoreReviewsService storeReviewsService;
 	@Autowired
 	private TransactionHistoryService transactionHistoryService;
-
 	
 	@Autowired
 	private ReviewCommentService reviewCommentService;
 	
-	@RequestMapping(value="/enroll.do")
-	public ModelAndView productReg() {
-		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
-		mav.addObject("tab","productEnroll");
-		return mav;
-	}
 	
-	@RequestMapping(value="/manage.do")
-	public ModelAndView productManage() {
-		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
-		mav.addObject("tab","productManage");
-		return mav;
-	}
-	
-	@RequestMapping(value="/transactionHistory.do")
-	public ModelAndView transactionHistory() {
-		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
-		mav.addObject("tab","transactionHistory");
-		return mav;
-	}
 
+	@RequestMapping(value="/myshopHead.do", method={RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public String myshophead(String memeberId) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+		//로그인한 memberId
+	    String memberId = ((UserDetails) principal).getUsername();		
+		//loginmember로 정보 받아오기
+		System.out.println("########여기요#####"+memberId);
+
+		//현재 로그인한 memberId의 shop_Id
+		String shopId = shopService.selectMembershopId(memberId);
+		
+		return shopId;
+		
+	}
+	
+	
 	@GetMapping("/myshop.do")
 	public void mystore(Member member, Model model,Map<String, Object> param,
-			@RequestParam(defaultValue="2") String shopId) {
+			@RequestParam String shopId) {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		//로그인한 memberId
@@ -94,39 +91,41 @@ public class ShopController {
 		System.out.println("##############"+loginMemberId);
 
 		//넘어온 shopId 임시로 적어둠
-		String shopId1 = "p9";
+		//String shopId1 = "p9";
 		
 		Shop shop = shopService.selectShop(shopId);
 		log.info("shop = {}", shop);
 		
 		//현재 상점 주인의 memberId
 		String memberId = shopService.selectMemberId(shopId);
-//		
-//		if(loginMemberId.equals(memberId)) {
-//			//상점 주인이 로그인한 경우
-//		}else {
-//			//구매자가 들어온 경우
-//		}
-		
+
 		//현재 상점 id로 현재 shop 객체 받아옴
 		
 		String profile = memberService.selectShopMember(memberId);
 
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
-		int openday = shopService.selectOpenDay(loginMemberId);
+
+		//상점오픈일
+		int openday = shopService.selectOpenDay(shopId);
+		//상품판매횟수
+		int sellCount = shopService.selectsellCount(shopId);
+
+
 		
+		model.addAttribute("memberId", memberId);
+		model.addAttribute("loginMemberId", loginMemberId);
 		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);
 		model.addAttribute("profile", profile);
+		model.addAttribute("sellCount", sellCount);
 	}
 	
 	//내상점-상품
 	@ResponseBody
 	@RequestMapping(value="/myshopProductList.do", method={RequestMethod.POST,RequestMethod.GET},
 			produces ="application/text; charset=utf8")
-
-	public String myshopProductList(@RequestParam String shopId,
+	public String myshopProductList(@RequestParam(required = false) String shopId,
 			@RequestParam(defaultValue ="1" ) int cPage,@RequestParam Map<String,Object> param,
 			Model model,			
 			HttpServletResponse response, HttpServletRequest request) throws IOException {
@@ -182,7 +181,6 @@ public class ShopController {
 	@ResponseBody
 	@RequestMapping(value="/myshopReviewList.do", method=RequestMethod.GET,
 			produces ="application/text; charset=utf8")
-
 	public String myshopReviewList(@RequestParam(defaultValue ="1") int cPage,
 			@RequestParam String shopId,
 			Model model,

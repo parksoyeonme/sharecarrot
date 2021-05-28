@@ -27,29 +27,25 @@ public class ShopServiceImpl implements ShopService{
 	
 	@Override
 	public int updateVisitCount(String shopId) {
-		// TODO Auto-generated method stub
 		return shopDao.updateVisitCount(shopId);
 	}
 
 	
 	@Override
 	public Shop selectShopOne(Map<String, Object> param) {
-		// TODO Auto-generated method stub
 		return shopDao.selectShopOne(param);
 	}
 
 
 	@Override
 	public List<Product> selectshopProductList(String shopId) {
-		// TODO Auto-generated method stub
 		return shopDao.selectshopProductList(shopId);
 	}
 
 
 	@Override
-	public int selectOpenDay(String memberId) {
-		// TODO Auto-generated method stub
-		return shopDao.selectOpenDay(memberId);
+	public int selectOpenDay(String shopId) {
+		return shopDao.selectOpenDay(shopId);
 	}
 
 
@@ -72,8 +68,20 @@ public class ShopServiceImpl implements ShopService{
 
 
 	@Override
+	public String selectMembershopId(String memberId) {
+		return shopDao.selectMembershopId(memberId);
+	}
+
+
+	@Override
+	public int selectsellCount(String shopId) {
+		return shopDao.selectsellCount(shopId);
+
+	}
+	
 	public String selectShopId(String loginMemberId) {
 		return shopDao.selectShopId(loginMemberId);
+
 	}
 
 

@@ -45,9 +45,11 @@
                             <div style="float: left; width: 21%; font-weight: bold;">
                               <i class="fas fa-shopping-cart" style="font-size: 23px;"></i>상품판매
                             </div>
+                          
                             <div style="float: left; width: 13%;">
-                                ${shop.shopSellCount}개
+                                ${sellCount}개
                             </div>
+                           
                         </li>
                     </ul>
                     <div id="shopMemo">
@@ -56,10 +58,12 @@
                     </div>
                     
                      <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
-                    <a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
-                 
-                    <a href="#" class="gomystore-button">신고하기</a>
-                    
+                    <c:if test="${loginMemberId == memberId}">
+                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
+                 	</c:if>
+                 	<sec:authorize access="isAuthenticated()">
+                    <a href="${pageContext.request.contextPath }/report/reportForm.do" class="gomystore-button">신고하기</a>
+                    </sec:authorize>
                       </div>
                   
                     <script>

@@ -18,7 +18,7 @@ public interface ShopService {
 	List<Product> selectshopProductList(String shopId);
 
 
-	int selectOpenDay(String memberId);
+	int selectOpenDay(String shopId);
 
 	String selectMemberId(String shopId);
 
@@ -26,7 +26,13 @@ public interface ShopService {
 
 	Member selectProfilOne(String shopId);
 
+
+	String selectMembershopId(String memberId);
+
+	int selectsellCount(String shopId);
+
 	String selectShopId(String loginMemberId);
+
 
 
 
