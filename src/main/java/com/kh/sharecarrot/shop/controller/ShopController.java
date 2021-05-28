@@ -30,6 +30,7 @@ import com.kh.sharecarrot.product.model.service.ProductService;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.reviewcomment.model.service.ReviewCommentService;
+import com.kh.sharecarrot.reviewcomment.model.vo.ReviewComment;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.storereviews.model.service.StoreReviewsService;
@@ -83,7 +84,8 @@ public class ShopController {
 	}
 
 	@GetMapping("/myshop.do")
-	public void mystore(Member member, Model model,Map<String, Object> param) {
+	public void mystore(Member member, Model model,Map<String, Object> param,
+			@RequestParam(defaultValue="2") String shopId) {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		//로그인한 memberId
@@ -92,13 +94,13 @@ public class ShopController {
 		System.out.println("##############"+loginMemberId);
 
 		//넘어온 shopId 임시로 적어둠
-		String shopId = "p9";
+		String shopId1 = "p9";
 		
-		Shop shop = shopService.selectShop(shopId);
+		Shop shop = shopService.selectShop(shopId1);
 		log.info("shop = {}", shop);
 		
 		//현재 상점 주인의 memberId
-		String memberId = shopService.selectMemberId(shopId);
+		String memberId = shopService.selectMemberId(shopId1);
 //		
 //		if(loginMemberId.equals(memberId)) {
 //			//상점 주인이 로그인한 경우
@@ -111,7 +113,7 @@ public class ShopController {
 		String profile = memberService.selectShopMember(memberId);
 
 		//방문자수(조회수)
-		int result = shopService.updateVisitCount(shopId);
+		int result = shopService.updateVisitCount(shopId1);
 		int openday = shopService.selectOpenDay(loginMemberId);
 		
 		model.addAttribute("openday", openday);
@@ -119,20 +121,18 @@ public class ShopController {
 		model.addAttribute("profile", profile);
 	}
 	
+	//내상점-상품
 	@ResponseBody
 	@RequestMapping(value="/myshopProductList.do", method={RequestMethod.POST,RequestMethod.GET},
 			produces ="application/text; charset=utf8")
-//	@GetMapping("/myshopProductList.do")
+
 	public String myshopProductList(@RequestParam String shopId,
 			@RequestParam(defaultValue ="1" ) int cPage,@RequestParam Map<String,Object> param,
 			Model model,			
 			HttpServletResponse response, HttpServletRequest request) throws IOException {
-//		response.setCharacterEncoding("UTF-8");
-		
-		
+
 		int numPerPage = 5;
 		log.debug("cPage = {}", cPage);
-		//Map<String, Object> param = new HashMap<>();
 			param.put("numPerPage", numPerPage);
 			param.put("cPage", cPage);
 			param.put("shopId", shopId);
@@ -142,11 +142,10 @@ public class ShopController {
 		List<Product> productList = productService.selectProductList(param);
 		int productListSize = productService.selectProductListSize(shopId);
 		
-//		Product product = productlist.get(0);
-		
+
 		List<ProductImage> productImageList = new ArrayList<>();
 		Iterator<Product> iter = productList.iterator();
-		//ProductImage productImage = null;
+	
 		while(iter.hasNext()) {
 			Product product = (Product)iter.next();
 			List<ProductImage> proimgList =  productService.selectProductImageList(product.getProductId());
@@ -165,12 +164,9 @@ public class ShopController {
 		log.debug("url = {}", url);
 		String pageBar = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
 		
-//		model.addAttribute("pageBar", pageBar);
-		
-		//상위 오브젝트 생성
+
 		JSONObject obj = new JSONObject();
 				
-	//	model.addAttribute("productListSize", productListSize);
 		//data: 뒤에 들어갈 값인 jArray 생성
 		obj.put("productList", productList);
 		obj.put("productImageList", productImageList);
@@ -182,10 +178,11 @@ public class ShopController {
 		
 	}
 	
+	//내상점-리뷰
 	@ResponseBody
 	@RequestMapping(value="/myshopReviewList.do", method=RequestMethod.GET,
 			produces ="application/text; charset=utf8")
-//	@GetMapping("/myshopProductList.do")
+
 	public String myshopReviewList(@RequestParam(defaultValue ="1") int cPage,
 			@RequestParam String shopId,
 			Model model,
@@ -202,54 +199,94 @@ public class ShopController {
 		List<ReviewImage> reviewImageList = new ArrayList<>();
 		List<Member> buyerList = new ArrayList<>();
 
-//		log.info("storeReviews = {}", reviewList);
-		int reviewListSize = reviewList.size();
+		String shopMemberId = shopService.selectMemberId(shopId);
+		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+		//로그인한 memberId
+	    String loginMemberId = ((UserDetails) principal).getUsername();	
+		
+		//List<ReviewComment> reviewCommList = new ArrayList<>();
+		
+		int totalReviewComment = reviewCommentService.selectTotalCommentsNo();
+		ReviewComment[] reviewCommArray = new ReviewComment[totalReviewComment];
 
+		int reviewListSize = reviewList.size();
+		
+		//댓글이 존재하면 1, 없으면 0
+		int j = 0;
+		Integer[] isExistArray = new Integer[reviewListSize];
 		Iterator<StoreReviews> iter = reviewList.iterator();
 		while(iter.hasNext()) {
 			StoreReviews reviews = (StoreReviews)iter.next();
 			List<ReviewImage> imgList = storeReviewsService.selectReviewImageList(reviews.getReviewNo());
 			List<Member> bList = transactionHistoryService.selectBuyer(reviews.getProductId());
+//			List<ReviewComment> list = reviewCommentService.reviewCommentlist(reviews.getReviewNo());
+			reviewCommArray[j] = reviewCommentService.selectReviewCommentOne(reviews.getReviewNo());
+			log.info("@@@reviewCommArray[j] : {}", reviewCommArray[j]);
 			buyerList.addAll(bList);
 			reviewImageList.addAll(imgList);
+//			reviewCommList.addAll(list);
+			j++;
 		}
 		
 		int totalContents = storeReviewsService.getTotalContents(shopId);
 		String url = request.getRequestURI();
-		log.debug("totalContents = {}",totalContents);
-		log.debug("url = {}", url);
-		String pageBar2 = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
-	
-//		log.info("reviewList : {}", reviewList);
-//		log.info("reviewImageList : {}", reviewImageList);
-//		log.info("reviewListSize : {}", reviewListSize);
 
-		//		//상위 오브젝트 생성
+		String pageBar2 = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
+
 		JSONObject obj = new JSONObject();
 		log.info("@@buyerList : {}",buyerList);
+		//data: 뒤에 들어갈 값인 jArray 생성
+		log.info("@@@reviewCommArraylength : {}", reviewCommArray.length);
+		log.info("@@@reviewCommArray : {}", reviewCommArray);
 		
-//		model.addAttribute("productListSize", productListSize);
-//		//data: 뒤에 들어갈 값인 jArray 생성
+		for(int i = 0; i < 2; i++) {
+			if(reviewCommArray[i]==null) {
+				isExistArray[i] = 0;
+//				isExistList.add(0);
+			}else if(reviewCommArray[i]!=null) {
+				isExistArray[i] = 1;
+//				isExistList.add(1);
+			}
+			log.info("@@@isExistArray[i] = {}", isExistArray[i]);			
+		}
+
+		//배열로 변경
+
+		
+//		obj.put("isExistList", isExistList);
+//		if(reviewCommList.size() >= 1) {
+//			//있을 때
+//			obj.put("isExist", true);
+//		}else {
+//			//없을 때
+//			obj.put("isExist", false);
+//		
+		
+		obj.put("shopMemberId", shopMemberId);
+		obj.put("loginMemberId",loginMemberId);
 		obj.put("reviewList", reviewList);
 		obj.put("reviewImageList", reviewImageList);
 		obj.put("reviewListSize", reviewListSize);
 		obj.put("buyerList", buyerList);
 		obj.put("pageBar2", pageBar2);
+		obj.put("isExistArray", isExistArray);
+		obj.put("reviewCommArray", reviewCommArray);
 		String resp = obj.toString();
 //		
 		return resp;
 	}
 	
-	//댓글등록
-	@RequestMapping(value="/reviewComment.do", method= {RequestMethod.POST,RequestMethod.GET})
+	//내상점 상점리뷰에 댓글등록
 	@ResponseBody
+	@RequestMapping(value="/reviewComment.do", method= RequestMethod.POST,produces ="text/plain; charset=utf8")
 	 public void reviewComment(HttpServletRequest request, HttpServletResponse response ,@RequestParam Map<String,Object> param) {
 		System.out.println(param);
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		String memberId = ((UserDetails) principal).getUsername(); 	
 		param.put("memberId", memberId);
 		int result = reviewCommentService.insertReviewComment(param);
-	
+		
 	}
 	
 

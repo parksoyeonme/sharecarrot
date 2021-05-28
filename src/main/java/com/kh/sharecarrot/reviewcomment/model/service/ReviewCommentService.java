@@ -9,6 +9,11 @@ public interface ReviewCommentService {
 
 	int insertReviewComment(Map<String, Object> param);
 
+	int selectTotalCommentsNo();
+
+	ReviewComment selectReviewCommentOne(int reviewNo);
+
+
 
 
 }
