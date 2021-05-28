@@ -1,46 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper    PUBLIC "-//mybatis.org//DTDMapper3.0//EN"    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="storereviews">
-	
-	<select id= "selectStoreReviewsList" resultType="StoreReviews">
-		select A.* , B.review_content as reviewCommentText, B.review_comment_no 
-FROM   store_reviews A
-       LEFT JOIN review_comment B 
-       ON     A.review_no = B.review_no 
-WHERE  A.product_id IN
-       (SELECT product_id
-       FROM    product
-       WHERE   shop_id = #{shopId}
-       )
-	</select>
-	
-	<select id= "selectReviewImageList" resultType="ReviewImage">
-		select * from review_image where review_no = #{reviewNo}
-	</select>
-	
-	<select id="getTotalContents" resultType="_int">
-	 select
-         count(*)
-      from
-          store_reviews
-          where product_id in (select product_id from product where shop_id = #{shopId})
-	
-	</select>
-	<resultMap type="shop" id="shopMap">
-		<id column="shop_id" property="shopId" />
-		<result column="shop_total_score" property="shopTotalScore" />
-		<result column="shop_visit_count" property="shopVisitCount" />
-		<result column="shop_sell_count" property="shopSellCount" />
-		<result column="shop_memo" property="shopMemo" />
-		<result column="member_id" property="memberId" />
-		
-	</resultMap>
-	
-	<resultMap type="ShopProduct" id="shopProductMap">
-		<collection property="product" resultMap="productMap"/>
-		<collection property="productImage" resultMap="productImgMap"/>
-	</resultMap>
-	
+
+    <select id="selectStoreReviewsList" resultType="StoreReviews">
+        select *
+        from store_reviews
+        where product_id in (select product_id from product where shop_id = #{shopId})
+    </select>
+    
+    <select id="selectReviewImageList" resultType="ReviewImage">
+        select * from review_image where review_no = #{reviewNo}
+    </select>
+    
+    <select id="getTotalContents" resultType="_int">
+        select
+                 count(*)
+              from
+                  store_reviews
+                  where product_id in (select product_id from product where shop_id = #{shopId})
+    </select>
+    
+    
 </mapper>
