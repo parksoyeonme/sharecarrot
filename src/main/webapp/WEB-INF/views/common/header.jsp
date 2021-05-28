@@ -107,6 +107,7 @@ function search_button_click() {
                     </sec:authorize>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do">신고게시판</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do">공지사항</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/chattingManagement.do">채팅관리</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">계정설정</a></li>
                   </ul>
                 </div>
