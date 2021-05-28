@@ -19,7 +19,7 @@ public interface ShopDao {
 	List<Product> selectshopProductList(String shopId);
 
 
-	int selectOpenDay(String memberId);
+	int selectOpenDay(String shopId);
 
 
 	String selectMemberId(String shopId);
@@ -29,6 +29,12 @@ public interface ShopDao {
 
 
 	Member selectProfilOne(String shopId);
+
+
+	String selectMembershopId(String memberId);
+
+
+	int selectsellCount(String shopId);
 
 
 

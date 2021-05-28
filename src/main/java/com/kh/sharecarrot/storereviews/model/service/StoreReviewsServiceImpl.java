@@ -25,13 +25,13 @@ public class StoreReviewsServiceImpl implements StoreReviewsService {
 
 	@Override
 	public int getTotalContents(String shopId) {
-		// TODO Auto-generated method stub
 		return storeReviewsDao.getTotalContents(shopId);
 	}
 
 	@Override
 	public List<StoreReviews> selectStoreReviewsList(String shopId, Map<String, Object> param) {
-		// TODO Auto-generated method stub
 		return storeReviewsDao.selectStoreReviewsList(shopId,param);
 	}
+
+
 }

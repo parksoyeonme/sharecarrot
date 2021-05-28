@@ -213,20 +213,8 @@ div.box {
     margin-left: -57px;
 	
 }
-#starcolor{
-	color: #CCCC00;
-}
-#BtnGoWrite{
-	background: #eba326;
-    width: 97px;
-	
-}
-#BtnGoUpdate{
-	background: #eba326;
-    width: 97px;
-    margin-left: 29px;
-}
-#updateContent0{
+
+#updateContent{
 	width: 392px;
     height: 90px;
 }

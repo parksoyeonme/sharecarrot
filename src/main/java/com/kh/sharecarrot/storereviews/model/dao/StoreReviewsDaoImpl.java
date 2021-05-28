@@ -36,10 +36,8 @@ public class StoreReviewsDaoImpl implements StoreReviewsDao {
 
 	@Override
 	public int getTotalContents(String shopId) {
-		// TODO Auto-generated method stub
 		return session.selectOne("storereviews.getTotalContents",shopId);
 	}
 
-	
 	
 }

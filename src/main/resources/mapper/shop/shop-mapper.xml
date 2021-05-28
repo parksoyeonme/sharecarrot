@@ -50,11 +50,23 @@
 	
 	</select>
 	-->
+	<select id= "selectMembershopId" resultType="String">
+	select shop_id from shop where member_id = #{memberId}
+	</select>
+	
 	<select id="selectOpenDay" resultType="_int">
 	select trunc(SYSDATE - member_enroll_date + 1)
-	from 
-	member
-	where member_id = #{memberId}
+	from member 
+	where member_id = (select member_id from shop where shop_id=#{shopId})
+	
+	</select>
+	
+	<select id="selectsellCount" resultType="_int">
+	
+	select count(product_ynh) 
+	from product 
+	where product_ynh ='Y' and shop_id = #{shopId}
+	
 	</select>
 	
 	<select id="selectMemberId" resultType="String">
@@ -81,7 +93,7 @@
 		<result column="shop_sell_count" property="shopSellCount" />
 		<result column="shop_memo" property="shopMemo" />
 		<result column="member_id" property="memberId" />
-		<collection property="member" ofType="member">
+		<collection property="Member" ofType="Member">
 			<id column="member_id" property="memberId"/>
 				<result column="member_password" property="memberPassword"/>
 				<result column="member_name" property="memberName"/>

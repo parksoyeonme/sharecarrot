@@ -14,4 +14,6 @@ public interface StoreReviewsDao {
 
 	int getTotalContents(String shopId);
 
+
+
 }
