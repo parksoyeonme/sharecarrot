@@ -63,6 +63,11 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectOne("shop.selectProfilOne", shopId);
 	}
 
+	@Override
+	public String selectShopId(String loginMemberId) {
+		return session.selectOne("shop.selectShopId", loginMemberId);
+	}
+
 
 
 

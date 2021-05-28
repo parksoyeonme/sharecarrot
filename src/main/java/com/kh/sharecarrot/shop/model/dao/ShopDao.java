@@ -31,6 +31,9 @@ public interface ShopDao {
 	Member selectProfilOne(String shopId);
 
 
+	String selectShopId(String loginMemberId);
+
+
 
 }
 

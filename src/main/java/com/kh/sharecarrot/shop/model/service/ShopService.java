@@ -26,6 +26,8 @@ public interface ShopService {
 
 	Member selectProfilOne(String shopId);
 
+	String selectShopId(String loginMemberId);
+
 
 
 

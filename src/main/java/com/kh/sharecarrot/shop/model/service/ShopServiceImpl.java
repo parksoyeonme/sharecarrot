@@ -67,8 +67,13 @@ public class ShopServiceImpl implements ShopService{
 
 	@Override
 	public Member selectProfilOne(String shopId) {
-		// TODO Auto-generated method stub
 		return shopDao.selectProfilOne(shopId);
+	}
+
+
+	@Override
+	public String selectShopId(String loginMemberId) {
+		return shopDao.selectShopId(loginMemberId);
 	}
 
 

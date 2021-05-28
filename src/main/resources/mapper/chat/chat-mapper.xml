@@ -16,6 +16,12 @@
 		order by message_date
 	</select>
 	
+	<select id="selectRoomList" resultType="chattingroom">
+		select *
+		from chatting_room
+		where room_seller_id = #{loginMemberId}
+	</select>
+	
 	<insert id="insertChattingRoom">
 		insert into chatting_room
 		values(seq_chatting_room_no.nextval,#{roomBuyerId}, #{roomSellerId})
