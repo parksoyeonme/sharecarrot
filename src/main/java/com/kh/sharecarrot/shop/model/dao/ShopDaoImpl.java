@@ -17,7 +17,10 @@ public class ShopDaoImpl implements ShopDao{
 	@Autowired
 	private SqlSessionTemplate session;
 	
-	
+	@Override
+	public void shopEnroll(Shop shop) {
+		session.insert("shop.shopEnroll", shop);
+	}
 
 	@Override
 	public int updateVisitCount(String shopId) {

@@ -20,6 +20,10 @@ public class ShopServiceImpl implements ShopService{
 	@Autowired
 	private ShopDao shopDao;
 	
+	public void shopEnroll(Shop shop) {
+		shopDao.shopEnroll(shop);
+	}
+
 	
 	@Override
 	public int updateVisitCount(String shopId) {

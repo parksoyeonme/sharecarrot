@@ -9,6 +9,8 @@ import com.kh.sharecarrot.shop.model.vo.Shop;
 
 public interface ShopService {
 
+	void shopEnroll(Shop shop);
+	
 	int updateVisitCount(String shopId);
 
 	Shop selectShopOne(Map<String, Object> param);
