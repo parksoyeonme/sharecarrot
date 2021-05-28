@@ -22,15 +22,16 @@ public class StoreReviewsServiceImpl implements StoreReviewsService {
 		return storeReviewsDao.selectReviewImageList(reviewNo);
 	}
 
-	@Override
-	public List<StoreReviews> selectStoreReviewsList(String shopId, Map<String, Object> param) {
-		// TODO Auto-generated method stub
-		return storeReviewsDao.selectStoreReviewsList(shopId,param);
-	}
 
 	@Override
 	public int getTotalContents(String shopId) {
 		// TODO Auto-generated method stub
 		return storeReviewsDao.getTotalContents(shopId);
+	}
+
+	@Override
+	public List<StoreReviews> selectStoreReviewsList(String shopId, Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return storeReviewsDao.selectStoreReviewsList(shopId,param);
 	}
 }

@@ -8,7 +8,7 @@
 $(document).ready(function() {
    console.log('shopId ', tempParam.shopId);
    productListFn();
-   
+  
    $(document).on("click",".btngropu4",function (){ 
       var btnValue = $(this).val();
       productListFn(btnValue);
@@ -82,6 +82,7 @@ function displayList(data){
       
       $('#product-list').append(html);
       console.log(html);
+     
       
 //       for(var i = 0; i < elem; i++){
 //          console.log(data.productlist[i].product);
@@ -105,7 +106,7 @@ function displayList(data){
       console.log("@@pagebar : " + data.pageBar);
       $('#pagebar').append(data.pageBar);
 }
-   
+  
    
 </script>
 <div class="div-division">
@@ -146,3 +147,4 @@ function displayList(data){
                             
 </div>
 <div id="pagebar"></div>
+
