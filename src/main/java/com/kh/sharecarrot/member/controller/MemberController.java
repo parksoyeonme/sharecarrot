@@ -287,7 +287,7 @@ public class MemberController {
 	   
 	    updateMember.setAuthorities(authorities); 
 	    //누락된 데이터처리
-	   
+	    
 	    //2. security context에서 principal 갱신
 	    Authentication newAuthentication = 
 	  		    new UsernamePasswordAuthenticationToken(

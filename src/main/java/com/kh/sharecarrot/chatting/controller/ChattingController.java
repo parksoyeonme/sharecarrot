@@ -83,4 +83,13 @@ public class ChattingController {
 		model.addAttribute("chattingMessageList", chattingMessageList);
 	}
 	
+	@GetMapping("/chattingManagement.do")
+	private void chattingManagement() {
+		// 현재 본인의 shop_id로 만들어진 chatting_room이 있는지 검사하고,
+		// 있으면 테이블로 띄워주기
+		
+		
+		
+	}
+	
 }
