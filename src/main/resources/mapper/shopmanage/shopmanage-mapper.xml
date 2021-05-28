@@ -42,16 +42,73 @@
 		where 	member_id = #{memberId}
 	</select>
 	
+	<select id="selectProduct" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.Product">
+			select 	product_id
+					, product_name
+					, product_price
+					, product_ynh
+					, product_reg_date
+					, product_content
+					, product_del_flag
+					, shop_id
+					, category_code
+			from 	product
+			where 	product_del_flag = 'N'
+			<if test="shopId != '' and shopId != null">
+			and 	shop_id = #{shopId}
+			</if>
+			<if test="productId != '' and productId != null">
+			and 	product_id = #{productId}
+			</if>
+			<if test="productName != '' and productName != null">
+			and 	product_name like '%' || #{productName} || '%'
+			</if>
+			<if test="productYnh != '' and productYnh != null">
+			and 	product_ynh = #{productYnh}
+			</if>
+			<if test="categoryCode != '' and categoryCode != null">
+			and 	category_code = #{categoryCode}
+			</if>
+	</select>
+	
 	<select id="selectProductList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.Product">
-		select 	product_id
-				, product_name
-				, product_price
-				, product_ynh
-				, product_reg_date
-				, product_content
-				, product_del_flag
-				, shop_id
-				, category_code
+		select *
+		from
+			(select a.*, rownum as rnum
+			from
+				(select 	product_id
+						, product_name
+						, product_price
+						, product_ynh
+						, product_reg_date
+						, product_content
+						, product_del_flag
+						, shop_id
+						, category_code
+				from 	product
+				where 	product_del_flag = 'N'
+				<if test="shopId != '' and shopId != null">
+				and 	shop_id = #{shopId}
+				</if>
+				<if test="productId != '' and productId != null">
+				and 	product_id = #{productId}
+				</if>
+				<if test="productName != '' and productName != null">
+				and 	product_name like '%' || #{productName} || '%'
+				</if>
+				<if test="productYnh != '' and productYnh != null">
+				and 	product_ynh = #{productYnh}
+				</if>
+				<if test="categoryCode != '' and categoryCode != null">
+				and 	category_code = #{categoryCode}
+				</if>
+				)a
+			)
+		where rnum  <![CDATA[>=]]> 5 * (to_number(#{pageNum}) -1) +1 and rnum <![CDATA[<=]]> 5 * to_number(#{pageNum})
+	</select>
+	
+	<select id="selectProductListCount" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="Integer">
+		select 	count(*)
 		from 	product
 		where 	product_del_flag = 'N'
 		<if test="shopId != '' and shopId != null">
@@ -86,6 +143,20 @@
 	<update id="deleteProduct" parameterType="com.kh.sharecarrot.product.model.vo.Product">
 		update 	product
 		set 	product_del_flag = 'Y'
+		where 	product_id = #{productId}
+	</update>
+	
+	<delete id="deleteProductImage" parameterType="com.kh.sharecarrot.product.model.vo.Product">
+		delete 	product_image
+		where 	product_id = #{productId}
+	</delete>
+	
+	<update id="updateProduct" parameterType="com.kh.sharecarrot.product.model.vo.Product">
+		update 	product
+		set 	product_name = #{productName}
+		, 		category_code = #{categoryCode}
+		, 		product_price = #{productPrice}
+		, 		product_content = #{productContent}
 		where 	product_id = #{productId}
 	</update>
 

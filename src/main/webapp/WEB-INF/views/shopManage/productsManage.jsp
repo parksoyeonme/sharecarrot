@@ -10,6 +10,12 @@ $(document).ready(function(){
 	//이미지파일리스트
 	var imgFileList = new Array();
 	
+	//수정 모달
+	var myModal = new bootstrap.Modal($('#productUpdateModal'), {
+					  keyboard: false
+					  , backdrop: 'static'
+				});
+	
 	//탭 초기화
 	$('#productManageNav').on('shown.bs.tab',function(){
 		selectProductList();
@@ -49,10 +55,7 @@ $(document).ready(function(){
 	
 	//상품 검색 버튼
 	$('#searchBtn').on('click', function(){
-		var search = {"productName" : $('#searchKeyword').val()
-					 , "productYnh" : $('#productYnhSelect').val()
-					 , "categoryCode" : $('#categoryCode2').val()};
-		selectProductList(search);
+		productPaging(1);
 	});
 	
 	//상품 수정 버튼
@@ -75,15 +78,6 @@ $(document).ready(function(){
 				var image = result.image;
 				
 				productImageList = image;
-				
-				console.log(product);
-				console.log(image);
-				
-				
-				var myModal = new bootstrap.Modal($('#productUpdateModal'), {
-					  keyboard: false
-					  , backdrop: 'static'
-					});
 				
 				$('#productNameModal').val(product.productName);
 				$('#productNameLengthModal').text($('#productNameModal').val().length);
@@ -123,7 +117,7 @@ $(document).ready(function(){
 				myModal.show();
 			}
 			, error : function(jqXHR){
-				alert('상품 삭제 실패');
+				alert('상품 수정 실패');
 				return;
 			}
 		});
@@ -191,6 +185,8 @@ $(document).ready(function(){
 	
 	//이미지 미리보기
 	$('#productImageUploadModal').on('change',function(){
+		//기존이미지 삭제
+		productImageList.length = 0;
 		//확장자
 		var ext = $(this).val().split('.').pop().toLowerCase();
 		//업로드 가능 이미지 확장자
@@ -275,48 +271,79 @@ $(document).ready(function(){
 		if(!confirm('상품을 수정 하시겠습니까?')){
 			return;
 		}
-		
-		var formData = new FormData();
-		var imgList = imgFileList;
-		
-		formData.append("productName", $('#productNameModal').val());
-		formData.append("categoryCode", $('#categoryCodeModal').val());
-		formData.append("productPrice", $('#productPriceModal').val());
-		formData.append("productContent", $('#productContentModal').val());
-		
-		if(productImageList.length <= 0){
-			for(var i = 0; i < imgList.length; i++){
-				formData.append("productImage", imgList[i]);
-			}
-		}else{
-			for(var i = 0; i < productImageList.length; i++){
-				formData.append("productImageList", productImageList[i]);
-			}
-		}
-		
-		$.ajax({
-			url : "updateProduct.do"
-			, type : "POST"
-			, data : formData
-			, processData : false
-			, contentType : false
-			, beforeSend : function(xhr){
-				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-            }
-			, success : function(result){
-				if(result > 0){
-					alert('상품 수정에 성공하였습니다.');
-					location.href="manage.do";
+		 
+		if(productImageList.length != 0){
+			var ajaxJson = {"productId" : $('#productIdModal').val()
+							, "productName" : $('#productNameModal').val()
+							, "categoryCode" : $('#categoryCodeModal').val()
+							, "productPrice" : $('#productPriceModal').val()
+							, "productContent" : $('#productContentModal').val()
+							, "productImageList": productImageList};
+			$.ajax({
+				url : "updateProduct.do"
+				, type : "POST"
+				, data : JSON.stringify(ajaxJson)
+				, processData : false
+				, contentType : 'application/json; charset=UTF-8'
+				, beforeSend : function(xhr){
+					xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	            }
+				, success : function(result){
+					if(result > 0){
+						alert('상품 수정에 성공하였습니다.');
+						myModal.hide();
+						selectProductList();
+						return;
+					}
+				}
+				, error : function(jqXHR){
+					alert('상품 수정에 실패하였습니다.');
 					return;
 				}
+			});
+		}else{
+			var formData = new FormData();
+			var imgList = imgFileList;
+			
+			formData.append("productId", $('#productIdModal').val());
+			formData.append("productName", $('#productNameModal').val());
+			formData.append("categoryCode", $('#categoryCodeModal').val());
+			formData.append("productPrice", $('#productPriceModal').val());
+			formData.append("productContent", $('#productContentModal').val());
+			
+			if(productImageList.length == 0){
+				for(var i = 0; i < imgList.length; i++){
+					formData.append("productImage", imgList[i]);
+				}
 			}
-			, error : function(jqXHR){
-				alert('상품 수정에 실패하였습니다.');
-				return;
-			}
-		});
-				
-		
+			
+			$.ajax({
+				url : "updateProductNewImage.do"
+				, type : "POST"
+				, data : formData
+				, processData : false
+				, contentType : false
+				, beforeSend : function(xhr){
+					xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	            }
+				, success : function(result){
+					if(result > 0){
+						alert('상품 수정에 성공하였습니다.');
+						myModal.hide();
+						selectProductList();
+						return;
+					}
+				}
+				, error : function(jqXHR){
+					alert('상품 수정에 실패하였습니다.');
+					return;
+				}
+			});
+		}
+	});
+	
+	$(document).on('click', '.page-link', function(){
+		productPaging($(this).data('page'));
 	});
 	
 	function selectProductList(search){
@@ -328,13 +355,14 @@ $(document).ready(function(){
 				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
             }
 			, success : function(result){
-				console.log(result);
+				var productList = result.productList;
+				var paging = result.paging;
 				
 				var tbody = $('#productListTbody');
 				tbody.empty();
 				
 				var tbodyHtml = '';
-				$.each(result,function(index,item){
+				$.each(productList,function(index,item){
 					tbodyHtml += '<tr>';
 					if(item.productImageList[0]){
 						tbodyHtml += '<td class="align-middle" style="width:10%;">';
@@ -371,6 +399,34 @@ $(document).ready(function(){
 				});
 				tbody.append(tbodyHtml);
 				
+				//페이징
+				console.log(paging);
+				var pagingHtml = '';
+				
+				if(paging.minNum == 1){
+					pagingHtml += '<li class="page-item disabled"><a class="page-link" href="#">&lt;&lt;</a></li>';
+				}else{
+					pagingHtml += '<li class="page-item"><a class="page-link" href="#" data-page="' + (paging.minNum - 1) + '">&lt;&lt;</a></li>';
+				}
+				
+				for(var i = paging.minNum; i <= paging.maxNum; i++){
+					if(i > paging.maxPageNum){
+						break;
+					}
+					if(i == paging.pageNum){
+						pagingHtml += '<li class="page-item active"><a class="page-link">' + i + '</a></li>';
+					}else{
+						pagingHtml += '<li class="page-item"><a class="page-link" href="javascript:void(0);" data-page="' + i + '">' + i + '</a></li>';
+					}
+				}
+				if(paging.maxNum >= paging.maxPageNum){
+					pagingHtml += '<li class="page-item disabled"><a class="page-link" href="#">&gt;&gt;</a></li>';
+				}else{
+					pagingHtml += '<li class="page-item"><a class="page-link" href="#" data-page="' + (paging.maxNum + 1) + '">&gt;&gt;</a></li>';
+				}
+				
+				$('#paging').empty();
+				$('#paging').append(pagingHtml);
 			}
 			, error : function(jqXHR){
 				alert('로딩 실패');
@@ -387,6 +443,14 @@ $(document).ready(function(){
 		var day = date.getDate();
 		day = day >= 10 ? day : '0' + day;
 		return year + '-' + month + '-' + day;
+	}
+	
+	function productPaging(pageNum){
+		var search = {"productName" : $('#searchKeyword').val()
+				 , "productYnh" : $('#productYnhSelect').val()
+				 , "categoryCode" : $('#categoryCode2').val()
+				 , "pageNum" : pageNum};
+		selectProductList(search);
 	}
 	
 	function drawPreviewModalData(){
@@ -452,7 +516,6 @@ $(document).ready(function(){
 		}
 		$('#imagePreviewModal').append(imgHtml);
 	}
-	
 });
 </script>
 
@@ -500,16 +563,9 @@ $(document).ready(function(){
 	</div>
 </div>
 
-<div class="row mx-3 mt-5">
+<div class="row mx-3">
 	<div class="col-md-12">
-		<ul class="pagination">
-			<li class="page-item"><a class="page-link" href="#">&lt;&lt;</a></li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item"><a class="page-link" href="#">4</a></li>
-			<li class="page-item"><a class="page-link" href="#">5</a></li>
-			<li class="page-item"><a class="page-link" href="#">&gt;&gt;</a></li>
+		<ul class="pagination justify-content-center" id="paging">
 		</ul>
 	</div>
 </div>
