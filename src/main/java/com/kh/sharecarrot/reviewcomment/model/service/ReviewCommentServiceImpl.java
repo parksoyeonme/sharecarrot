@@ -22,4 +22,15 @@ public class ReviewCommentServiceImpl implements ReviewCommentService {
 		return reviewCommentDao.insertReviewComment(param);
 	}
 
+	@Override
+	public int selectTotalCommentsNo() {
+		return reviewCommentDao.selectTotalCommentsNo();
+	}
+
+	@Override
+	public ReviewComment selectReviewCommentOne(int reviewNo) {
+		return reviewCommentDao.selectReviewCommentOne(reviewNo);
+	}
+
+
 }
