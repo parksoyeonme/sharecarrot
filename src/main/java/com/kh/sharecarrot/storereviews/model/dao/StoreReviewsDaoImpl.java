@@ -39,6 +39,7 @@ public class StoreReviewsDaoImpl implements StoreReviewsDao {
 		// TODO Auto-generated method stub
 		return session.selectOne("storereviews.getTotalContents",shopId);
 	}
+
 	
 	
 }
