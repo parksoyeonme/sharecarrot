@@ -1,6 +1,7 @@
 package com.kh.sharecarrot;
 
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -29,13 +30,17 @@ import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Category;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * Handles requests for the application home page.
  */
 @Controller
+@Slf4j
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -55,8 +60,20 @@ public class HomeController {
 			@RequestParam(defaultValue = "1") int cPage,
 			@RequestParam(defaultValue = "") String locCode,
 			@RequestParam(defaultValue = "") String category,
-			HttpServletRequest request) { 
+			HttpServletRequest request,
+			Principal principal) { 
+		
+		log.info("principal = {}", principal);
+		//로그인을 한 경우에만 찜 목록 불러오는 코드
+		List<JjimList> jjimList = null;
+		if(principal != null) {
+			String longinMemberId = principal.getName();
+			jjimList = utilsService.selectJjimList(longinMemberId);
+			log.info("jjim = {}" ,jjimList);
 			
+		}
+		
+		
 		/* 더 보기 페이징*/
 		param.put("limit", limit);
 		param.put("cPage", cPage);
@@ -84,6 +101,7 @@ public class HomeController {
 		model.addAttribute("productList", productList);
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("jjimList", jjimList);
 		
 		return "forward:/index.jsp";
 	}
