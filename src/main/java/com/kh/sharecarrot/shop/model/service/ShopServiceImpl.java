@@ -20,10 +20,6 @@ public class ShopServiceImpl implements ShopService{
 	@Autowired
 	private ShopDao shopDao;
 	
-	public void shopEnroll(Shop shop) {
-		shopDao.shopEnroll(shop);
-	}
-
 	
 	@Override
 	public int updateVisitCount(String shopId) {
@@ -76,6 +72,12 @@ public class ShopServiceImpl implements ShopService{
 	@Override
 	public int selectsellCount(String shopId) {
 		return shopDao.selectsellCount(shopId);
+
+	}
+	
+	public String selectShopId(String loginMemberId) {
+		return shopDao.selectShopId(loginMemberId);
+
 	}
 
 

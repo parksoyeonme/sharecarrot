@@ -105,10 +105,13 @@ public class ShopController {
 
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
+
 		//상점오픈일
 		int openday = shopService.selectOpenDay(shopId);
 		//상품판매횟수
 		int sellCount = shopService.selectsellCount(shopId);
+
+
 		
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("loginMemberId", loginMemberId);

@@ -31,6 +31,11 @@ public class ChattingDaoImpl implements ChattingDao {
 	public int insertChattingRoom(Map<String, Object> param) {
 		return session.insert("chat.insertChattingRoom", param);
 	}
+
+	@Override
+	public List<ChattingRoom> selectRoomList(String loginMemberId) {
+		return session.selectList("chat.selectRoomList", loginMemberId);
+	}
 	
 	
 	

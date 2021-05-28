@@ -17,10 +17,7 @@ public class ShopDaoImpl implements ShopDao{
 	@Autowired
 	private SqlSessionTemplate session;
 	
-	@Override
-	public void shopEnroll(Shop shop) {
-		session.insert("shop.shopEnroll", shop);
-	}
+	
 
 	@Override
 	public int updateVisitCount(String shopId) {
@@ -60,9 +57,16 @@ public class ShopDaoImpl implements ShopDao{
 	}
 
 	@Override
+
 	public String selectMembershopId(String memberId) {
 		return session.selectOne("shop.selectMembershopId", memberId);
 	}
+
+	public String selectShopId(String loginMemberId) {
+		return session.selectOne("shop.selectShopId", loginMemberId);
+	}
+
+
 
 	@Override
 	public int selectsellCount(String shopId) {

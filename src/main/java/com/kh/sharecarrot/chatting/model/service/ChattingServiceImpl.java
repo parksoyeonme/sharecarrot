@@ -35,4 +35,10 @@ public class ChattingServiceImpl implements ChattingService{
 		return chattingDao.insertChattingRoom(param);
 	}
 
+
+	@Override
+	public List<ChattingRoom> selectRoomList(String loginMemberId) {
+		return chattingDao.selectRoomList(loginMemberId);
+	}
+
 }
