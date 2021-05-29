@@ -29,7 +29,7 @@
 function chatting_popup(){
 // 	var loginUser = <sec:authentication property="principal.memberId"/>;
 // 	var shopId = ${product.shopId};
-	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
+	var url = "${pageContext.request.contextPath}/chat/buyerChattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
 
 	var popupWidth = 500;
 	var popupHeight = 400;
