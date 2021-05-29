@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <jsp:include page="/WEB-INF/views/common/history.jsp" />
 <!-- 메인 페이지 작업영역 -->
@@ -46,7 +48,12 @@
                   <option value="" disabled selected>지역명</option>
                   <option value="">전체</option>
                   <c:forEach items="${locationList}" var="location">
-                    <option value="${location.locCode}" ${loginMember.locCode eq location.locCode ? 'selected' : ''} >${location.locName}</option>
+                    <sec:authorize access="isAnonymous()">
+                      <option value="${location.locCode}">${location.locName}</option>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <option value="${location.locCode}" ${locCode eq location.locCode ? 'selected' : '' }>${location.locName}</option>
+                    </sec:authorize>
                   </c:forEach>
                 </select>
               </div>
@@ -69,31 +76,46 @@
         
 			
         <div class="item-wrapper">
-          <div class="items" id="item-list">
-  		<c:forEach items="${productList}" var="product">
-            <div class="item" onclick="location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=${product.productId}'">
-              <div class="item-photo">
-                <img src="./resources/upload/product/${product.productImgRenamed}" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">${product.productName}</div>
-                <div class="item-price">
-                  <strong class="amount">${product.productPrice}</strong>
-                  <span class="currency">원</span>
+          <c:if test="${listLength ne 0}">
+            <div class="items" id="item-list">
+              <c:forEach items="${productList}" var="product">
+                <div class="item" onclick="location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=${product.productId}'">
+                  <div class="item-photo">
+                    <img src="./resources/upload/product/${product.productImgRenamed}" alt="상품이미지">
+                  </div>
+                  <div class="item-detail">
+                    <div class="item-name">${product.productName}</div>
+                    <div class="item-price">
+                      <strong class="amount">${product.productPrice}</strong>
+                      <span class="currency">원</span>
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
+            </c:if>
+            <c:if test="${listLength eq 0}">
+              <div class="no-item-list" id="item-list">
+                <div class="no-item">
+                  <p>등록된 상품이 없습니다.</p>
                 </div>
               </div>
-            </div>
-		</c:forEach>
+            </c:if>
             
 		</div>
           <!-- 상품 끝 -->
           <!-- 버튼 시작-->
           <!-- 버튼 클릭 시 상품 목록 불러오기 (10개씩)-->
-            
-          <div class="button-more" id="button-more">
-            <button type="button" class="btn-more btn-large">더보기</button>
-            <input type="hidden" id="btn-plus" value="2">
+          <c:if test="${listLength ne 0}">
+              <div class="button-more" id="button-more">
+              <button type="button" class="bttn btn-more btn-large">더보기</button>
+            </c:if>
+            <c:if test="${listLength eq 0}">
+              <div class="button-nomore" id="button-more">
+              <button type="button" class="bttn btn-nomore"></button>
+            </c:if>
+              <input type="hidden" id="btn-plus" value="2">
           </div>
+            
           <!-- 버튼 끝 -->
         </div>
       </div>
@@ -103,13 +125,13 @@
   <script>
     const list_div = document.getElementById("item-list");
     const btnMore = document.getElementById("button-more");
-
+    
     /* 상품 목록 없을 때 함수*/
     const noItemList = () => {
       // const wrapper = document.querySelector(".item-wrapper");
       btnMore.className = "btn-nomore";
       
-
+      
       const item = document.createElement("div");
       list_div.append(item);
       item.className="no-item";
@@ -166,7 +188,7 @@
 
     const $locationOption = $("#select-location");
     const $categoryOption = $("#select-category");
-    const button_more = document.querySelector(".btn-more");
+    const button_more = document.querySelector(".bttn");
     let btnPlus = document.querySelector("#btn-plus").value;
 
     const itemList = document.getElementById("item-list");
@@ -185,24 +207,38 @@
         },
         url:"${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
         success: data =>{
-          console.log(data);
           const list_div = document.getElementById("item-list");
-          list_div.className= "items";
+          console.log(data);
+          if(data.length > 0){
+            list_div.className ="items";
+            button_more.className="bttn btn-more btn-large";
+            button_more.innerText="더보기";
+          } else {
+            list_div.className ="no-item-list";
+            btnMore.className = "btn-nomore";
+            // button_more.className ="bttn btn-nomore";
+          }
+
+          // const no_list_div = document.querySelector(".no-item-list");
+          
+          // no_list_div.className ="items";
+          // list_div.className= "items";
           btnMore.className= "button-more";
           
           // $categoryOption.find('option:first').attr('selected');
           $('#select-category option:eq(0)').prop('selected', true);  // 지역 선택시 카테고리 옵션 초기화
-
+          
           while ( list_div.hasChildNodes() ) { 
             list_div.removeChild( list_div.firstChild ); 
           }
-
+          
           for (let i = 0; i < data.length; i++) 
           {          
             let item = makeItem(data[i]);
             list_div.appendChild(item);
           }
-
+          
+          // no_list_div.className ="items";
           if(data.length == 0){
             list_div.className ="no-item-list";
             noItemList();
@@ -218,11 +254,11 @@
   
     /* 카테고리 선택시 Ajax 요청 */     
     $categoryOption.on("change", function(){ 
-      if($locationOption.val() == null){
-        //지역 선택 없이 카테고리 선택 못하게
-        alert("지역을 먼저 선택해주세요");
-          return false;
-      }
+      // if($locationOption.val() == null){
+      //   //지역 선택 없이 카테고리 선택 못하게
+      //   alert("지역을 먼저 선택해주세요");
+      //     return false;
+      // }
         console.log($locationOption.val(), $categoryOption.val());
 
         $.ajax({
@@ -264,7 +300,7 @@
     
     /* 더보기 버튼 클릭시 Ajax 요청 */  
     button_more.addEventListener("click", e =>{
-      // alert("눌림");
+      alert("눌림");
       $.ajax({
         type:"POST",
         dataType:"JSON",
@@ -291,6 +327,7 @@
 
           if(data.length === 0){
             alert("등록된 상품이 없습니다.")
+            btnMore.className = "btn-nomore";
           }
         },
         error: (request, status, error) =>{

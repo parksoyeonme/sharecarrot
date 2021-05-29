@@ -20,4 +20,9 @@
 		select count(*) from jjim_list
 		where member_id = #{memberId}
 	</select>
+	
+	<select id="selectLocationCode" resultType="string">
+		select loc_code from member
+		where member_id = #{loginId}
+	</select>
 </mapper>

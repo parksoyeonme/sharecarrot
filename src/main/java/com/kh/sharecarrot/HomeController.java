@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,10 +80,13 @@ public class HomeController {
 		param.put("cPage", cPage);
 		param.put("categoryCode", category);
 		param.put("locCode", locCode);
-		if(request.getSession().getAttribute("loginMember") != null) {
-			logger.info("session ={}", request.getSession().getAttribute("loginMember"));
-			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
-			locCode = loginMember.getLocCode();
+		if(principal != null) {
+			
+			logger.info("Member ={}", principal);
+//			Member loginMember = (Member)principal;
+			String loginId = principal.getName();
+			logger.info("id={}", principal.getName());
+			locCode = utilsService.selectLocationCode(loginId);
 			logger.info("locCode={}", locCode);
 			//locCode 공백제거
 			locCode = locCode.trim();
@@ -91,7 +95,9 @@ public class HomeController {
 		}
 		
 		List<MainProduct> productList = mainService.selectProductList(param);
+		int listLength = productList.size();
 		logger.info("productList = {}", productList);
+		logger.info("listLength ={}", listLength);
 		
 		List<Location> locationList = utilsService.selectLocationList();
 		List<Category> categoryList = utilsService.selectCategoryList();
@@ -102,6 +108,8 @@ public class HomeController {
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("jjimList", jjimList);
+		model.addAttribute("locCode", locCode);
+		model.addAttribute("listLength", listLength);
 		
 		return "forward:/index.jsp";
 	}
