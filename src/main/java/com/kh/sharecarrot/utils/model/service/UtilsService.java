@@ -16,4 +16,6 @@ public interface UtilsService {
 
 	int selectTotalJjimNo(String memberId);
 
+	String selectLocationCode(String loginId);
+
 }
