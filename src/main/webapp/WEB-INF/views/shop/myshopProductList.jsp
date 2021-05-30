@@ -46,14 +46,24 @@ function displayList(data){
 
       var html = "";
 
-      console.log(data);
+      console.log("data: "+ data.productList.length);
 
+	    if(data.productList.length == 0){
+	    	html += "<table>";
+            html += "<tr>";
+	        html += "<td>";
+	        html += "<div style='margin-left: 132px'>등록된 상품이 존재하지 않습니다.</div>" ;    
+	        html += "</td>";
+            html += "</tr>";
+            html += "</table>";  
+	    }else{
       //나중에 페이징 처리 후에 5에서 data.productListSize로 바꾸기
-      for(var i = 0; i < 5; i++){
+      for(var i = 0; i < data.productList.length; i++){
          if(i == 0){
             html += "<table>";
             html += "<tr>";
          }
+         
 	         html += "<td><div class='box box1 boxC ' onclick='productDetail(" + data.productList[i].productId + ")'>"
 	         + "<img id='productImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>"
 	           + "</div>";
@@ -61,18 +71,19 @@ function displayList(data){
 	         html += "<div class='pro-price'>"+ data.productList[i].productPrice +"</div>";
 	         html += "</td>";
          //나중에 페이징 처리 후에 data.productListSize-1로 바꿔주기
-         if(i == (4)){
+         if(i == data.productList.length-1){
             html += "</tr>";
             html += "</table>";
             
          }
       }
+	    }
       
       
       $('#product-list').append(html);
       //console.log(html);
  
-      console.log("@@pagebar : " + data.pageBar);
+     // console.log("@@pagebar : " + data.pageBar);
       $('#pagebar').append(data.pageBar);
 }
   

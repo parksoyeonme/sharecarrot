@@ -11,7 +11,14 @@ public interface ReviewCommentService {
 
 	int selectTotalCommentsNo();
 
-	ReviewComment selectReviewCommentOne(int reviewNo);
+	
+
+	int deleteReviewComment(ReviewComment reviewComment);
+
+	List<ReviewComment> selectReviewCommentOne();
+
+
+	
 
 
 
