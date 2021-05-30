@@ -58,6 +58,9 @@
     }
     /*찜한 상품 CSS 끝*/
     /*최근 본 상품 CSS 시작*/
+    .recent-title{
+      letter-spacing: -1px;
+    }
     .recent-dot{
       display: flex;
       -webkit-box-pack: center;
@@ -69,7 +72,7 @@
     }
 
     .recent-content{
-      height: 120px;
+      /* height: 120px; */
       display: flex;
       flex-direction: column;
       -webkit-box-align: center;
@@ -80,6 +83,51 @@
       font-size: 12px;
       text-align: center;
     }
+
+    .recent-img {
+      width: 70px;
+      height: 70px;
+      position: relative;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: black;
+      margin: 5px 0;
+    }
+    .recent-img:hover{
+      cursor: pointer;
+    }
+
+    .recent-detail-area {
+      position: absolute;
+      width: 200px;
+      height: 100%;
+      border: 1px solid black;
+      right: 0%;
+      display: none;
+    }
+    .recent-img:hover .recent-detail-area {
+      display: block;
+    }
+    .recent-detail-div {
+      height: 100%;
+      width: calc(100% - 70px);
+      background-color: white;
+      text-align: left;
+    }
+    .recent-detail-name {
+        font-size: 0.9rem;
+        font-weight: bold;
+        padding: 10px 10px 0px 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .recent-detail-price {
+        font-weight: bold;
+        padding: 0px 10px 3px 10px;
+    }
+
     /*최근 본 상품 CSS 끝*/
     /* TOP 버튼 CSS 시작 */
     .top-btn{
@@ -94,7 +142,7 @@
       font-size: 14px;
       color: rgb(102, 102, 102);
       border: 1px solid rgb(204, 204, 204);
-      background-color: transparent;
+      background-color: white;
       outline: none;
     }
     /* TOP 버튼 CSS 끝 */
@@ -144,7 +192,11 @@ var totalJjim = 0;
           <div class="recent-title">최근 본 상품</div>
           <div class="recent-dot"></div>
           <!-- 최근 본 상품 == null -->
-          <div class="recent-content">최근 본<br/> 상품이 <br/>없습니다</div>
+          <div class="recent-content" id="recent-content">
+           <div id="recent-no-content">
+             최근 본<br/> 상품이 <br/>없습니다
+           </div> 
+          </div>
           <!-- 최근 본 상품 != null => 3개까지 출력. 저장은 DB? Session? -->
         </div>
       <!-- 최근 본 상품 목록 끝 -->
@@ -155,7 +207,6 @@ var totalJjim = 0;
         </div>
       <!-- TOP 버튼 끝 -->
     </div>
-    <!-- 1024px 이하일 경우..... 어떡하지... -->
 </div>
 <script>
   
@@ -178,5 +229,81 @@ var totalJjim = 0;
 	</sec:authorize>
 	  location.href = '${pageContext.request.contextPath}/jjim/jjimList.do';
   }
+
+  // 뭐해야하지
+  const recentList = (productInfo) =>{
+    const recent_div = document.querySelector("#recent-content");
+    
+    const recent_img = document.createElement("div");
+    recent_img.className = "recent-img";
+    // recent_img.src = "${pageContext.request.contextPath}/resources/upload/product/" + productInfo.productImg;
+    recent_img.style.backgroundImage="url(${pageContext.request.contextPath}/resources/upload/product/" + productInfo.productImg + ")";
+    recent_img.width = 50;
+    recent_img.height = 50;
+
+    const recent_detail_area = document.createElement("div");
+    recent_img.appendChild(recent_detail_area);
+    recent_detail_area.className="recent-detail-area"
+    recent_detail_area.addEventListener("click", function(e) {
+          location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productInfo.productId;
+        })
+
+    const recent_detail_div = document.createElement("div");
+    recent_detail_area.appendChild(recent_detail_div);
+    recent_detail_div.className="recent-detail-div"
+
+    const recent_detail_name = document.createElement("div");
+    const recent_detail_price = document.createElement("div");
+    recent_detail_name.className = "recent-detail-name";
+    recent_detail_price.className = "recent-detail-price";
+
+    recent_detail_name.innerText = productInfo.productName;
+    recent_detail_price.innerText = productInfo.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",") + " 원";
+
+    recent_detail_div.appendChild(recent_detail_name);
+    recent_detail_div.appendChild(recent_detail_price);
+    
+
+    recent_div.appendChild(recent_img);
+
+
+
+
+    // <div class="recent-detail-area">
+    //   <div class="recent-detail-div">
+    //     <div class="recent-detail-name">나이키 모나크에어 올블랙 255</div>
+    //     <div class="recent-detail-price">30,000</div>
+    //   </div>
+    // </div>
+  }
+  
+  // 로컬스토리지에 있는 최근본상품1~3 값을 불러온다.(JSON)
+
+  let product_count = 0;
+  for(let i = 1; i <= 3; i++){
+    const productInfoJSON = localStorage.getItem("최근본상품_" + i);
+    // console.log(productInfo);
+
+    // 키값을 통해 불러온 값이 없으면 멈춰!
+    if(!productInfoJSON) {
+      break;
+    }
+
+    //불러온 JSON값을 JSON.PARSE해서 저장
+    const productInfo = JSON.parse(productInfoJSON);
+    console.log(productInfo)
+
+    //변수들을 html요소로 만든다.
+    recentList(productInfo);
+    product_count++;
+  }  
+  
+  // 로컬스토리지에 상품이 하나라도 있으면 문구 지운다.
+  if(product_count > 0) {
+    document.querySelector("#recent-no-content").style.display = "none";
+  }
+  
+
+
   
 </script>

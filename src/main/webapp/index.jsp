@@ -37,7 +37,6 @@
          </div>
         </div>
         <!-- 배너 끝 -->
-
         <!-- 검색 시작 -->
         <!-- <form:form> -->
           <div class="search">
@@ -81,12 +80,13 @@
               <c:forEach items="${productList}" var="product">
                 <div class="item" onclick="location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=${product.productId}'">
                   <div class="item-photo">
+                    <!-- <img src="./resources/upload/product/${product.productImgRenamed}" alt="상품이미지"> -->
                     <img src="./resources/upload/product/${product.productImgRenamed}" alt="상품이미지">
                   </div>
                   <div class="item-detail">
                     <div class="item-name">${product.productName}</div>
                     <div class="item-price">
-                      <strong class="amount">${product.productPrice}</strong>
+                      <strong class="amount"><fmt:formatNumber value="${product.productPrice}" pattern="#,###" /></strong>
                       <span class="currency">원</span>
                     </div>
                   </div>
@@ -159,6 +159,7 @@
         
         const item_photo_img = document.createElement("img");
         item_photo_img.src = "./resources/upload/product/" + productImgRenamed;
+        item_photo_img.alt ="상품이미지";
         item_photo.appendChild(item_photo_img);
         
         const item_detail = document.createElement("div");
@@ -173,7 +174,7 @@
         item_price.className ="item-price"
         
         const amount = document.createElement("strong");
-        amount.innerText = productPrice;
+        amount.innerText = productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
         amount.className ="amount";
         item_price.appendChild(amount);
         
@@ -300,7 +301,6 @@
     
     /* 더보기 버튼 클릭시 Ajax 요청 */  
     button_more.addEventListener("click", e =>{
-      alert("눌림");
       $.ajax({
         type:"POST",
         dataType:"JSON",

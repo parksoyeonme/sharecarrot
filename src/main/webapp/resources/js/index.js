@@ -78,4 +78,3 @@ prevBtn.addEventListener('click', moveToPreviousSlide);
 startSlide();
 
 /*---------------------------------이미지 슬라이더 js 끝--------------------------------------------- */
-
