@@ -35,4 +35,9 @@ public class UtilsServiceImpl implements UtilsService {
 		return utilsDao.selectTotalJjimNo(memberId);
 	}
 
+	@Override
+	public String selectLocationCode(String loginId) {
+		return utilsDao.selectLocationCode(loginId);
+	}
+
 }

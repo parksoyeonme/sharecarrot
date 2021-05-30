@@ -16,4 +16,6 @@ public interface UtilsDao {
 
 	int selectTotalJjimNo(String memberId);
 
+	String selectLocationCode(String loginId);
+
 }
