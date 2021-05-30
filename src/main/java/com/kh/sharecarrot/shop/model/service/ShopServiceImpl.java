@@ -31,17 +31,6 @@ public class ShopServiceImpl implements ShopService{
 	}
 
 	
-	@Override
-	public Shop selectShopOne(Map<String, Object> param) {
-		return shopDao.selectShopOne(param);
-	}
-
-
-	@Override
-	public List<Product> selectshopProductList(String shopId) {
-		return shopDao.selectshopProductList(shopId);
-	}
-
 
 	@Override
 	public int selectOpenDay(String shopId) {
@@ -60,11 +49,6 @@ public class ShopServiceImpl implements ShopService{
 		return shopDao.selectShop(shopId);
 	}
 
-
-	@Override
-	public Member selectProfilOne(String shopId) {
-		return shopDao.selectProfilOne(shopId);
-	}
 
 
 	@Override

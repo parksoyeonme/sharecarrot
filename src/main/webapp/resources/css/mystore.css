@@ -30,23 +30,7 @@
 	font-size: 20px;
 }
 /*내상점관리 버튼*/
-.gomystore-button {
-    -webkit-border-radius: 7;
-    -moz-border-radius: 7;
-    border-radius: 7px;
-    font-size: 13px;
-    background: #FA8440;
-    padding: 10px 20px;
-    margin-left: 41px;
-    text-decoration: none;
-}
-.gomystore-button:hover {
-    text-decoration: none;
-}
-.gomystore-button:active {
-    position: relative;
-    top: 1px;
-}
+
 
 /*전체*/
 .div-division > .left {

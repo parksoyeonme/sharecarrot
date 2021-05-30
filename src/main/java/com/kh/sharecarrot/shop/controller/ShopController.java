@@ -57,21 +57,17 @@ public class ShopController {
 	private StoreReviewsService storeReviewsService;
 	@Autowired
 	private TransactionHistoryService transactionHistoryService;
-	
 	@Autowired
 	private ReviewCommentService reviewCommentService;
 	
 	
-
+	//header의 내상점으로 들어오기
 	@RequestMapping(value="/myshopHead.do", method={RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
 	public String myshophead(String memeberId) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		//로그인한 memberId
 	    String memberId = ((UserDetails) principal).getUsername();		
-		//loginmember로 정보 받아오기
-		System.out.println("########여기요#####"+memberId);
-
 		//현재 로그인한 memberId의 shop_Id
 		String shopId = shopService.selectMembershopId(memberId);
 		
@@ -79,7 +75,7 @@ public class ShopController {
 		
 	}
 	
-	
+	//상품으로 들어오기
 	@GetMapping("/myshop.do")
 	public void mystore(Member member, Model model,Map<String, Object> param,
 			@RequestParam String shopId) {
@@ -87,32 +83,24 @@ public class ShopController {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		//로그인한 memberId
 	    String loginMemberId = ((UserDetails) principal).getUsername();		
-		//loginmember로 정보 받아오기
-		System.out.println("##############"+loginMemberId);
-
-		//넘어온 shopId 임시로 적어둠
-		//String shopId1 = "p9";
-		
+	
 		Shop shop = shopService.selectShop(shopId);
-		log.info("shop = {}", shop);
+		log.debug("shop = {}", shop);
 		
 		//현재 상점 주인의 memberId
 		String memberId = shopService.selectMemberId(shopId);
 
 		//현재 상점 id로 현재 shop 객체 받아옴
-		
 		String profile = memberService.selectShopMember(memberId);
 
 		//방문자수(조회수)
 		int result = shopService.updateVisitCount(shopId);
-
 		//상점오픈일
 		int openday = shopService.selectOpenDay(shopId);
 		//상품판매횟수
 		int sellCount = shopService.selectsellCount(shopId);
 
 
-		
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("loginMemberId", loginMemberId);
 		model.addAttribute("openday", openday);
@@ -121,12 +109,14 @@ public class ShopController {
 		model.addAttribute("sellCount", sellCount);
 	}
 	
+	
 	//내상점-상품
 	@ResponseBody
 	@RequestMapping(value="/myshopProductList.do", method={RequestMethod.POST,RequestMethod.GET},
 			produces ="application/text; charset=utf8")
 	public String myshopProductList(@RequestParam(required = false) String shopId,
-			@RequestParam(defaultValue ="1" ) int cPage,@RequestParam Map<String,Object> param,
+			@RequestParam(defaultValue ="1" ) int cPage,
+			@RequestParam Map<String,Object> param,
 			Model model,			
 			HttpServletResponse response, HttpServletRequest request) throws IOException {
 
@@ -136,12 +126,9 @@ public class ShopController {
 			param.put("cPage", cPage);
 			param.put("shopId", shopId);
 			
-			
-			
 		List<Product> productList = productService.selectProductList(param);
 		int productListSize = productService.selectProductListSize(shopId);
 		
-
 		List<ProductImage> productImageList = new ArrayList<>();
 		Iterator<Product> iter = productList.iterator();
 	
@@ -150,11 +137,6 @@ public class ShopController {
 			List<ProductImage> proimgList =  productService.selectProductImageList(product.getProductId());
 			productImageList.addAll(proimgList);
 		}
-
-//		log.info("productList : {}", productList);
-//		log.info("productImageList : {}", productImageList);
-//		log.info("productListSize : {}", productListSize);
-
 		
 		//pagebar
 		int totalContents = productService.getTotalContents(shopId);
@@ -166,7 +148,6 @@ public class ShopController {
 
 		JSONObject obj = new JSONObject();
 				
-		//data: 뒤에 들어갈 값인 jArray 생성
 		obj.put("productList", productList);
 		obj.put("productImageList", productImageList);
 		obj.put("productListSize", productListSize);
@@ -181,15 +162,13 @@ public class ShopController {
 	@ResponseBody
 	@RequestMapping(value="/myshopReviewList.do", method=RequestMethod.GET,
 			produces ="application/text; charset=utf8")
-	public String myshopReviewList(
-			@RequestParam String shopId,
-			Model model,
+	public String myshopReviewList(@RequestParam String shopId, Model model,
 			HttpServletResponse responset,HttpServletRequest request) throws IOException {
 		
 		List<StoreReviews> storeReviewList = storeReviewsService.selectStoreReviewsList(shopId);
 		List<ReviewImage> reviewImageList = new ArrayList<>();
 		List<Member> buyerList = new ArrayList<>();
-		List<ReviewComment> reviewCommentlist = new ArrayList<>();
+		//List<ReviewComment> reviewCommentlist = new ArrayList<>();
 
 		String shopMemberId = shopService.selectMemberId(shopId);
 		
@@ -197,79 +176,43 @@ public class ShopController {
 		//로그인한 memberId
 	    String loginMemberId = ((UserDetails) principal).getUsername();	
 		
-		//List<ReviewComment> reviewCommList = new ArrayList<>();
 		
 	    int storeReviewListSize = storeReviewsService.selectStoreReviewListSize(shopId);
-		//int totalReviewComment = reviewCommentService.selectTotalCommentsNo();
-		//ReviewComment[] reviewCommArray = new ReviewComment[totalReviewComment];
 
-		//int reviewCommentListSize = reviewCommentService.selectRevieCommentListSize(shopId);
-		
-		//이거int reviewListSize = reviewList.size();
-		
-		//댓글이 존재하면 1, 없으면 0
 		int j = 0;
-		//이거Integer[] isExistArray = new Integer[reviewListSize];
+
 		Iterator<StoreReviews> iter = storeReviewList.iterator();
 		while(iter.hasNext()) {
 			StoreReviews reviews = (StoreReviews)iter.next();
 			List<ReviewImage> imgList = storeReviewsService.selectReviewImageList(reviews.getReviewNo());
 			List<Member> bList = transactionHistoryService.selectBuyer(reviews.getProductId());
-//			List<ReviewComment> list = reviewCommentService.reviewCommentlist(reviews.getReviewNo());
-//			reviewCommArray[j] = reviewCommentService.selectReviewCommentOne(reviews.getReviewNo());
-			//log.info("@@@reviewCommArray[j] : {}", reviewCommArray[j]);
 			buyerList.addAll(bList);
 			reviewImageList.addAll(imgList);
-//			reviewCommList.addAll(list);
+
 			j++;
 		}
 		
-		List<ReviewComment> list = reviewCommentService.selectReviewCommentOne();
-		//reviewCommentlist.addAll(list);
+		List<ReviewComment> reviewCommentlist = reviewCommentService.selectReviewCommentOne();
 
 		JSONObject obj = new JSONObject();
 		log.info("@@buyerList : {}",buyerList);
-		//data: 뒤에 들어갈 값인 jArray 생성
-//		log.info("@@@reviewCommArraylength : {}", reviewCommArray.length);
-//		log.info("@@@reviewCommArray : {}", reviewCommArray);
-		
-		/*
-		 * for(int i = 0; i < 2; i++) { if(reviewCommArray[i]==null) { isExistArray[i] =
-		 * 0; // isExistList.add(0); }else if(reviewCommArray[i]!=null) {
-		 * isExistArray[i] = 1; // isExistList.add(1); }
-		 * log.info("@@@isExistArray[i] = {}", isExistArray[i]); }
-		 */
-
-		//배열로 변경
-
-		
-//		obj.put("isExistList", isExistList);
-//		if(reviewCommList.size() >= 1) {
-//			//있을 때
-//			obj.put("isExist", true);
-//		}else {
-//			//없을 때
-//			obj.put("isExist", false);
-//		
-		
+	
 		obj.put("shopMemberId", shopMemberId);
 		obj.put("loginMemberId",loginMemberId);
 		obj.put("storeReviewList", storeReviewList);
 		obj.put("reviewImageList", reviewImageList);
 		obj.put("storeReviewListSize", storeReviewListSize);
 		obj.put("buyerList", buyerList);
-		//obj.put("isExistArray", isExistArray);
-		obj.put("reviewCommentlist", list);
-		//obj.put("reviewCommArray", reviewCommArray);
+		obj.put("reviewCommentlist", reviewCommentlist);
 		String resp = obj.toString();
-//		
+		
 		return resp;
 	}
 	
-	//내상점 상점리뷰에 댓글등록
+	//내상점 댓글등록
 	@ResponseBody
 	@RequestMapping(value="/reviewComment.do", method= RequestMethod.POST,produces ="text/plain; charset=utf8")
-	 public void reviewComment(HttpServletRequest request, HttpServletResponse response ,@RequestParam Map<String,Object> param) {
+	 public void reviewComment(@RequestParam Map<String,Object> param) {
 		System.out.println(param);
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		String memberId = ((UserDetails) principal).getUsername(); 	
@@ -277,7 +220,8 @@ public class ShopController {
 		int result = reviewCommentService.insertReviewComment(param);
 		
 	}
-
+	
+	//내상점 댓글삭제
 	@ResponseBody
 	@RequestMapping(value="/deleteReviewComment.do",method= RequestMethod.POST)
 	public int deleteReviewComment(ReviewComment reviewComment) {
