@@ -42,23 +42,29 @@
       <a class="nav-link ${param.boardCategory eq 'C5'? 'active' : ''}" href="${pageContext.request.contextPath}/board/boardList.do?boardCategory=C5${!empty param.locCode ? '&locCode='+=param.locCode : '' }">회사생활</a>
     </li>
   </ul>
-	<div class='mb-2 mt-2'>
-	<select class="col-md-2" id="selectLocation" required>
-	  <option selected value="">전체지역</option>
-	  <c:forEach items="${locationList}" var="location">
-	  	<option value="${location.locCode}" ${param.locCode eq location.locCode ? 'selected' : ''}>${location.locName}</option>
-	  </c:forEach>
-	</select>
-	<select class="col-md-2" id="selectHottest" required>
-	  <option value="L" selected>최신순</option>
-	  <option value="H">인기순</option>
-	</select>
-	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goBoardForm();"/>
-	</div>
+  <div class='container mt-3'>
+  	<div class="row">
+		<div class='col'>
+			<select id="selectLocation" required>
+			  <option selected value="">전체지역</option>
+			  <c:forEach items="${locationList}" var="location">
+			  	<option value="${location.locCode}" ${param.locCode eq location.locCode ? 'selected' : ''}>${location.locName}</option>
+			  </c:forEach>
+			</select>
+			<select id="selectHottest" required>
+			  <option value="L" selected>최신순</option>
+			  <option value="H">인기순</option>
+			</select>
+		</div>
+		<div class='col mb-3' style='text-align:right;'>
+			<input type="button" value="글쓰기" id="btn-add" class="btn btn-sm btn-outline-dark" onclick="goBoardForm();"/>
+		</div>
+  	</div>
+  </div>
 	
 	<div id="boardList">
 	</div>
-	<button id="searchMore" class="btn btn-outline-primary btn-block col-sm-10 mx-auto">더 보기</button>
+	<button id="searchMore" class="btn btn-outline-dark btn-block col-sm-12 mx-auto">더 보기</button>
 	
 	<script>
 	function goBoardForm(){
@@ -88,7 +94,6 @@
 		
 		$("#selectHottest").change(function(e){
 			const code = e.target.value;
-			console.log(code);
 			readBoardList(1, code);
 		});
 		
@@ -105,8 +110,7 @@
 				},
 				url: "${pageContext.request.contextPath}/board/searchBoardList.do?${_csrf.parameterName}=${_csrf.token}",
 				success: function(data){
-					console.log(data);
-					displayList(data);
+					displayList(data,code);
 				},
 				error:function(request,status,error){
 		            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -115,8 +119,14 @@
 		}
 		
 		
-		function displayList(data){
-			$(boardList).html('');
+		function displayList(data, code){
+			if(code) $(boardList).html('');
+			console.log(data);
+			if(data.length === 0){
+				console.log('nullTEst');
+				$(searchMore).html('더 보여줄 자료가 없습니다!');
+			}
+				
 			$.each(data, function(index, elem){
 				<%-- 유저 지역 검색 --%>
 				var loc = "";
@@ -129,15 +139,17 @@
 				var enDate = getFormetDate(new Date(elem.boardEnrollDate));
 				
 				
+				<%--회원정보 헤더--%>
 				var html = "<div class='m-3'>";
 						html = "<table class='table'>";
 						html += "<tr class='table-dark'>";
 							html += "<td>"+elem.memberId+"</td>";
-							html += "<th colspan='2'>"+elem.boardTitle+"</th>";
-							html += "<td>"+enDate+"</td>";
-							html += "<td>"+loc+"</td>";
+							html += "<th colspan='2'>["+elem.boardTitle+"]</th>";
+							html += "<td align='right'>"+enDate+"</td>";
+							html += "<td align='right'>"+loc+"</td>";
 						html += "</tr>";
 						
+						<%--이미지--%>
 						html += "<tr id='boardImage-tr' class='table-secondary'>";
 							html += "<th colspan='5' style='margin: 0 auto;'>";	
 								$.each(elem.boardImageList, function(index, img){
@@ -145,7 +157,9 @@
 								});
 							html += "</th>";
 						html += "</tr>";
-						html += "<tr class='table-secondary'><td colspan='5'>"+elem.boardContent+"</td></tr>";
+						
+						<%--게시글 내용--%>
+						html += "<tr class='table-secondary'><td colspan='5' height='200'>"+elem.boardContent+"</td></tr>";
 						
 						<%--좋아요 버튼--%>
 						<%-- 좋아요테이블에 해당게시물의 번호가 포함되어있는지 확인 --%>
@@ -197,13 +211,11 @@
 						//로그인 한경우 수정/삭제버튼 추가
 						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == "<sec:authentication property='principal.username'/>"){
-							html += "<tr><td></td><td></td><td></td>";
-							html += "<td>";
-							html += `<input type='button' class='btn btn-danger' onclick="location.href='${pageContext.request.contextPath}/board/boardUpdate.do?boardNo=\${elem.boardNo}';" value='수정'/>`;
-							html += "</td>";
-							html += "<td>";
-							html += `<form name='deleteF' id='deleteFrm\${elem.boardNo}' action='${pageContext.request.contextPath}/board/boardDelete.do?${_csrf.parameterName}=${_csrf.token}' method='POST'>`;
-							html += `<button onclick='deleteFrm();' type='button' class='btn btn-danger d-inline'>삭제</button>`;
+							html += "<tr><td></td><td></td><td></td><td></td>";
+							html += "<td align='right'>";
+							html += `<input type='button' class='btn btn-sm btn-secondary" d-inline' onclick="location.href='${pageContext.request.contextPath}/board/boardUpdate.do?boardNo=\${elem.boardNo}';" value='수정'/>|`;
+							html += `<form class='d-inline' name='deleteF' id='deleteFrm\${elem.boardNo}' action='${pageContext.request.contextPath}/board/boardDelete.do?${_csrf.parameterName}=${_csrf.token}' method='POST'>`;
+							html += `<button onclick='deleteFrm();' type='button' class='btn btn-sm btn-secondary" d-inline'>삭제</button>`;
 							html += `<input name='boardNo' type='hidden' value='\${elem.boardNo}'/>`;
 							html += "</form>";
 							html += "</td>";
@@ -353,7 +365,9 @@
 					
 					
 					var enDate = getFormetDate(new Date(elem.boardCommentEnrollDate));
+					<sec:authorize access="isAuthenticated()">
 					var loginMemberId = "<sec:authentication property='principal.username'/>";
+					</sec:authorize>
 					if(level == 1){ // 댓글영역
 						html += `<li class='list-group-item d-flex' id='commentLevel\${boardCommentRef}'>`;
 						html += `<div><b>\${elem.memberId}</b>&nbsp;</div>`;
@@ -362,10 +376,12 @@
 						
 						
 						html += `<div style='font-size:12px;'>&nbsp;\${enDate} <br> &nbsp;&nbsp;`;
+						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == loginMemberId){
 							html += `<a class='updelBtn' onclick='loginCheck();' data-bs-toggle="collapse" href="#update\${elem.boardCommentId}" role="button" aria-expanded="false" aria-controls="update\${elem.boardCommentId}">수정&nbsp;&nbsp;&nbsp;</a>`; 
 							html += `<span class='updelBtn' onclick="commentDelete('\${elem.boardCommentId}', '\${elem.boardNo}', '\${elem.memberId}')">삭제</span>`;
 						}
+						</sec:authorize>
 						html += `</div>`;
 						html += "</li>";
 						
@@ -383,10 +399,12 @@
 						
 						
 						html += `<div style='font-size:12px;'>&nbsp;\${enDate} <br> &nbsp;&nbsp;`;
+						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == loginMemberId){
 							html += `<a class='updelBtn' onclick='loginCheck();' data-bs-toggle="collapse" href="#update\${elem.boardCommentId}" role="button" aria-expanded="false" aria-controls="update\${elem.boardCommentId}">수정&nbsp;&nbsp;&nbsp;</a>`; 
 							html += `<span class='updelBtn' onclick="commentDelete('\${elem.boardCommentId}', '\${elem.boardNo}', '\${elem.memberId}')">삭제</span>`;
 						}
+						</sec:authorize>
 						html += `</div>`;
 						html += "</li>";
 						
@@ -439,12 +457,6 @@
 			return;
 		</sec:authorize>
 		
-		var loginMemberId = "<sec:authentication property='principal.username'/>";
-		if(loginMemberId != memberId){
-			alert('본인의 댓글만 삭제가 가능합니다!');
-			return;
-		}
-		
 		//댓글을 입력하지 않았으면 조기리턴
 		if(!commentUpdateText.val()){
 			alert('내용을 입력해주세요.');
@@ -478,7 +490,7 @@
 			return;
 		</sec:authorize>
 		
-		var loginMemberId = "<sec:authentication property='principal.username'/>";
+
 		
 		//다른사람껄 삭제하려하면
 		if(loginMemberId != memberId){

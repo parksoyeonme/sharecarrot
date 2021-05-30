@@ -25,6 +25,13 @@
             border-bottom: 1px solid rgb(209, 209, 209);
             padding-top: 10px;
         }
+        header{
+        	position: fixed;
+        	top : 0;
+        	left : 0;
+        	right : 0;
+        	z-index: 99;
+        }
     </style>
 <script>
 
@@ -40,6 +47,19 @@ function search_button_click() {
     location.href = "${pageContext.request.contextPath}/product/headerSearch.do?searchkeyword="+searchkeyword;
 }
 
+function myshop_head_click(){
+
+	 $.ajax({
+	        type:"GET",
+	        url:"${pageContext.request.contextPath}/shop/myshopHead.do",
+	        success:function(data){
+				console.log(data);
+	        	location.href="${pageContext.request.contextPath}/shop/myshop.do?shopId=" + data;
+
+	        }                
+	});
+}
+
 </script>
 <c:if test="${not empty msg}">
 <script>
@@ -49,37 +69,46 @@ function search_button_click() {
 </head>
 <body>
     <header>
-    <ul class="nav nav-pills nav-fill" id="header-nav">
-        <li class="nav-item" style="padding-top: 7px;">
+    <ul class="nav nav-pills flex-column flex-sm-row mb-3" id="header-nav">
+    
+    <!-- LOGO -->
+        <li class="nav-item mb-2">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        <a href="${pageContext.request.contextPath}">
 	            <img src="${pageContext.request.contextPath}/resources/images/mainlogo.png" style="max-height: 50px;">
 	        </a>
+	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </li>
-        <li class="nav-item">
-            <div class="input-group mb-3">
+        
+	<!-- 검색바 -->
+        <li class="nav-item flex-sm-fill">
+            <div class="input-group">
                 <input type="text" onkeyup="enterkey();" id="headersearch" name="headersearch" class="form-control" placeholder="지역 혹은 물품을 검색해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" onclick="search_button_click();" id="searchbutton" name="searchbutton" type="button" id="button-addon2">검색</button>
+                <button class="btn btn-outline-success" onclick="search_button_click();" id="searchbutton" name="searchbutton" type="button" id="button-addon2">검색</button>
             </div>
         </li>
+        
+	<!-- 버튼그룹 -->
         <li class="nav-item">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            
+		<!-- 비회원 화면 -->
    				<sec:authorize access="isAnonymous()">
-	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do';">로그인</button>
-	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do';">회원가입</button>
-	                <button type="button" class="btn btn-primary" >판매하기</button>
-	                <button type="button" class="btn btn-primary" >내상점</button>
+	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do';">로그인</button>
+	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do';">회원가입</button>
                 </sec:authorize>
+		<!-- 로그인시 화면 -->
                 <sec:authorize access="isAuthenticated()">
                		<form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
-					    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">로그아웃</button>
+					    <button class="btn btn-light my-2 my-sm-0" type="submit">로그아웃</button>
 	                </form:form>
-	                <button type="button" class="btn btn-primary">판매하기</button>
-	                <button type="button" class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/shop/myshop.do';">내상점</button>
+	                <button type="button" class="btn btn-light" onclick=" myshop_head_click();">내상점</button>
+	                <button type="button" class="btn btn-light">판매하기</button>
                 </sec:authorize>
+                
+		<!-- 카테고리 DROPDOWN -->
                 <div class="btn-group" role="group">
-                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    카테고리
-                  </button>
+                  <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <li><a class="dropdown-item" href="#">상품카테고리</a></li>
                     <%--분기처리 --%>
@@ -91,11 +120,15 @@ function search_button_click() {
                     </sec:authorize>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do">신고게시판</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do">공지사항</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/chattingManagement.do">채팅관리</a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">계정설정</a></li>
                   </ul>
                 </div>
               </div>
-        </li>
+        </li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </ul>
     </header>
+    
+    <!-- 공백 -->
+    <br/><br/><br/>
 <section>

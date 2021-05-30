@@ -4,6 +4,47 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="product">
 
+
+	<select id= "selectProductList" resultMap="productMap2">
+		select product_id, product_name, product_price from product
+		where shop_id = #{shopId}
+		<choose>
+			<when test="btnValue != null and btnValue.equals('cu')">
+			order by product_reg_date asc
+			</when>
+			<when test="btnValue != null and btnValue.equals('row')">
+			order by product_price asc
+			</when>
+			<when test="btnValue != null and btnValue.equals('hig')">
+			order by product_price desc
+			</when>
+		
+		</choose>
+	</select>
+	
+	<select id= "selectProductListSize" resultType="_int">
+		select count(*)	from 
+		product
+		where shop_id = #{shopId}
+	</select>
+	<resultMap type="product" id="productMap2">
+		<id column="product_id" property="productId"/>
+			<result column="product_name" property="productName"/>
+			<result column="product_price" property="productPrice"/>
+<!-- 			<result column="product_ynh" property="productYnh" jdbcType="CHAR" javaType="_boolean" typeHandler="BooleanTypeHandler"/> -->
+			<result column="product_ynh" property="productYnh"/>
+			<result column="product_reg_date" property="productRegDate"/>
+			<result column="product_content" property="productContent"/>
+			<result column="product_del_flag" property="productDelFlag" jdbcType="CHAR" javaType="_boolean" typeHandler="BooleanTypeHandler"/>
+			<result column="shop_id" property="shopId"/>
+			<result column="category_code" property="categoryCode"/>
+	</resultMap>
+			   
+	<select id="selectProductImageList" resultMap="productImgMap">
+		select * from product_image
+		where product_img_no in (select min(product_img_no) from product_image where product_id = #{productId})
+	 </select>
+
 	<select id="searchLocation" resultType="product">
 		select * from product
 		where shop_id in (
@@ -22,4 +63,134 @@
 		where product_id like '%' ||  #{productName} || '%'
 	</select>
 
+	<resultMap type="productImage" id="productImgMap">
+		<id column="product_img_no" property="productImgNo"/>
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+	</resultMap>
+	
+	<resultMap type="shop" id="shopMap">
+		<id column="shop_id" property="shopId" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_sell_count" property="shopSellCount" />
+		<result column="shop_memo" property="shopMemo" />
+		<result column="member_id" property="memberId" />
+		
+	</resultMap>
+	
+	<resultMap type="ShopProduct" id="shopProductMap">
+		<collection property="product" resultMap="productMap"/>
+		<collection property="productImage" resultMap="productImgMap"/>
+	</resultMap>
+	<select id="selectProduct" resultType="product">
+		select *
+		from product
+		where product_id = #{productId}
+	</select>
+	<select id="selectProductDetail" resultMap="productMap">
+		select pd.*, 
+		        i.product_img_no,
+		        i.product_img_origin,
+		        i.product_img_renamed,
+		        i.product_id
+		from 
+		(
+		    select ps.*, m.profile_renamed
+		    from
+		        (
+		        select s.shop_visit_count,s.shop_total_score, s.member_id, p.*
+		        from shop s
+		            join product p
+		                on s.shop_id = p.shop_id
+		                    where product_id = #{productId} 
+		        ) ps
+		    join member m
+		        on ps.member_id = m.member_id
+		) pd
+		    left join product_image i
+		        on pd.product_id = i.product_id
+	</select>
+	<select id="selectProductListByCategory" resultMap="productByCategoryMap">
+		select p.product_id, 
+			p.product_name,
+	        i.product_img_no,
+	        i.product_img_origin,
+	        i.product_img_renamed,
+	        i.product_id
+		from product p
+		left join product_image i
+				        on p.product_id = i.product_id
+		where p.category_code = #{categoryCode}
+	</select>
+	<resultMap type="product" id="productByCategoryMap">
+		<id column="product_id" property='productId' />
+		<result column="product_name" property="productName" />
+		<collection property="productImageList" ofType="productImage">
+			<id column="product_img_no" property="productImgNo" />
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+		</collection>
+	</resultMap>
+	<resultMap type="productDetail" id="productMap">
+		<id column="product_id" property='productId' />
+		<result column="product_name" property="productName" />
+		<result column="product_price" property="productPrice" />
+		<result column="product_ynh" property="productYnh" />
+		<result column="product_reg_date" property="productRegDate" />
+		<result column="product_content" property="productContent" />
+		<result column="product_del_flag" property="productDelFlag" />
+		<result column="shop_id" property="shopId" />
+		<result column="category_code" property="categoryCode" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="member_id" property="memberId" />
+		<result column="shop_id" property="shopId" />
+		<collection property="productImageList" ofType="productImage">
+			<id column="product_img_no" property="productImgNo" />
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectLocCode" resultType="string">
+	select loc_name
+		from
+		    (
+		    select loc_code
+		        from
+		        (
+		            select * 
+		            from product p
+		                join shop s
+		                    on s.shop_id = p.shop_id
+		            where product_id = #{productName}
+		        ) ps
+		        join member m
+		            on ps.member_id = m.member_id
+		    ) a
+		join location l 
+		    on l.loc_code = a.loc_code
+	</select>
+	
+	<insert id="insertJjim">
+	insert into jjim_list values(
+		seq_jjim_list_no.nextval,
+		#{productId},
+		#{memberId}
+	)
+	</insert>
+	
+	<select id="getTotalContents" resultType="_int">
+	 select
+         count(*)
+      from product
+		where shop_id = #{shopId}
+	
+	</select>
+	
+	
 </mapper>

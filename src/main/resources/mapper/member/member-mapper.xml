@@ -10,6 +10,12 @@
 				on m.member_id = a.member_id
 		where m.member_id = #{memberId}
 	</select>
+	
+	<select id="selectShopMember" resultType="String">
+		select profile_renamed
+		from member
+		where member_id = #{memberId}
+	</select>
    
    	<insert id="setAuthority">
    		insert into
@@ -52,7 +58,6 @@
 			member_addr = #{memberAddr}
 		where member_id = #{memberId}		
 	</update>
-	
 	<resultMap type="member" id="memberMap">
 		<id column="member_id" property="memberId"/>
 		<result column="member_password" property="memberPassword"/>

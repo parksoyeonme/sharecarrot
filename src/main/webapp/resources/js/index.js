@@ -1,3 +1,5 @@
+/*-------------------------------이미지 슬라이더 js--------------------------------------------- */
+
 const slideContainer = document.querySelector('.container');
 const slide = document.querySelector('.slides');
 const nextBtn = document.getElementById('next-btn');
@@ -74,3 +76,6 @@ nextBtn.addEventListener('click', moveToNextSlide);
 prevBtn.addEventListener('click', moveToPreviousSlide);
 
 startSlide();
+
+/*---------------------------------이미지 슬라이더 js 끝--------------------------------------------- */
+

@@ -2,18 +2,68 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 <script type="text/javascript">
 $(document).ready(function(){
 	var initTab = '${tab}';
+	
+	getCode();
 	
 	if(initTab){
 		$('.nav-link').removeClass('active');
 		$('#'+ initTab +'Nav').addClass('active');
 		$('.tab-pane').removeClass('show active');
 		$('#'+ initTab).addClass('show active');
-	}	
+	}
+	
+	$('#productEnrollNav').on('show.bs.tab',function(){
+		history.pushState(null,null,"enroll.do");
+		$('#productRegForm')[0].reset();
+		getCode();
+	});
+	
+	$('#productManageNav').on('show.bs.tab',function(){
+		history.pushState(null,null,"manage.do");
+		getCode();
+	});
+	
+	$('#transactionHistoryNav').on('show.bs.tab',function(){
+		history.pushState(null,null,"transactionHistory.do");
+	});
+	
+	//카테고리, 지역
+	function getCode(){
+		$('#categoryCode').empty();
+		$('#categoryCode2').empty();
+		$('#locationCode').empty();
+		
+		$.ajax({
+			url : "getCode.do"
+			, type : "POST"
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            }
+			, success : function(result){
+				var category = '';
+				$.each(result.category,function(index, item){
+					category += '<option value="' + item.categoryCode +'">'+ item.categoryName + '</option>';
+				});
+				$('#categoryCode').append(category);
+				$('#categoryCodeModal').append(category);
+				
+				category = '<option value="">전체</option>' + category;
+				$('#categoryCode2').append(category);
+				
+				var location = '';
+				$.each(result.location,function(index, item){
+					location += '<option value="' + item.locCode +'">'+ item.locName + '</option>';
+				});
+				$('#locationCode').append(location);
+				$('#locationCodeModal').append(location);
+			}
+		});
+	}
 	
 	
 });

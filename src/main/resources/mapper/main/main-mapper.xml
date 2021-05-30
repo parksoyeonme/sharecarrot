@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main">
+
+	<select id="selectProductList" resultMap="mainCollectionMap">
+		SELECT  
+			D.product_id, D.product_name, D.product_price, i3.product_img_renamed
+		FROM product D
+			left join ( 
+			select product_id, product_img_renamed  from (
+			select min(i.product_img_no) img_id from product p
+			left join product_image i 
+			on p.product_id = i.product_id
+			group by i.product_id
+			) GI
+			join product_image i2
+			on GI.img_id = i2.product_img_no
+			) i3
+			on D.product_id = i3.product_id
+			left join shop s 
+                                on D.shop_id = s.shop_id
+                                    left join member m
+                                    on s.member_id = m.member_id
+		<where>
+			d.product_ynh = 'N' and d.product_del_flag = 'N'
+		 	<if test="categoryCode != '' and categoryCode != null">
+		        and d.category_code = #{categoryCode}
+		 	</if>
+			<if test="locCode != '' and locCode != null">
+		        and m.loc_code = #{locCode}
+		 	</if>
+		</where>
+		order by d.product_reg_date desc
+	</select>
+	
+	<resultMap type="mainProduct" id="mainCollectionMap">
+		<id column="product_id" property="productId" />
+		<result column="product_name" property="productName" />
+		<result column="product_price" property="productPrice" />
+		<result column="product_img_renamed" property="productImgRenamed" />
+	</resultMap>
+
+</mapper>

@@ -9,7 +9,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-  <form:form method="post" 
+  <form:form 
+  		id="EnrollFrm"
+  		method="post" 
   		action="${pageContext.request.contextPath}/board/boardEnroll.do?${_csrf.parameterName}=${_csrf.token}" 
   		enctype="multipart/form-data">
     <select id="boardCategory" name="boardCategory" required>
@@ -33,10 +35,10 @@
     <div class="mb-3">
       <textarea class="form-control" id="boardContent" name="boardContent" rows="3" placeholder="내용을 입력해주세요"></textarea>
     </div>
-    <input type="button" class="btn btn-primary" id="addImgBtn" value="이미지 등록"/>
-    <div class="input-group" id="imgContainer">
-      <input type="file" class="form-control" id="upfile1" name="upfile">
+    <div class="" id="imgContainer">
+      <input type="file" class="form-control" id="upfile0" name="upfile">
     </div>
+    <input type="button" class="btn btn-primary form-control" id="addImgBtn" value="이미지 추가 등록"/>
     <hr />
     <button class="btn btn-primary form-control">등록</button>
   </form:form>
@@ -44,7 +46,7 @@
     var i = 1;
     $("#addImgBtn").click(function(){
       i++;
-      console.log(i);
+      
       if(i > 10) {
         alert("이미지 파일은 최대 10개까지만 등록이 가능합니다.");
         return;

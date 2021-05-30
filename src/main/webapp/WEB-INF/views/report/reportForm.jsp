@@ -3,9 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="게시글 작성" name="title"/>
 </jsp:include>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <style>
 div#board-container{width:400px; margin:0 auto; text-align:center;}
 div#board-container input{margin-bottom:15px;}
@@ -14,64 +17,55 @@ div#board-container label.custom-file-label{text-align:left;}
 
 </style>
 <script>
-/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
-function boardValidate(){
-	var $content = $("[name=content]");
-	if(/^(.|\n)+$/.test($content.val()) == false){
+
+var i = 1;
+
+$(() => {
+	$("#addImgBtn").click(function(){
+		i++;
+		if(i > 10) {
+			alert("이미지 파일은 최대 10개까지만 등록이 가능합니다.");
+			return;
+		}
+		$("#imgContainer").append("<input type='file' class='form-control' id='upfile"+i+"' name='upfile'>");
+	});
+	
+});
+
+function reportValidate(){
+	var $reportTitle = $("[name=reportTitle]");
+	var $reportContent = $("[name=reportContent]");
+
+	if(/^(.|\n)+$/.test($reportTitle.val()) == false){
+		alert("제목을 입력하세요");
+		return false;
+	}
+	
+	if(/^(.|\n)+$/.test($reportContent.val()) == false){
 		alert("내용을 입력하세요");
 		return false;
 	}
 	return true;
 }
-
-$(() => {
-	$("[name=upFile]").change(e => {
-		var $file = $(e.target); // input[type=file]
-		var f = $file.prop("files")[0]; // file객체
-		//console.log($file, f);
-		var $label = $file.next(".custom-file-label");
-		
-		if(f === undefined)
-			$label.text("파일을 선택하세요.");
-		else 
-			$label.text(f.name);
-	});
-	
-});
-
 </script>
 <div id="board-container">
 	<form 
-		name="boardFrm" 
-		action="${pageContext.request.contextPath}/board/boardEnroll.do" 
+		name="reportFrm" 
+		action="${pageContext.request.contextPath}/report/reportEnroll.do?${_csrf.parameterName}=${_csrf.token}"
 		method="post"
 		enctype="multipart/form-data" 
-		onsubmit="return boardValidate();">
-		<input type="text" class="form-control" placeholder="제목" name="title" id="title" required>
-		<input type="text" class="form-control" name="memberId" value="${loginMember.id}" readonly required>
-		<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input -->
-		<div class="input-group mb-3" style="padding:0px;">
-		  <div class="input-group-prepend" style="padding:0px;">
-		    <span class="input-group-text">첨부파일1</span>
-		  </div>
-		  <div class="custom-file">
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile1">
-		    <label class="custom-file-label" for="upFile1">파일을 선택하세요</label>
-		  </div>
-		</div>
-		<div class="input-group mb-3" style="padding:0px;">
-		  <div class="input-group-prepend" style="padding:0px;">
-		    <span class="input-group-text">첨부파일2</span>
-		  </div>
-		  <div class="custom-file">
-		    <input type="file" class="custom-file-input" name="upFile" id="upFile2" >
-		    <label class="custom-file-label" for="upFile2">파일을 선택하세요</label>
-		  </div>
-		</div>
-		
-	    <textarea class="form-control" name="content" placeholder="내용" required></textarea>
+		onsubmit="return reportValidate();">
+		<input type="text" class="form-control" placeholder="제목" name="reportTitle" id="reportTitle" required>
+		<input type="button" class="btn btn-primary" id="addImgBtn" value="이미지 등록"/>
+	    <div class="input-group" id="imgContainer">
+	      <input type="file" class="form-control" id="upfile1" name="upfile">
+	    </div>
+		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
+		<input type="text" class="form-control" name="shopId" id="shopId" value="t8" readonly required>
+	    <textarea class="form-control" name="reportContent" placeholder="내용" required></textarea>
 		<br />
-		<input type="submit" class="btn btn-outline-success" value="저장" >
+		<input type="submit" value="글등록" >
+		<input type="button" class="btn btn-outline-success" value="취소" >
 	</form>
 </div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

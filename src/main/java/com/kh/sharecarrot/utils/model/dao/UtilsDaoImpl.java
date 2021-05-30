@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.sharecarrot.utils.model.vo.Category;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
 
 @Repository
@@ -23,5 +24,22 @@ public class UtilsDaoImpl implements UtilsDao {
 	public List<Category> selectCategoryList() {
 		return session.selectList("utils.selectCategoryList");
 	}
+
+	@Override
+	public List<JjimList> selectJjimList(String memberId) {
+		return session.selectList("utils.selectJjimList", memberId);
+	}
+
+	@Override
+	public int selectTotalJjimNo(String memberId) {
+		return session.selectOne("utils.selectTotalJjimNo", memberId);
+	}
+
+	@Override
+	public String selectLocationCode(String loginId) {
+		
+		return session.selectOne("utils.selectLocationCode", loginId);
+	}
+	
 
 }
