@@ -27,10 +27,21 @@ public class ReviewCommentServiceImpl implements ReviewCommentService {
 		return reviewCommentDao.selectTotalCommentsNo();
 	}
 
+	
+
+
 	@Override
-	public ReviewComment selectReviewCommentOne(int reviewNo) {
-		return reviewCommentDao.selectReviewCommentOne(reviewNo);
+	public int deleteReviewComment(ReviewComment reviewComment) {
+		// TODO Auto-generated method stub
+		return reviewCommentDao.deleteReviewComment(reviewComment);
 	}
+
+	@Override
+	public List<ReviewComment> selectReviewCommentOne() {
+		// TODO Auto-generated method stub
+		return reviewCommentDao.selectReviewCommentOne();
+	}
+
 
 
 }

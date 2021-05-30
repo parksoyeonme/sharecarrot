@@ -181,21 +181,15 @@ public class ShopController {
 	@ResponseBody
 	@RequestMapping(value="/myshopReviewList.do", method=RequestMethod.GET,
 			produces ="application/text; charset=utf8")
-	public String myshopReviewList(@RequestParam(defaultValue ="1") int cPage,
+	public String myshopReviewList(
 			@RequestParam String shopId,
 			Model model,
 			HttpServletResponse responset,HttpServletRequest request) throws IOException {
-	
-		//1. 사용자입력값
-		int numPerPage = 2;
-		log.debug("cPage = {}", cPage);
-		Map<String, Object> param = new HashMap<>();
-		param.put("numPerPage", numPerPage);
-		param.put("cPage", cPage);
 		
-		List<StoreReviews> reviewList = storeReviewsService.selectStoreReviewsList(shopId,param);
+		List<StoreReviews> storeReviewList = storeReviewsService.selectStoreReviewsList(shopId);
 		List<ReviewImage> reviewImageList = new ArrayList<>();
 		List<Member> buyerList = new ArrayList<>();
+		List<ReviewComment> reviewCommentlist = new ArrayList<>();
 
 		String shopMemberId = shopService.selectMemberId(shopId);
 		
@@ -205,49 +199,46 @@ public class ShopController {
 		
 		//List<ReviewComment> reviewCommList = new ArrayList<>();
 		
-		int totalReviewComment = reviewCommentService.selectTotalCommentsNo();
-		ReviewComment[] reviewCommArray = new ReviewComment[totalReviewComment];
+	    int storeReviewListSize = storeReviewsService.selectStoreReviewListSize(shopId);
+		//int totalReviewComment = reviewCommentService.selectTotalCommentsNo();
+		//ReviewComment[] reviewCommArray = new ReviewComment[totalReviewComment];
 
-		int reviewListSize = reviewList.size();
+		//int reviewCommentListSize = reviewCommentService.selectRevieCommentListSize(shopId);
+		
+		//이거int reviewListSize = reviewList.size();
 		
 		//댓글이 존재하면 1, 없으면 0
 		int j = 0;
-		Integer[] isExistArray = new Integer[reviewListSize];
-		Iterator<StoreReviews> iter = reviewList.iterator();
+		//이거Integer[] isExistArray = new Integer[reviewListSize];
+		Iterator<StoreReviews> iter = storeReviewList.iterator();
 		while(iter.hasNext()) {
 			StoreReviews reviews = (StoreReviews)iter.next();
 			List<ReviewImage> imgList = storeReviewsService.selectReviewImageList(reviews.getReviewNo());
 			List<Member> bList = transactionHistoryService.selectBuyer(reviews.getProductId());
 //			List<ReviewComment> list = reviewCommentService.reviewCommentlist(reviews.getReviewNo());
-			reviewCommArray[j] = reviewCommentService.selectReviewCommentOne(reviews.getReviewNo());
-			log.info("@@@reviewCommArray[j] : {}", reviewCommArray[j]);
+//			reviewCommArray[j] = reviewCommentService.selectReviewCommentOne(reviews.getReviewNo());
+			//log.info("@@@reviewCommArray[j] : {}", reviewCommArray[j]);
 			buyerList.addAll(bList);
 			reviewImageList.addAll(imgList);
 //			reviewCommList.addAll(list);
 			j++;
 		}
 		
-		int totalContents = storeReviewsService.getTotalContents(shopId);
-		String url = request.getRequestURI();
-
-		String pageBar2 = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
+		List<ReviewComment> list = reviewCommentService.selectReviewCommentOne();
+		//reviewCommentlist.addAll(list);
 
 		JSONObject obj = new JSONObject();
 		log.info("@@buyerList : {}",buyerList);
 		//data: 뒤에 들어갈 값인 jArray 생성
-		log.info("@@@reviewCommArraylength : {}", reviewCommArray.length);
-		log.info("@@@reviewCommArray : {}", reviewCommArray);
+//		log.info("@@@reviewCommArraylength : {}", reviewCommArray.length);
+//		log.info("@@@reviewCommArray : {}", reviewCommArray);
 		
-		for(int i = 0; i < 2; i++) {
-			if(reviewCommArray[i]==null) {
-				isExistArray[i] = 0;
-//				isExistList.add(0);
-			}else if(reviewCommArray[i]!=null) {
-				isExistArray[i] = 1;
-//				isExistList.add(1);
-			}
-			log.info("@@@isExistArray[i] = {}", isExistArray[i]);			
-		}
+		/*
+		 * for(int i = 0; i < 2; i++) { if(reviewCommArray[i]==null) { isExistArray[i] =
+		 * 0; // isExistList.add(0); }else if(reviewCommArray[i]!=null) {
+		 * isExistArray[i] = 1; // isExistList.add(1); }
+		 * log.info("@@@isExistArray[i] = {}", isExistArray[i]); }
+		 */
 
 		//배열로 변경
 
@@ -263,13 +254,13 @@ public class ShopController {
 		
 		obj.put("shopMemberId", shopMemberId);
 		obj.put("loginMemberId",loginMemberId);
-		obj.put("reviewList", reviewList);
+		obj.put("storeReviewList", storeReviewList);
 		obj.put("reviewImageList", reviewImageList);
-		obj.put("reviewListSize", reviewListSize);
+		obj.put("storeReviewListSize", storeReviewListSize);
 		obj.put("buyerList", buyerList);
-		obj.put("pageBar2", pageBar2);
-		obj.put("isExistArray", isExistArray);
-		obj.put("reviewCommArray", reviewCommArray);
+		//obj.put("isExistArray", isExistArray);
+		obj.put("reviewCommentlist", list);
+		//obj.put("reviewCommArray", reviewCommArray);
 		String resp = obj.toString();
 //		
 		return resp;
@@ -286,7 +277,13 @@ public class ShopController {
 		int result = reviewCommentService.insertReviewComment(param);
 		
 	}
-	
+
+	@ResponseBody
+	@RequestMapping(value="/deleteReviewComment.do",method= RequestMethod.POST)
+	public int deleteReviewComment(ReviewComment reviewComment) {
+		
+		return reviewCommentService.deleteReviewComment(reviewComment);
+	}
 
 	
 }

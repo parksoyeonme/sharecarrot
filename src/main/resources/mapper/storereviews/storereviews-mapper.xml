@@ -6,6 +6,7 @@
     select *
             from store_reviews
             where product_id in (select product_id from product where shop_id = #{shopId})
+           
 </select>
 
 <select id="selectReviewImageList" resultType="ReviewImage">
@@ -20,5 +21,14 @@
                       where product_id in (select product_id from product where shop_id = #{shopId})
 </select>
 
+
+<select id="selectStoreReviewListSize" resultType="_int">
+     select
+                     count(*)
+                  from
+                      store_reviews
+                      where product_id in (select product_id from product where shop_id = #{shopId})
+    
+    </select>
 
 </mapper>

@@ -29,8 +29,15 @@ public class StoreReviewsServiceImpl implements StoreReviewsService {
 	}
 
 	@Override
-	public List<StoreReviews> selectStoreReviewsList(String shopId, Map<String, Object> param) {
-		return storeReviewsDao.selectStoreReviewsList(shopId,param);
+	public List<StoreReviews> selectStoreReviewsList(String shopId) {
+		return storeReviewsDao.selectStoreReviewsList(shopId);
+	}
+
+
+	@Override
+	public int selectStoreReviewListSize(String shopId) {
+		// TODO Auto-generated method stub
+		return storeReviewsDao.selectStoreReviewListSize(shopId);
 	}
 
 

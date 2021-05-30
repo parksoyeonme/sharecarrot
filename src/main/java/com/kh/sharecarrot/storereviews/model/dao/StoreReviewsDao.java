@@ -8,11 +8,13 @@ import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 
 public interface StoreReviewsDao {
 
-	List<StoreReviews> selectStoreReviewsList(String shopId, Map<String, Object> param);
+	List<StoreReviews> selectStoreReviewsList(String shopId);
 
 	List<ReviewImage> selectReviewImageList(int reviewNo);
 
 	int getTotalContents(String shopId);
+
+	int selectStoreReviewListSize(String shopId);
 
 
 
