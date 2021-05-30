@@ -37,7 +37,13 @@ public interface ShopManageService {
 	//상품 수정 신규 이미지
 	int updateProductNewImage(HttpServletRequest request, Product product, List<MultipartFile> list);
 
-	//페이징
+	//상품 리스트 페이징
 	Map<String,Integer> getProductListPaging(Product product);
+
+	//거래내역 리스트
+	List<Product> selectTransactionList(Product product);
+	
+	//거래내역 리스트 페이징
+	Map<String,Integer> getTransactionListPaging(Product product);
 
 }

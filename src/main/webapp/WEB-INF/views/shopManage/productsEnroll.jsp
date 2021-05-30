@@ -172,13 +172,13 @@ $(document).ready(function(){
 </script>
 
 <div class="row mx-3">
-	<div class="col-10">
+	<div class="col-12">
 		<span class="fs-4 fw-bold">기본정보&nbsp;<span class="fs-6 text-danger">*필수입력</span></span>
 		<hr/>
 		<form action="productEnroll" id="productRegForm" method="post" enctype="multipart/form-data">
 			<div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">상품명</label>
-				<div class="col-6">
+				<label class="col-2 col-form-label fw-bold">상품명</label>
+				<div class="col-9">
 					<input class="form-control" name="product_name" id="productName">
 				</div>
 				<div class="col-1">
@@ -187,8 +187,8 @@ $(document).ready(function(){
 			</div>
 			<hr/>
 			<div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">상품 이미지</label>
-				<div class="col-10">
+				<label class="col-2 col-form-label fw-bold">상품 이미지</label>
+				<div class="col-9">
 					<input type="file" class="form-control" id="productImageUpload" multiple>
 					<div id="imagePreviewMain"></div>
 					<div id="imagePreview"></div>
@@ -199,8 +199,8 @@ $(document).ready(function(){
 			</div>
 			<hr/>
 			<div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">카테고리</label>
-				<div class="col-2"> 
+				<label class="col-2 col-form-label fw-bold">카테고리</label>
+				<div class="col-3"> 
 					<select class="form-select" id="categoryCode"></select>
 				</div>
 			</div>
@@ -218,8 +218,8 @@ $(document).ready(function(){
 			</div>
 			<hr/> -->
 			<div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">상품 가격</label>
-				<div class="col-2">
+				<label class="col-2 col-form-label fw-bold">상품 가격</label>
+				<div class="col-3">
 					<input type="number" class="form-control" name="product_price" id="productPrice">
 				</div>
 				<div class="col-1">
@@ -228,8 +228,8 @@ $(document).ready(function(){
 			</div>
 			<hr/>
 			<div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">상품 설명</label>
-				<div class="col-5">
+				<label class="col-2 col-form-label fw-bold">상품 설명</label>
+				<div class="col-9">
 					<textarea class="form-control" id="productContent" rows="3"></textarea>
 				</div>
 				<div class="col-1">
@@ -238,15 +238,15 @@ $(document).ready(function(){
 			</div>
 			<hr/>
 			<div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">거래 지역</label>
-				<div class="col-5">
+				<label class="col-2 col-form-label fw-bold">거래 지역</label>
+				<div class="col-3">
 					<select class="form-select" id="locationCode">
 				    </select>
 				</div>
 			</div>
 			<hr/>
 			<div class="row justify-content-end">
-				<div class="col-1">
+				<div class="col-2">
 					<button type="button" class="btn btn-warning" id="productEnrollBtn">등록하기</button>
 				</div>
 			</div>
