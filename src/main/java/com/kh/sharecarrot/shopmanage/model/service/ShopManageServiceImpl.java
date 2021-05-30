@@ -226,4 +226,44 @@ public class ShopManageServiceImpl implements ShopManageService{
 		return map;
 	}
 
+	@Override
+	public List<Product> selectTransactionList(Product product) {
+		if(product.getTransactionType().equals("buy")) {
+			Member member = (Member)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			product.setMemberId(member.getMemberId());
+		}else if(product.getTransactionType().equals("sell")) {
+			product.setShopId(getShopInfo().getShopId());
+		}
+		List<Product> list = shopManageDao.selectTransactionList(product);
+		
+		//이미지 리스트
+		for(Product p:list) {
+			p.setProductImageList(shopManageDao.selectProductImageList(p));
+		}
+		
+		return list;
+	}
+
+	@Override
+	public Map<String, Integer> getTransactionListPaging(Product product) {
+		if(product.getPageNum() == null) {
+			product.setPageNum("1");
+		}
+		
+		int pageSize = 5;
+		int totalNum = shopManageDao.selectTransactionListCount(product);
+		int pageNum = Integer.parseInt(product.getPageNum());
+		int minNum = (((pageNum - 1)/pageSize) * pageSize) + 1;
+		int maxNum = minNum * pageSize;
+		int maxPageNum = (totalNum % pageSize) == 0 ? (totalNum / pageSize) : (totalNum / pageSize) + 1;
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pageNum", pageNum);
+		map.put("totalNum", totalNum);
+		map.put("minNum", minNum);
+		map.put("maxNum", maxNum);
+		map.put("maxPageNum", maxPageNum);
+		return map;
+	}
+
 }

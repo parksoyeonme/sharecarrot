@@ -126,5 +126,14 @@ public class ShopManageController {
 		
 		return shopManageService.updateProductNewImage(request, product, multi.getFiles("productImage"));
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/selectTransactionList.do")
+	public ModelMap selectTransactionList(Product product){
+		ModelMap map = new ModelMap();
+		map.addAttribute("transactionList", shopManageService.selectTransactionList(product));
+		map.addAttribute("paging", shopManageService.getTransactionListPaging(product));
+		return map;
+	}
 
 }
