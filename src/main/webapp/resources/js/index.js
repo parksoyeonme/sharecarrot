@@ -1,3 +1,5 @@
+/*-------------------------------이미지 슬라이더 js--------------------------------------------- */
+
 const slideContainer = document.querySelector('.container');
 const slide = document.querySelector('.slides');
 const nextBtn = document.getElementById('next-btn');
@@ -74,3 +76,81 @@ nextBtn.addEventListener('click', moveToNextSlide);
 prevBtn.addEventListener('click', moveToPreviousSlide);
 
 startSlide();
+
+/*---------------------------------이미지 슬라이더 js 끝--------------------------------------------- */
+
+
+
+/*--------------------------------select 검색 js------------------------------------------ */
+
+
+
+const changeOption = () => {
+  const selectLocation = document.getElementById("select-location");
+  const selectCategory = document.getElementById("select-category");
+
+  let chosenLocation = selectLocation.options[selectLocation.selectedIndex].value;
+  let chosenCategory = selectCategory.options[selectCategory.selectedIndex].value;
+
+  console.log(`지역코드 : ${chosenLocation}, 카테고리: ${chosenCategory}`);
+
+  // $.ajax({
+  //   type: "POST",
+  //   dataType : "json",
+  //   data: {
+  //     locCode : chosenLocation,
+  //     Category : chosenCategory,
+  //   },
+  //   url: "${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
+  //   success: (data) =>{
+  //     console.log(data);
+  //   }
+  //   ,
+  //   error:(request,status,error) =>{
+  //           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+  //   }
+  // });
+
+}
+//   const option ={
+//     method: "POST",
+//     headers: {
+//       'Content-Type': 'application/json'  
+//     },
+//     body : JSON.stringify({
+//       locCode: chosenLocation,
+//       category : chosenCategory
+//     })
+//   }
+
+//   fetch("/sharecarrot/search/mainProductList.do", option)
+//   .then(res =>{
+//     console.log(res);
+//     res.json();
+//   })
+//   .then(data =>{
+//     console.log(JSON.stringify(data));
+//   })
+// }
+
+
+
+
+/*--------------------------------select 검색 js 끝------------------------------------------ */
+
+
+
+
+/*--------------------------------더보기 버튼 js------------------------------------------ */
+
+// const moreBtn = document.querySelector(".btn-more");
+
+// moreBtn.addEventListener("click", ()=>{
+//   // alert("HI, 에이치아이")
+//   const div = document.createElement('div');
+//   div.textContent = "차차차";
+//   const item = document.querySelector(".item");
+//   item.append(div);
+// });
+
+/*--------------------------------더보기 버튼 js 끝------------------------------------------ */

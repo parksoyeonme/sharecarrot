@@ -1,8 +1,19 @@
 package com.kh.sharecarrot.notice.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
-public interface NoticeService {
+import com.kh.sharecarrot.notice.model.vo.Notice;
+import com.kh.sharecarrot.report.model.vo.Report;
 
+
+public interface NoticeService {
+	List<Notice> selectNoticeList(Map<String, Object> param);
+
+	int getTotalContents();
+
+	Notice selectOneNoticeDetail(int no);
 
 }

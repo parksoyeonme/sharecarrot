@@ -15,6 +15,11 @@ div#board-container label.custom-file-label{text-align:left;}
 </style>
 <div id="board-container" class="mx-auto text-center">
 	<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="title" value="${report.reportTitle}" required>
+	<c:forEach items="${reportImage}" var="reportImage">
+	<button type="button" class="btn btn-outline-success btn-block" onclick="fileDownload(${reportImage.reportImgId});">
+		첨부파일 - ${reportImage.reportImgOrigin}
+	</button>
+	</c:forEach>
 	<input type="text" class="form-control" name="memberId" value="${report.memberId}" readonly required>
     <textarea class="form-control" name="content" placeholder="내용" required>${report.reportContent}</textarea>
 	<input type="datetime-local" class="form-control" name="regDate" value='<fmt:formatDate value="${report.reportDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>'>
@@ -22,8 +27,13 @@ div#board-container label.custom-file-label{text-align:left;}
 <input type="button" class="btn btn-outline-success" value="정지" onclick="goReprtList(${report.reportNo});" />
 <script>
 function goReprtList(no){
-	location.href = "${pageContext.request.contextPath}/report/reportListGo.do?no=" + no;
+	if(confirm("해당 내용을 처리하시겠습니까?")){
+		location.href = "${pageContext.request.contextPath}/report/reportListGo.do?no=" + no;
+	}
+	
 }
-
+function fileDownload(no){
+	location.href = "${pageContext.request.contextPath}/report/fileDownload.do?no=" + no;
+}
 </script>	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

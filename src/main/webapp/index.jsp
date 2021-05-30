@@ -38,160 +38,53 @@
         </div>
         <!-- 배너 끝 -->
         <!-- 검색 시작 -->
-        <div class="search">
-          <div style="display: flex">
-
-
-          <div class="location-nav">
-            <select>
-              <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
-              <option value="" disabled selected>지역명</option>
-    	  		<c:forEach items="${locationList}" var="location">
-	  				<option value="${location.locCode}">${location.locName}</option>
-	  			</c:forEach>
-            </select>
+        <form:form>
+          <div class="search">
+            <div style="display: flex">
+              <div class="location-nav">
+                <select id="select-location" onchange="changeOption()">
+                  <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
+                  <option value="" disabled selected>지역명</option>
+                  <c:forEach items="${locationList}" var="location">
+                    <option value="${location.locCode}" ${loginMember.locCode eq location.locCode ? 'selected' : ''} >${location.locName}</option>
+                  </c:forEach>
+                </select>
+              </div>
+              <div class="category-nav">
+                <select id="select-category" onchange="changeOption()">
+                  <!-- 카테고리명 불러오기 -->
+                  <option value="" disabled selected>카테고리</option>
+                  <c:forEach items="${categoryList}" end="4" var="category">
+                    <option value="${category.categoryCode}">${category.categoryName}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="category-nav">
-            <select>
-              <!-- 카테고리명 불러오기 -->
-              <option value="" disabled selected>카테고리</option>
-              	<c:forEach items="${categoryList}" var="category">
-	  				<option value="${category.categoryCode}">${category.categoryName}</option>
-	  			</c:forEach>
-            </select>
-          </div>
-          <div class="search-form">
-            <!-- 폼 제출 방식 :  버튼? 엔터? -->
-            <input type="text"  placeholder="검색어 입력">
-          </div>
-        </div>
-        </div>
+        </form:form>
         <!-- 검색 끝 -->
         <!-- 상품 리스트 시작 -->
         <!-- 조건에 맞는 상품 정보 불러오기 -->
+        
+			
         <div class="item-wrapper">
           <div class="items">
-            <div class="item list1">
+  		<c:forEach items="${productList}" var="product">
+            <div class="item" onclick="location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=${product.productId}'">
               <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
+                <img src="./resources/upload/product/${product.productImgRenamed}" alt="상품이미지">
               </div>
               <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
+                <div class="item-name">${product.productName}</div>
                 <div class="item-price">
-                  <strong class="amount">10,000</strong>
+                  <strong class="amount">${product.productPrice}</strong>
                   <span class="currency">원</span>
                 </div>
               </div>
             </div>
-            <div class="item list2">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list3">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list4">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list5">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list6">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list7">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list8">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list9">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-            <div class="item list10">
-              <div class="item-photo">
-                <img src="./resources/images/sample_banana.png" alt="상품이미지">
-              </div>
-              <div class="item-detail">
-                <div class="item-name">샘플 바나나</div>
-                <div class="item-price">
-                  <strong class="amount">10,000</strong>
-                  <span class="currency">원</span>
-                </div>
-              </div>
-            </div>
-          </div>
+		</c:forEach>
+            
+		</div>
           <!-- 상품 끝 -->
           <!-- 버튼 시작-->
           <!-- 버튼 클릭 시 상품 목록 불러오기 (10개씩)-->
@@ -204,7 +97,6 @@
       </div>
     </div>
     <script src="./resources/js/index.js"></script>
-
 
 
 
