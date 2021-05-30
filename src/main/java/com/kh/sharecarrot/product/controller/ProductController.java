@@ -1,6 +1,8 @@
 package com.kh.sharecarrot.product.controller;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,14 +18,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.sharecarrot.common.ShareCarrotUtils;
 import com.kh.sharecarrot.product.model.service.ProductService;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductDetail;
+import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
@@ -227,13 +234,21 @@ public class ProductController {
 	
 	@GetMapping("/headerSearch.do")
 	public void headerSearch(
-			@RequestParam(value = "searchkeyword") String searchKeyword
-			) {
+			@RequestParam(value = "searchkeyword") String searchKeyword, @RequestParam(defaultValue ="1" ) int cPage
+			, @RequestParam Map<String,Object> param, Model model, HttpServletRequest request) {
+		
+		//페이징 처리
+		int numPerPage = 20;
+		log.debug("cPage = {}", cPage);
+		param.put("numPerPage", numPerPage);
+		param.put("cPage", cPage);
+				
 		List<Location> locationList = utilsService.selectLocationList();
 //		log.info("list = {}", locationList);
 //		log.info("searchkeyword = {}", searchkeyword);
 		boolean locFlag = false;
 		List<Product> productList = null;
+		int productListSize = 0;
 		
 		Iterator<Location> iter = locationList.iterator();
 		while(iter.hasNext()) {
@@ -245,15 +260,46 @@ public class ProductController {
 		}
 
 		if(locFlag) {
-			String locName = searchKeyword;
-			productList = productService.searchLocation(locName);
+			param.put("locName", searchKeyword);
+			productList = productService.searchLocation(param);
+			productListSize = productService.searchLocationSize(searchKeyword);
 			log.debug("locSearch : {}", productList);
 		}else {
-			String productName = searchKeyword;
-			productList = productService.searchTitle(productName);
+			param.put("productName", searchKeyword);
+			productList = productService.searchTitle(param);
+			productListSize = productService.searchTitleSize(searchKeyword);
 			log.debug("titleSearch : {}", productList);
 		}
 		
-		//페이징 처리
+		List<ProductImage> productImageList = new ArrayList<>();
+		Iterator<Product> iter2 = productList.iterator();
+	
+		while(iter2.hasNext()) {
+			Product product = (Product)iter2.next();
+			List<ProductImage> proimgList =  productService.selectProductImageList(product.getProductId());
+			if(proimgList.size() > 0) {
+				productImageList.addAll(proimgList);				
+			}else{
+				productImageList.add(new ProductImage());
+			}
+		}
+		
+		//pagebar
+		int totalContents = productListSize;
+		String url = request.getRequestURI();
+		log.debug("totalContents = {}",totalContents);
+		log.debug("url = {}", url);
+		
+		//if(!"".equals(searchKeyword)) {
+			url = url + "?searchkeyword=" + searchKeyword;
+		//}
+		
+		String pageBar = ShareCarrotUtils.getPageBar(productListSize, cPage, numPerPage, url);
+		
+		model.addAttribute("searchkeyword", searchKeyword);
+		model.addAttribute("productList", productList);
+		model.addAttribute("productImageList", productImageList);
+		model.addAttribute("productListSize", productListSize);
+		model.addAttribute("pageBar", pageBar);
 	}
 }
