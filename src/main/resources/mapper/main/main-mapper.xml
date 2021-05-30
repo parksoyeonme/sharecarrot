@@ -32,6 +32,7 @@
 		        and m.loc_code = #{locCode}
 		 	</if>
 		</where>
+		order by d.product_reg_date desc
 	</select>
 	
 	<resultMap type="mainProduct" id="mainCollectionMap">

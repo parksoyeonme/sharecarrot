@@ -3,7 +3,9 @@ package com.kh.sharecarrot.shopmanage.model.service;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +37,6 @@ public class ShopManageServiceImpl implements ShopManageService{
 		String productId = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 		product.setProductId(productId);
 		
-		//테스트 shopId
 		product.setShopId(getShopInfo().getShopId());
 		
 		//상품정보 저장
@@ -82,6 +82,11 @@ public class ShopManageServiceImpl implements ShopManageService{
 		
 		return rtn;
 	}
+	
+	@Override
+	public Product selectProduct(Product product) {
+		return shopManageDao.selectProduct(product);
+	}
 
 	@Override
 	public List<Product> selectProductList(Product product) {
@@ -89,6 +94,10 @@ public class ShopManageServiceImpl implements ShopManageService{
 		Shop shop = getShopInfo();
 		//샵아이디 검색조건
 		product.setShopId(shop.getShopId());
+		
+		if(product.getPageNum() == null) {
+			product.setPageNum("1");
+		}
 		
 		//상품리스트
 		List<Product> productList = shopManageDao.selectProductList(product);
@@ -120,6 +129,101 @@ public class ShopManageServiceImpl implements ShopManageService{
 		return shopManageDao.deleteProduct(product);
 	}
 
-	
+	@Override
+	public List<ProductImage> selectProductImageList(Product product) {
+		return shopManageDao.selectProductImageList(product);
+	}
+
+	@Override
+	public int updateProduct(Product product) {
+		try {
+			//상품 정보 업데이트
+			int updateRtn = shopManageDao.updateProduct(product);
+			
+			//이미지 삭제
+			int deleteRtn = shopManageDao.deleteProductImage(product);
+			
+			//이미지 정보 업데이트
+			List<ProductImage> imgList = product.getProductImageList();
+			for(ProductImage a:imgList) {
+				shopManageDao.productImageEnroll(a);
+			}
+			
+			return updateRtn;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public int updateProductNewImage(HttpServletRequest request, Product product, List<MultipartFile> list) {
+		//상품 정보 업데이트
+		int updateRtn = shopManageDao.updateProduct(product);
+		//이미지 삭제
+		int deleteRtn = shopManageDao.deleteProductImage(product);
+		
+		//이미지 업로드 패스 지정
+		String path = request.getServletContext().getRealPath("/resources/upload/product/");
+		File dir = new File(path);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		//이미지 업로드
+		for(MultipartFile file:list) {
+			String fileName = file.getOriginalFilename();
+			String newName = product.getProductId() + "_" + UUID.randomUUID().toString();
+			String ext = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
+			File imgfile = new File(path + newName + ext);
+			
+			try {
+				file.transferTo(imgfile);
+				
+				ProductImage imgInfo = new ProductImage();
+				imgInfo.setProductId(product.getProductId());
+				imgInfo.setProductImgOrigin(fileName);
+				imgInfo.setProductImgRenamed(newName + ext);
+
+				int imgRtn = shopManageDao.productImageEnroll(imgInfo);
+				if(imgRtn <= 0 ) {
+					log.error("이미지 업로드 오류");
+					return 0;
+				}
+			} catch (Exception e) {
+				log.error("이미지 저장오류", e);
+				e.printStackTrace();
+				return 0;
+			}
+		}
+		
+		return updateRtn;
+	}
+
+	@Override
+	public Map<String, Integer> getProductListPaging(Product product) {
+		//샵번호
+		product.setShopId(getShopInfo().getShopId());
+		
+		if(product.getPageNum() == null) {
+			product.setPageNum("1");
+		}
+		
+		int pageSize = 5;
+		int totalNum = shopManageDao.selectProductListCount(product);
+		int pageNum = Integer.parseInt(product.getPageNum());
+		int minNum = (((pageNum - 1)/pageSize) * pageSize) + 1;
+		int maxNum = minNum * pageSize;
+		int maxPageNum = (totalNum % pageSize) == 0 ? (totalNum / pageSize) : (totalNum / pageSize) + 1;
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("pageNum", pageNum);
+		map.put("totalNum", totalNum);
+		map.put("minNum", minNum);
+		map.put("maxNum", maxNum);
+		map.put("maxPageNum", maxPageNum);
+		return map;
+	}
 
 }

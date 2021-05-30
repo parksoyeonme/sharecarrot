@@ -11,16 +11,30 @@ public interface ShopService {
 
 	void shopEnroll(Shop shop);
 	
-	int updateVisitCount(String myshopId);
+	int updateVisitCount(String shopId);
 
 	Shop selectShopOne(Map<String, Object> param);
 
 	List<Product> selectshopProductList(String shopId);
 
 
-	int selectOpenDay(String memberId);
+	int selectOpenDay(String shopId);
 
-//	Member selectProfilOne(String myshopId);
+	String selectMemberId(String shopId);
+
+	Shop selectShop(String shopId);
+
+	Member selectProfilOne(String shopId);
+
+
+	String selectMembershopId(String memberId);
+
+	int selectsellCount(String shopId);
+
+	String selectShopId(String loginMemberId);
+
+
+
 
 
 }

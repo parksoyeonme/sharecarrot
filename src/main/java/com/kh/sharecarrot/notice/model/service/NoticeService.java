@@ -16,4 +16,12 @@ public interface NoticeService {
 
 	Notice selectOneNoticeDetail(int no);
 
+	int updatenoticeYn(int no);
+
+	int insertNotice(Notice notice);
+
+	
+
+
+
 }

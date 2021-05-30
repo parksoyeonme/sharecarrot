@@ -5,21 +5,20 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shopmanage.model.service.ShopManageService;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
@@ -38,7 +37,7 @@ public class ShopManageController {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@RequestMapping(value="")
+	@RequestMapping(value="/shopManageBase.do", method = RequestMethod.GET)
 	public ModelAndView shopManage() {
 		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		mav.addObject("tab","productManage");
@@ -75,9 +74,23 @@ public class ShopManageController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value="/selectProductInfo.do")
+	public ModelMap selectProduct(Product product) {
+		ModelMap map = new ModelMap();
+		map.addAttribute("product", shopManageService.selectProduct(product));
+		map.addAttribute("image", shopManageService.selectProductImageList(product));
+		return map;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value="/selectProductList.do")
-	public List<Product> selectPoductList(Product product){
-		return shopManageService.selectProductList(product);
+	public ModelMap selectProductList(Product product){
+		System.out.println(product.toString());
+		
+		ModelMap map = new ModelMap();
+		map.addAttribute("paging", shopManageService.getProductListPaging(product));
+		map.addAttribute("productList", shopManageService.selectProductList(product));
+		return map;
 	}
 	
 	@ResponseBody
@@ -97,6 +110,21 @@ public class ShopManageController {
 		ModelAndView mav = new ModelAndView("shopManage/shopManageBase");
 		mav.addObject("tab","transactionHistory");
 		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/updateProduct.do", method = RequestMethod.POST)
+	public int updateProduct(@RequestBody Product product) {
+		return shopManageService.updateProduct(product);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/updateProductNewImage.do", method = RequestMethod.POST)
+	public int updateProductNewImage(HttpServletRequest request
+							, MultipartHttpServletRequest multi
+							, Product product) {
+		
+		return shopManageService.updateProductNewImage(request, product, multi.getFiles("productImage"));
 	}
 
 }

@@ -20,6 +20,16 @@ public class ReviewCommentDaoImpl implements ReviewCommentDao {
 		return session.insert("reviewComment.insertReviewComment",param);
 	}
 
+	@Override
+	public int selectTotalCommentsNo() {
+		return session.selectOne("reviewComment.selectTotalCommentsNo");
+	}
+
+	@Override
+	public ReviewComment selectReviewCommentOne(int reviewNo) {
+		return session.selectOne("reviewComment.selectReviewCommentOne", reviewNo);
+	}
+
 
 
 }

@@ -112,6 +112,28 @@
 		    left join product_image i
 		        on pd.product_id = i.product_id
 	</select>
+	<select id="selectProductListByCategory" resultMap="productByCategoryMap">
+		select p.product_id, 
+			p.product_name,
+	        i.product_img_no,
+	        i.product_img_origin,
+	        i.product_img_renamed,
+	        i.product_id
+		from product p
+		left join product_image i
+				        on p.product_id = i.product_id
+		where p.category_code = #{categoryCode}
+	</select>
+	<resultMap type="product" id="productByCategoryMap">
+		<id column="product_id" property='productId' />
+		<result column="product_name" property="productName" />
+		<collection property="productImageList" ofType="productImage">
+			<id column="product_img_no" property="productImgNo" />
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+		</collection>
+	</resultMap>
 	<resultMap type="productDetail" id="productMap">
 		<id column="product_id" property='productId' />
 		<result column="product_name" property="productName" />
@@ -125,6 +147,7 @@
 		<result column="shop_visit_count" property="shopVisitCount" />
 		<result column="shop_total_score" property="shopTotalScore" />
 		<result column="member_id" property="memberId" />
+		<result column="shop_id" property="shopId" />
 		<collection property="productImageList" ofType="productImage">
 			<id column="product_img_no" property="productImgNo" />
 			<result column="product_img_origin" property="productImgOrigin"/>

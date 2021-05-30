@@ -26,43 +26,64 @@ public class ShopServiceImpl implements ShopService{
 
 	
 	@Override
-	public int updateVisitCount(String myshopId) {
-		// TODO Auto-generated method stub
-		return shopDao.updateVisitCount(myshopId);
+	public int updateVisitCount(String shopId) {
+		return shopDao.updateVisitCount(shopId);
 	}
 
 	
 	@Override
 	public Shop selectShopOne(Map<String, Object> param) {
-		// TODO Auto-generated method stub
 		return shopDao.selectShopOne(param);
 	}
 
 
 	@Override
 	public List<Product> selectshopProductList(String shopId) {
-		// TODO Auto-generated method stub
 		return shopDao.selectshopProductList(shopId);
 	}
 
 
 	@Override
-	public int selectOpenDay(String memberId) {
-		// TODO Auto-generated method stub
-		return shopDao.selectOpenDay(memberId);
+	public int selectOpenDay(String shopId) {
+		return shopDao.selectOpenDay(shopId);
 	}
 
 
-//	@Override
-//	public Member selectProfilOne(String myshopId) {
-//		// TODO Auto-generated method stub
-//		return shopDao.selectProfilOne(myshopId);
-//	}
+	@Override
+	public String selectMemberId(String shopId) {
+		return shopDao.selectMemberId(shopId);
+	}
 
 
-	
-	
+	@Override
+	public Shop selectShop(String shopId) {
+		return shopDao.selectShop(shopId);
+	}
 
+
+	@Override
+	public Member selectProfilOne(String shopId) {
+		return shopDao.selectProfilOne(shopId);
+	}
+
+
+	@Override
+	public String selectMembershopId(String memberId) {
+		return shopDao.selectMembershopId(memberId);
+	}
+
+
+	@Override
+	public int selectsellCount(String shopId) {
+		return shopDao.selectsellCount(shopId);
+
+	}
 	
+	public String selectShopId(String loginMemberId) {
+		return shopDao.selectShopId(loginMemberId);
+
+	}
+
+
 	
 }

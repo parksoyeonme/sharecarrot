@@ -43,8 +43,8 @@
     </li>
   </ul>
   <div class='container mt-3'>
-  	<div class="row justify-content-between">
-		<div class='col-4'>
+  	<div class="row">
+		<div class='col'>
 			<select id="selectLocation" required>
 			  <option selected value="">전체지역</option>
 			  <c:forEach items="${locationList}" var="location">
@@ -56,15 +56,15 @@
 			  <option value="H">인기순</option>
 			</select>
 		</div>
-		<div class='col-4 mb-3'>
-			<input type="button" value="글쓰기" id="btn-add" class="btn btn-sm btn-outline-success" onclick="goBoardForm();"/>
+		<div class='col mb-3' style='text-align:right;'>
+			<input type="button" value="글쓰기" id="btn-add" class="btn btn-sm btn-outline-dark" onclick="goBoardForm();"/>
 		</div>
   	</div>
   </div>
 	
 	<div id="boardList">
 	</div>
-	<button id="searchMore" class="btn btn-outline-primary btn-block col-sm-10 mx-auto">더 보기</button>
+	<button id="searchMore" class="btn btn-outline-dark btn-block col-sm-12 mx-auto">더 보기</button>
 	
 	<script>
 	function goBoardForm(){
@@ -121,6 +121,12 @@
 		
 		function displayList(data, code){
 			if(code) $(boardList).html('');
+			console.log(data);
+			if(data.length === 0){
+				console.log('nullTEst');
+				$(searchMore).html('더 보여줄 자료가 없습니다!');
+			}
+				
 			$.each(data, function(index, elem){
 				<%-- 유저 지역 검색 --%>
 				var loc = "";

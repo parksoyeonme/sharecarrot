@@ -14,4 +14,7 @@ public interface StoreReviewsService {
 
 	int getTotalContents(String shopId);
 
+
+
+	
 }

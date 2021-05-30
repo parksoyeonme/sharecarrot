@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <style>
 	.history-box{
@@ -48,9 +51,10 @@
       display: flex;
       -webkit-box-align: center;
       align-items: center;
-      font-size: 12px;
-      color: rgb(204, 204, 204);
+      font-size: 14px;
+      color: black;
       font-weight: 600;
+      cursor:pointer;
     }
     /*찜한 상품 CSS 끝*/
     /*최근 본 상품 CSS 시작*/
@@ -98,17 +102,16 @@
 
 <sec:authorize access="isAuthenticated()">
 <script>
-var totalJjim;
-$(() => {
+var totalJjim = 0;
+(() => {
 	$.ajax({
         type : "GET",
 		url: "${pageContext.request.contextPath}/product/getTotalJjimNo.do",
-		dataType : "json",
         contentType : "application/json; charset:UTF-8",
 	    success: function(data){
 			console.log(data);
 			
-			$('#jjim_count').val(totalJjim);
+			$('#jjim_count').html(totalJjim);
 		},
 		error: (request, status, err) =>{
 			 console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+err);
@@ -129,9 +132,9 @@ $(() => {
           <div class="jjim-title">찜한상품</div>
           <div class="jjim-count-wrapper">
             <!-- 찜한 상품 생길 시 count ++, 색상 변경(red)-->
-            <div class="jjim-count">
-              <span>♥</span>
-              <span id="jjim_count">0</span>
+            <div class="jjim-count" onclick='jjimListDo();'>
+              <span id = 'jjim-icon'>♥</span>
+              <span id="jjim_count">&nbsp;${fn:length(jjimList)}</span>
             </div>
           </div>
         </div>
@@ -155,9 +158,25 @@ $(() => {
     <!-- 1024px 이하일 경우..... 어떡하지... -->
 </div>
 <script>
+  
   const topBtn = document.querySelector(".top-btn");
   topBtn.addEventListener("click", e =>{
     e.preventDefault();
     window.scrollTo({top: 0, behavior:"smooth"});
   });
+  
+  $(document).ready(function(){
+	  const jjimIcon = $("#jjim-icon");
+	  if(!${fn:length(jjimList)} == 0)
+		  jjimIcon.css('color', 'red');
+	  
+  });
+  function jjimListDo(){
+	<sec:authorize access="isAnonymous()">
+      alert('로그인후 이용해주세요.');
+      return;
+	</sec:authorize>
+	  location.href = '${pageContext.request.contextPath}/jjim/jjimList.do';
+  }
+  
 </script>

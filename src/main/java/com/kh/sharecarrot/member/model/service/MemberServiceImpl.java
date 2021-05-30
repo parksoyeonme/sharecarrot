@@ -48,5 +48,10 @@ public class MemberServiceImpl implements MemberService {
 	public int setAuthority(Authority auth) {
 		return memberDao.setAuthority(auth);
 	}
+
+	@Override
+	public String selectShopMember(String memberId) {
+		return memberDao.selectShopMember(memberId);
+	}
 	
 }

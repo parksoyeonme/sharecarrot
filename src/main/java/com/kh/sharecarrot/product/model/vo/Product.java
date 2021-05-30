@@ -39,4 +39,6 @@ public class Product {
 		
 		private List<ProductImage> productImageList;
 		private String locName;
+		
+		private String pageNum;
 }

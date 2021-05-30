@@ -8,18 +8,52 @@
 <jsp:include page="/WEB-INF/views/common/history.jsp" /> 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <style>
-   #imgSlider{
-      width:50%;
+#imgSlider{
+      width: 50%;
+      margin: 0 auto;
+   }
+   #imgSlider img{
+      height: 500px;
       margin: 0 auto;
    }
    #memberProfile{
       border-radius: 10% 30% 50% 70%;
    }
+	#productList img{
+		width: 100px !important;
+		height: 100px !important;
+	}
 </style>
+
+<script>
+function chatting_popup(){
+// 	var loginUser = <sec:authentication property="principal.memberId"/>;
+// 	var shopId = ${product.shopId};
+	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
+
+	var popupWidth = 500;
+	var popupHeight = 400;
+	var popupX = (window.screen.width / 2) - (popupWidth / 2);
+	// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
+	var popupY= (window.screen.height / 2) - (popupHeight / 2) - 50;
+	// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
+	window.open(url, "chat", "width=" + popupWidth + ", height=" + popupHeight + ", left="+popupX+", top=" + popupY).focus();
+}
+
+</script>
+
 <!-- Img Slider 영역 -->
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
     <c:if test="${product.productImageList ne null}">
+	    <div class="carousel-item active">
+	      <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
+	    </div>
+	    <c:forEach items="${product.productImageList}" var="image">
+		    <div class="carousel-item">
+		      <img src="${pageContext.request.contextPath}/resources/upload/product/${image.productImgRenamed}" class="d-block w-100" alt="...">
+		    </div>
+	    </c:forEach>
        <div class="carousel-item active">
          <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
        </div>
@@ -80,6 +114,7 @@
    <!-- 상점정보 -->
       <div class="col">
       <h5>상점정보</h5>
+      <hr/>
          <div>
             <a href="${pageContext.request.contextPath}/shop/myshop.do">
                <img id='memberProfile' src="${pageContext.request.contextPath}/resources/upload/member/${product.profileRenamed}"/>
@@ -87,24 +122,44 @@
                <sub>${product.locName}</sub>
             </a> &nbsp;
             <!-- 채팅기능 -->
-            <a href="#"><sub>
+            <a onclick="chatting_popup();"><sub>
                <svg style="color:green;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-plus-fill" viewBox="0 0 16 16">
                  <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zM12.5 1a.5.5 0 0 1 .5.5V3h1.5a.5.5 0 0 1 0 1H13v1.5a.5.5 0 0 1-1 0V4h-1.5a.5.5 0 0 1 0-1H12V1.5a.5.5 0 0 1 .5-.5z"/>
                </svg> 연락하기</sub>
             </a>
-            <p>
-            <sub>상점 총 별점</sub>
+            <p style="text-align:right;">
+            <sub>상점 총 별점</sub>&nbsp;&nbsp;&nbsp;
                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style='color:CCCC00;'>
                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                </svg>
                ${product.shopTotalScore}
-            </p><br>
+            </p>
+             <p style="text-align:right;">
+            <sub>상점 총 상품수</sub>&nbsp;
+               <svg style='color:red;' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket2-fill" viewBox="0 0 16 16">
+				  <path d="M5.929 1.757a.5.5 0 1 0-.858-.514L2.217 6H.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.623l1.844 6.456A.75.75 0 0 0 3.69 15h8.622a.75.75 0 0 0 .722-.544L14.877 8h.623a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1.717L10.93 1.243a.5.5 0 1 0-.858.514L12.617 6H3.383L5.93 1.757zM4 10a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0v-2zm3 0a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0v-2zm4-1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1z"/>
+				</svg>
+               ${product.shopProductCount}
+            </p>
          </div>
       </div> <!-- col -->
    
       
       <div class="col">
-      <h5>상품리뷰</h5>
+      <h5 class="d-inline">연관상품</h5><sub>${category}</sub>
+      <hr/>
+      <div id="productList" class='row' style="text-align:center;">
+      <c:forEach items="${productList}" var="product" begin="1" end="3">
+      	<c:if test="${product ne null}">
+      		<div class='col'>
+      			<a href="${pageContext.request.contextPath}/product/productDetail.do?productId=${product.productId}">
+      			<img style="border:1px solid black" src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}">
+      			<p>${product.productName}</p>
+      			</a>
+      		</div>      	
+      	</c:if>
+      </c:forEach>
+      </div>
       </div>
       
       

@@ -2,9 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	//이미지파일리스트
+	var imgFileList = new Array();
 	
 	//상품명 글자수 제한
 	$('#productName').on('keyup',function(){
@@ -33,37 +35,13 @@ $(document).ready(function(){
 		//업로드 가능 이미지 확장자
 		var imageExt = ['jpg', 'jpeg', 'png'];
 
-		//초기화
-		$('#imagePreview').empty();
-		
-		
 		if(ext){
 			if($.inArray(ext,imageExt) == -1){
 				$(this).val('');
 				alert('이미지 파일이 아닙니다.');
 			}else{
-				var files = $('#productImageUpload').prop('files');
-				
-				var imgHtml = "";
-				$.each(files, function(index,file){
-					//이미지 url
-					var imageUrl = URL.createObjectURL(file);
-					
-					if((index%3) == 0){
-						imgHtml += '<div class="row">';
-					}
-					imgHtml += '<div class="col-4">';
-					imgHtml += '<img class="img-thumbnail" src="' + imageUrl + '"">';
-					imgHtml += '</div>';
-					if((index%3) == 2){
-						imgHtml += '</div>';
-					}
-				});
-				
-				if(files.length % 3 != 2){
-					imgHtml += '</div>';
-				}
-				$('#imagePreview').append(imgHtml);
+				var list = $('#productImageUpload').prop('files');
+				drawPreview(list);
 			}
 		}
 	});
@@ -72,6 +50,33 @@ $(document).ready(function(){
 	$('#imgRemoveBtn').on('click',function(){
 		$('#productImageUpload').val('');
 		$('#imagePreview').empty();
+	});
+	
+	
+	//대표이미지 설정
+	$(document).on('click', '.img-preview', function(){
+		if(!confirm('대표이미지를 변경하시겠습니까?')){
+			return;
+		}
+		
+		var input = $('#productImageUpload');
+		var fileList = input[0].files;
+		var selectedName = $(this).data('name');
+		var tmpList = new Array();
+		//대표이미지 선택
+		$.each(fileList, function(index, item){
+			if(selectedName == item.name){
+				tmpList.push(item);
+				return;
+			}
+		});
+		//이외파일
+		$.each(fileList, function(index, item){
+			if(selectedName != item.name){
+				tmpList.push(item);
+			}
+		});
+		drawPreview(tmpList);
 	});
 	
 	//상품등록
@@ -88,12 +93,16 @@ $(document).ready(function(){
 			return;
 		}
 		
+		if(!confirm('상품을 등록 하시겠습니까?')){
+			return;
+		}
+		
 		
 		var formData = new FormData();
-		var imgList = $('#productImageUpload').prop('files');
+		//var imgList = $('#productImageUpload').prop('files');
+		var imgList = imgFileList;
 		
 		formData.append("productName", $('#productName').val());
-		console.log(imgList);
 		
 		for(var i = 0; i < imgList.length; i++){
 			formData.append("productImage", imgList[i]);
@@ -116,6 +125,7 @@ $(document).ready(function(){
 			, success : function(result){
 				if(result > 0){
 					alert('상품 등록에 성공하였습니다.');
+					location.href="manage.do";
 					return;
 				}
 			}
@@ -125,6 +135,39 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	function drawPreview(list){
+		//업로드리스트 초기화
+		imgFileList = list;
+		//초기화
+		$('#imagePreview').empty();
+		var imgHtml = "";
+		$.each(imgFileList, function(index,file){
+			//이미지 url
+			var imageUrl = URL.createObjectURL(file);
+			
+			if((index%3) == 0){
+				imgHtml += '<div class="row my-3">';
+			}
+			if(index == 0){
+				imgHtml += '<div class="col-4" style="position: relative;">';
+				imgHtml += '<p class="h4 fw-bold" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index=1;l">대표이미지</p>';
+				imgHtml += '<img class="img-thumbnail img-preview" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%; opacity: 0.8;">';
+			}else{
+				imgHtml += '<div class="col-4">';
+				imgHtml += '<img class="img-thumbnail img-preview" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%;">';
+			}
+			imgHtml += '</div>';
+			if((index%3) == 2){
+				imgHtml += '</div>';
+			}
+		});
+		
+		if(imgFileList.length % 3 != 2){
+			imgHtml += '</div>';
+		}
+		$('#imagePreview').append(imgHtml);
+	}
 });
 </script>
 
@@ -158,12 +201,11 @@ $(document).ready(function(){
 			<div class="mb-3 row">
 				<label class="col-1 col-form-label fw-bold">카테고리</label>
 				<div class="col-2"> 
-					<select class="form-select" id="categoryCode">
-				    </select>
+					<select class="form-select" id="categoryCode"></select>
 				</div>
 			</div>
 			<hr/>
-			<div class="mb-3 row">
+			<!-- <div class="mb-3 row">
 				<label class="col-1 col-form-label fw-bold">상품 상태</label>
 				<div class="col-2 form-check">
 					<input class="form-check-input" type="radio" name="product_status" checked="checked">
@@ -174,7 +216,7 @@ $(document).ready(function(){
 					<label class="form-check-label">새 상품</label>
 				</div>
 			</div>
-			<hr/>
+			<hr/> -->
 			<div class="mb-3 row">
 				<label class="col-1 col-form-label fw-bold">상품 가격</label>
 				<div class="col-2">

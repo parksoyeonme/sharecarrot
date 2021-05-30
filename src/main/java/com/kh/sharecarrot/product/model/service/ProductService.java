@@ -35,6 +35,8 @@ public interface ProductService {
 
 	Product selectProduct(String productId);
 
+	List<Product> selectProductList(String categoryCode);
+
 
 
 

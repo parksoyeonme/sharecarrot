@@ -15,16 +15,16 @@ div#board-container label.custom-file-label{text-align:left;}
 
 </style>
 <script>
-function reportValidate(){
-	var $reportTitle = $("[name=reportTitle]");
-	var $reportContent = $("[name=reportContent]");
+function noticeValidate(){
+	var $boardTitle = $("[name=boardTitle]");
+	var $boardContent = $("[name=boardContent]");
 
-	if(/^(.|\n)+$/.test($reportTitle.val()) == false){
+	if(/^(.|\n)+$/.test($boardTitle.val()) == false){
 		alert("제목을 입력하세요");
 		return false;
 	}
 	
-	if(/^(.|\n)+$/.test($reportContent.val()) == false){
+	if(/^(.|\n)+$/.test($boardContent.val()) == false){
 		alert("내용을 입력하세요");
 		return false;
 	}
@@ -34,14 +34,14 @@ function reportValidate(){
 </script>
 <div id="board-container">
 	<form 
-		name="reportFrm" 
-		action="${pageContext.request.contextPath}/report/reportEnroll.do?${_csrf.parameterName}=${_csrf.token}"
+		name="noticeFrm" 
+		action="${pageContext.request.contextPath}/notice/noticeEnroll.do?${_csrf.parameterName}=${_csrf.token}"
 		method="post"
 		enctype="multipart/form-data" 
-		onsubmit="return reportValidate();">
-		<input type="text" class="form-control" placeholder="제목" name="reportTitle" id="reportTitle" required>
+		onsubmit="return noticeValidate();">
+		<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" required>
 		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
-		<input type="text" class="form-control" name="shopId" id="shopId" value="t8" readonly required>
+		<!-- <input type="text" class="form-control" name="shopId" id="shopId" value="t8" readonly required> -->
 		<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input 
 		<div class="input-group mb-3" style="padding:0px;">
 		  <div class="input-group-prepend" style="padding:0px;">
@@ -65,7 +65,7 @@ function reportValidate(){
 		
 		
 		
-	    <textarea class="form-control" name="reportContent" placeholder="내용" required></textarea>
+	    <textarea class="form-control" name="boardContent" placeholder="내용" required></textarea>
 		<br />
 		<input type="submit" value="글등록" >
 		<input type="button" class="btn btn-outline-success" value="취소" >

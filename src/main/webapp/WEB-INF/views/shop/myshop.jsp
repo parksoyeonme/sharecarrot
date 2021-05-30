@@ -13,50 +13,63 @@
 <!--icon-->
  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <script>
-	console.log('test');
+   console.log('test');
 </script>
 
 <section id="my-store-container" class="ms_container">
         <hr />
      <div class="container">
             <div class="row">
-                <div class="col-lg-3" style="background-color: red; height: 220px;">
-                    <div>${profile}</div>
+                <div class="col-lg-3" style="height: 220px; border: 2px solid #FA8440;">
+                    <div><img id="profileImg" src='${pageContext.request.contextPath}/resources/upload/member/${profile}' style="width: 112%;; height: 217px; margin-left: -12px;"></div>
                 </div>
-                <div class="col-lg-7" style="background-color: #faad4a; height: 220px;">
+                <div class="col-lg-7" style="width: 590px; height: 220px; background-color: #ef9a0f;">
                     <ul class="amount">
                         <li>
                             <div style="font-size: 36px; font-weight: bold;">
                                 ${shop.memberId}
                             </div>
-                            <div style="border: 1px solid gold; float: left; width: 22%; color: #ffffff; font-weight: bold;">
+                            <div style="float: left; width: 22%; font-weight: bold;">
                                <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 11%;">
+                            <div style="float: left; width: 11%;">
 <%--                                  ${shop.shopTotalScore}일 --%>
                                  ${openday}일
                             </div>
-                            <div style="border: 1px solid blue; float: left; width: 22%; color: #223465; font-weight: bold;">
+                            <div style="float: left; width: 22%; font-weight: bold;">
                                 <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 11%;">
+                            <div style="float: left; width: 11%;">
                                 ${shop.shopVisitCount}명
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 21%; color: #223465; font-weight: bold;">
-                              <i class="fas fa-shopping-cart" style="font-size: 23px;color: skyblue;"></i>상품판매
+                            <div style="float: left; width: 21%; font-weight: bold;">
+                              <i class="fas fa-shopping-cart" style="font-size: 23px;"></i>상품판매
                             </div>
-                            <div style="border: 1px solid red; float: left; width: 13%;">
-                                ${shop.shopSellCount}개
+                          
+                            <div style="float: left; width: 13%;">
+                                ${sellCount}개
                             </div>
+                           
                         </li>
                     </ul>
-                    <div style="margin-top: 41px; margin-left: 28px; height: 113px; border: 1px solid;"}>
+                    <div id="shopMemo">
+                     
                     	${shop.shopMemo}
                     </div>
+                    
+                     <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
+                    <c:if test="${loginMemberId == memberId}">
+                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
+                 	</c:if>
+                 	<sec:authorize access="isAuthenticated()">
+                    <a href="${pageContext.request.contextPath }/report/reportForm.do" class="gomystore-button">신고하기</a>
+                    </sec:authorize>
+                      </div>
+                  
                     <script>
-                    	const tempParam = {
-                    			shopId: "${shop.shopId}",
-                    	}
+                       const tempParam = {
+                             shopId: "${shop.shopId}",
+                       }
                     </script>
                 </div>
                 <div id="sidebar" class="col-lg-2">
@@ -64,17 +77,14 @@
                     
                     </div>
                 </div>
-                <div class="mystore-btn" style="margin-top: 10px; float: left;" >
-                    <a href="#" class="gomystore-button">내상점관리</a>
-                </div>
-                <div class="report-btn" style="margin-top: 10px;" >
-                    <a href="#" class="gomystore-button">내상점관리</a>
-                </div>
+               
+            
+               
             </div>
             <br>
-            <div class="col-lg-10">
+            <div class="col-lg-9" style="margin-left: 55px;">
                 <div class="main">
-                    <div class="tabs" style="margin-left: 21px;">
+                    <div class="tabs" style="margin-left: 20px;">
                         <div class="tab" data-tab-target="#tab1">
                             <p>상품</p>
                         </div>

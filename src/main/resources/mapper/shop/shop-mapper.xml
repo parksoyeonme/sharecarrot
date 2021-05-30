@@ -15,12 +15,23 @@
 			#{memberId}
 		)
 	</insert>
-
+	
+	<select id="selectShopId" resultType="String">
+		select shop_id
+		from shop
+		where member_id = #{loginMemberId}
+	</select>
+	
+	<select id="selectShop" resultType="shop">
+	select *
+	from shop
+	where shop_id = #{shopId}
+	</select>
 
 	<update id="updateVisitCount" parameterType="String">
 	update shop set
 	shop_visit_count = shop_visit_count + 1
-	where shop_id =#{shopId}
+	where shop_id =#{myShopId}
 	</update>
 	
 	<select id= "selectShopOne" resultMap="shopMap">
@@ -45,41 +56,69 @@
 	
 	</select>
 	-->
+	<select id= "selectMembershopId" resultType="String">
+	select shop_id from shop where member_id = #{memberId}
+	</select>
+	
 	<select id="selectOpenDay" resultType="_int">
 	select trunc(SYSDATE - member_enroll_date + 1)
-	from 
-	member
-	where member_id = #{memberId}
+	from member 
+	where member_id = (select member_id from shop where shop_id=#{shopId})
+	
+	</select>
+	
+	<select id="selectsellCount" resultType="_int">
+	
+	select count(product_ynh) 
+	from product 
+	where product_ynh ='Y' and shop_id = #{shopId}
+	
+	</select>
+	
+	<select id="selectMemberId" resultType="String">
+	select member_id
+	from shop
+	where shop_id = #{shopId}
+	</select>
+
+	  
+	<select id="selectProfilOne" resultMap="shopmemberMap">
+		select profile_renamed
+		 from shop s join member m
+	       on s.member_id = m.member_id
+	       where shop_id =#{shopId}
 	</select>
 	
 	
-	<!--  
-	<select id="selectProfilOne" resultMap="shopMap">
-		select m.profile_renamed from shop s join member m
-	       on s.member_id = m.member_id
-	       where shop_id = #{myshopId}
-		</select>
-	-->
-	
-	
-	<resultMap type="product" id="productMap">
-		<id column="product_id" property="productId"/>
-			<result column="product_name" property="productName"/>
-			<result column="product_price" property="productPrice"/>
-			<result column="product_ynh" property="productYnh"/>
-			<result column="product_reg_date" property="productRegDate"/>
-			<result column="product_content" property="productContent"/>
-			<result column="product_del_flag" property="productDelFlag"/>
-			<result column="shop_id" property="shopId"/>
-			<result column="category_code" property="categoryCode"/>
+
+ 
+	<resultMap type="shop" id="shopmemberMap">
+		<id column="shop_id" property="shopId" />
+		<result column="shop_total_score" property="shopTotalScore" />
+		<result column="shop_visit_count" property="shopVisitCount" />
+		<result column="shop_sell_count" property="shopSellCount" />
+		<result column="shop_memo" property="shopMemo" />
+		<result column="member_id" property="memberId" />
+		<collection property="Member" ofType="Member">
+			<id column="member_id" property="memberId"/>
+				<result column="member_password" property="memberPassword"/>
+				<result column="member_name" property="memberName"/>
+				<result column="birthday" property="birthday"/>
+				<result column="email" property="email"/>
+				<result column="phone" property="phone"/>
+				<result column="enabled" property="enabled"/>
+				<result column="quit_yn" property="quitYn"/>
+				<result column="member_enroll_date" property="memberEnrollDate"/>
+				<result column="profile_original" property="profileOriginal"/>
+				<result column="profile_renamed" property="profileRenamed"/>
+				<result column="member_addr" property="memberAddr"/>
+				<result column="loc_code" property="locCode"/>
+
+		</collection>
+		
 	</resultMap>
-			
-	<resultMap type="productImage" id="productImgMap">
-		<id column="product_img_no" property="productImgNo"/>
-			<result column="product_img_origin" property="productImgOrigin"/>
-			<result column="product_img_renamed" property="productImgRenamed"/>
-			<result column="product_id" property="productId"/>
-	</resultMap>
+
+
 	<resultMap type="shop" id="shopMap">
 		<id column="shop_id" property="shopId" />
 		<result column="shop_total_score" property="shopTotalScore" />
@@ -87,25 +126,9 @@
 		<result column="shop_sell_count" property="shopSellCount" />
 		<result column="shop_memo" property="shopMemo" />
 		<result column="member_id" property="memberId" />
-		
 	</resultMap>
-	
-	<resultMap type="member" id="memberMap">
-		<id column="member_id" property="memberId"/>
-		<result column="member_password" property="memberPassword"/>
-		<result column="member_name" property="memberName"/>
-		<result column="birthday" property="birthday"/>
-		<result column="email" property="email"/>
-		<result column="phone" property="phone"/>
-		<result column="member_enroll_date" property="memberEnrollDate"/>
-		<result column="profile_original" property="profileOriginal"/>
-		<result column="profile_renamed" property="profileRenamed"/>
-		<result column="member_addr" property="memberAddr"/>
-		<result column="loc_code" property="locCode"/>
-		<result column="enabled" property="enabled"/>
-		<result column="quit_yn" property="quitYn"/>
-	</resultMap>
-	
 
 	
+	
+
 </mapper>

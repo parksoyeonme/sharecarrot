@@ -16,7 +16,7 @@
  }
 </style>
 <script>
-function goReportForm(){
+function goNoticeForm(){
 	location.href = "${pageContext.request.contextPath}/notice/noticeForm.do";
 }
 

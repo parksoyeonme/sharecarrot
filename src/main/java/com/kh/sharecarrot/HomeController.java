@@ -1,6 +1,7 @@
 package com.kh.sharecarrot;
 
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +31,17 @@ import com.kh.sharecarrot.member.model.vo.Member;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Category;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * Handles requests for the application home page.
  */
 @Controller
+@Slf4j
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -53,16 +59,35 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, 
 			@RequestParam(defaultValue = "1") int cPage,
-			HttpServletRequest request) { 
+			@RequestParam(defaultValue = "") String locCode,
+			@RequestParam(defaultValue = "") String category,
+			HttpServletRequest request,
+			Principal principal) { 
+		
+		log.info("principal = {}", principal);
+		//로그인을 한 경우에만 찜 목록 불러오는 코드
+		List<JjimList> jjimList = null;
+		if(principal != null) {
+			String longinMemberId = principal.getName();
+			jjimList = utilsService.selectJjimList(longinMemberId);
+			log.info("jjim = {}" ,jjimList);
 			
+		}
+		
+		
 		/* 더 보기 페이징*/
 		param.put("limit", limit);
 		param.put("cPage", cPage);
-		if(request.getSession().getAttribute("loginMember") != null) {
-			logger.info("session ={}", request.getSession().getAttribute("loginMember"));
-			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
-			String locCode = loginMember.getLocCode();
-			logger.info("locCde={}", locCode);
+		param.put("categoryCode", category);
+		param.put("locCode", locCode);
+		if(principal != null) {
+			
+			logger.info("Member ={}", principal);
+//			Member loginMember = (Member)principal;
+			String loginId = principal.getName();
+			logger.info("id={}", principal.getName());
+			locCode = utilsService.selectLocationCode(loginId);
+			logger.info("locCode={}", locCode);
 			//locCode 공백제거
 			locCode = locCode.trim();
 			param.put("locCode", locCode);
@@ -70,7 +95,9 @@ public class HomeController {
 		}
 		
 		List<MainProduct> productList = mainService.selectProductList(param);
+		int listLength = productList.size();
 		logger.info("productList = {}", productList);
+		logger.info("listLength ={}", listLength);
 		
 		List<Location> locationList = utilsService.selectLocationList();
 		List<Category> categoryList = utilsService.selectCategoryList();
@@ -80,12 +107,15 @@ public class HomeController {
 		model.addAttribute("productList", productList);
 		model.addAttribute("locationList", locationList);
 		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("jjimList", jjimList);
+		model.addAttribute("locCode", locCode);
+		model.addAttribute("listLength", listLength);
 		
 		return "forward:/index.jsp";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/search/mainProductList.do", method = RequestMethod.GET)
+	@RequestMapping(value="/search/mainProductList.do", method = RequestMethod.POST)
 	public List<MainProduct> mainProductList(
 					@RequestParam(defaultValue = "1") int cPage,
 					@RequestParam(defaultValue = "") String locCode,

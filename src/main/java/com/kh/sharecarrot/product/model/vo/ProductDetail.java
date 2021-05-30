@@ -15,4 +15,6 @@ public class ProductDetail extends Product{
 	private int shopTotalScore;
 	private String memberId;
 	private String profileRenamed;
+	private String shopId;
+	private int shopProductCount;
 }
