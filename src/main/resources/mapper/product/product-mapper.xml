@@ -46,11 +46,24 @@
 	 </select>
 
 	<select id="searchLocation" resultType="product">
-		select * from product
+		select product_id, product_name, product_price from product
 		where shop_id in (
 		select shop_id from shop
+		where member_id in (
+		    select member_id from member
+		        where loc_code in (
+		            select loc_code from location
+		            where loc_name like '%' ||  #{locName} || '%'
+		        )
+		    ))
+	</select>
+	
+	<select id="searchLocationSize" resultType="_int">
+		select count(*) from product
 		where shop_id in (
-		    select shop_id from member
+		select shop_id from shop
+		where member_id in (
+		    select member_id from member
 		        where loc_code in (
 		            select loc_code from location
 		            where loc_name like '%' ||  #{locName} || '%'
@@ -59,8 +72,13 @@
 	</select>
 	
 	<select id="searchTitle" resultType="product">
-		select * from product 
-		where product_id like '%' ||  #{productName} || '%'
+		select product_id, product_name, product_price from product
+		where product_name like '%' ||  #{productName} || '%'
+	</select>
+	
+	<select id="searchTitleSize" resultType="_int">
+		select count(*) from product
+		where product_name like '%' ||  #{productName} || '%'
 	</select>
 
 	<resultMap type="productImage" id="productImgMap">

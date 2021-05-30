@@ -18,15 +18,24 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
 
 	@Override
-	public List<Product> searchLocation(String locName) {
-		return productDao.searchLocation(locName);
+	public List<Product> searchLocation(Map<String, Object> param) {
+		return productDao.searchLocation(param);
+	}
+	
+	@Override
+	public int searchLocationSize(String locName) {
+		return productDao.searchLocationSize(locName);
 	}
 
 	@Override
-	public List<Product> searchTitle(String productName) {
-		return productDao.searchTitle(productName);
+	public List<Product> searchTitle(Map<String, Object> param) {
+		return productDao.searchTitle(param);
 	}
-
+	
+	@Override
+	public int searchTitleSize(String productName) {
+		return productDao.searchTitleSize(productName);
+	}
 
 	@Override
 	public ProductDetail selectProductDetail(String productId) {

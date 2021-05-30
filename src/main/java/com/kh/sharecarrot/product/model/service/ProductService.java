@@ -9,9 +9,11 @@ import com.kh.sharecarrot.product.model.vo.ProductImage;
 
 public interface ProductService {
 
-	List<Product> searchLocation(String locName);
+	List<Product> searchLocation(Map<String, Object> param);
+	int searchLocationSize(String locName);
 
-	List<Product> searchTitle(String productName);
+	List<Product> searchTitle(Map<String, Object> param);
+	int searchTitleSize(String productName);
 
 	ProductDetail selectProductDetail(String productId);
 
