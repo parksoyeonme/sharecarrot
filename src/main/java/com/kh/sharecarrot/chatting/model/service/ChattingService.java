@@ -18,4 +18,6 @@ public interface ChattingService {
 
 	List<ChattingRoom> selectRoomList(String loginMemberId);
 
+	int insertChattingMessage(ChattingMessage chattingMessage);
+
 }

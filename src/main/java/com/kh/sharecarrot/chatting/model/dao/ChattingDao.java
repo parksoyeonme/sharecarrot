@@ -18,4 +18,6 @@ public interface ChattingDao {
 
 	List<ChattingRoom> selectRoomList(String loginMemberId);
 
+	int insertChattingMessage(ChattingMessage chattingMessage);
+
 }
