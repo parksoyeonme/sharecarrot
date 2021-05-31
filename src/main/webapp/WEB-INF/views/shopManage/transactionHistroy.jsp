@@ -61,9 +61,6 @@ $(document).ready(function(){
 			, success : function(result){
 				var transactionList = result.transactionList;
 				var paging = result.paging;
-				
-				console.log(paging);
-				
 				var html = '';
 				if(transactionList.length != 0){
 					$.each(transactionList, function(index, item){
@@ -188,7 +185,9 @@ $(document).ready(function(){
 		</div>
 		<!-- 거래내역 목록 -->
 		<div class="col-12">
-			<table id="transactionList"></table>
+			<table>
+				<tbody id="transactionList"></tbody>
+			</table>
 		</div>
 	</div>
 </div>
