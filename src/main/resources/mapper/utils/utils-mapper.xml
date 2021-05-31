@@ -11,18 +11,50 @@
 		select * from category
 	</select>
 	
-	<select id="selectJjimList" resultType="jjimList">
-		select * from jjim_list
-		where member_id = #{memberId}
-	</select>
-
 	<select id="selectTotalJjimNo" resultType="_int">
 		select count(*) from jjim_list
 		where member_id = #{memberId}
 	</select>
-	
+
 	<select id="selectLocationCode" resultType="string">
 		select loc_code from member
 		where member_id = #{loginId}
 	</select>
+	
+	<select id="selectJjimList" resultMap="jjimListExtMap">
+		select jp.*, 
+        i.product_img_no,
+        i.product_img_origin,
+        i.product_img_renamed,
+        i.product_id
+		from 
+		    (
+		    select j.*, p.product_name, p.product_price, p.product_reg_date from jjim_list j
+		    join product p on j.product_id = p.product_id
+		    ) jp
+		    left join product_image i
+				        on jp.product_id = i.product_id
+		where member_id = #{member_id}
+	</select>
+	
+	<resultMap type="jjimListExt" id="jjimListExtMap">
+		<id column="jjim_no" property="jjimNo"/>
+		<result column="product_id" property="productId"/>
+		<result column="member_id" property="memberId"/>
+		<result column="product_name" property="productName"/>
+		<result column="product_price" property="productPrice"/>
+		<result column="product_reg_date" property="productRegDate"/>
+		<collection property="productImageList" ofType="ProductImage">
+			<id column="product_img_no" property="productImgNo"/>
+			<result column="product_img_origin" property="productImgOrigin"/>
+			<result column="product_img_renamed" property="productImgRenamed"/>
+			<result column="product_id" property="productId"/>
+		</collection>
+	</resultMap>
+
+	
+	<delete id="deleteJjim">
+		delete from jjim_list
+		where product_id = #{productId} and member_id = #{memberId}
+	</delete>
 </mapper>
