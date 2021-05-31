@@ -60,7 +60,7 @@
 	
 	<select id="searchTitle" resultType="product">
 		select * from product 
-		where product_id like '%' ||  #{productName} || '%'
+		where product_name like '%' ||  #{productName} || '%'
 	</select>
 
 	<resultMap type="productImage" id="productImgMap">

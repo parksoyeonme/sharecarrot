@@ -41,4 +41,10 @@ public class ChattingServiceImpl implements ChattingService{
 		return chattingDao.selectRoomList(loginMemberId);
 	}
 
+
+	@Override
+	public int insertChattingMessage(ChattingMessage chattingMessage) {
+		return chattingDao.insertChattingMessage(chattingMessage);
+	}
+
 }

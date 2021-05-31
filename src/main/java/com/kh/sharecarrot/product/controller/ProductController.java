@@ -57,7 +57,6 @@ public class ProductController {
 		String locCode = productService.selectLocCode(productId);
 		product.setLocName(locCode);
 		
-		
 		//Shop_Product_Count 세팅
 		int shopProductCount = productService.getTotalContents(productDetail.getShopId());
 		productDetail.setShopProductCount(shopProductCount);
@@ -71,8 +70,7 @@ public class ProductController {
 				category = c.getCategoryName();
 			}
 		}
-		
-		
+				
 		//연관상품 불러오기
 		List<Product> productList = productService.selectProductList(productDetail.getCategoryCode());
 		
