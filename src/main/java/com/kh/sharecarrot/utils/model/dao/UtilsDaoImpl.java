@@ -1,6 +1,7 @@
 package com.kh.sharecarrot.utils.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
+import com.kh.sharecarrot.utils.model.vo.jjimListExt;
 
 @Repository
 public class UtilsDaoImpl implements UtilsDao {
@@ -26,7 +28,7 @@ public class UtilsDaoImpl implements UtilsDao {
 	}
 
 	@Override
-	public List<JjimList> selectJjimList(String memberId) {
+	public List<jjimListExt> selectJjimList(String memberId) {
 		return session.selectList("utils.selectJjimList", memberId);
 	}
 
@@ -34,5 +36,17 @@ public class UtilsDaoImpl implements UtilsDao {
 	public int selectTotalJjimNo(String memberId) {
 		return session.selectOne("utils.selectTotalJjimNo", memberId);
 	}
+
+	@Override
+	public String selectLocationCode(String loginId) {
+		
+		return session.selectOne("utils.selectLocationCode", loginId);
+	}
+
+	@Override
+	public int deleteJjim(Map<String, Object> param) {
+		return session.delete("utils.deleteJjim", param);
+	}
+	
 
 }

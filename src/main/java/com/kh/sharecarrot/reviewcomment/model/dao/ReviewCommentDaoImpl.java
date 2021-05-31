@@ -25,10 +25,22 @@ public class ReviewCommentDaoImpl implements ReviewCommentDao {
 		return session.selectOne("reviewComment.selectTotalCommentsNo");
 	}
 
+
+
+
 	@Override
-	public ReviewComment selectReviewCommentOne(int reviewNo) {
-		return session.selectOne("reviewComment.selectReviewCommentOne", reviewNo);
+	public int deleteReviewComment(ReviewComment reviewComment) {
+		return session.update("reviewComment.deleteReviewComment", reviewComment);
 	}
+
+	@Override
+	public List<ReviewComment> selectReviewCommentOne() {
+		// TODO Auto-generated method stub
+		return session.selectList("reviewComment.selectReviewCommentOne");
+	}
+
+
+	
 
 
 

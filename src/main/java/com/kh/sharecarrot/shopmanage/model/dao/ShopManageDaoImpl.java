@@ -30,10 +30,20 @@ public class ShopManageDaoImpl implements ShopManageDao{
 	public Shop selectShopInfo(String memberId) {
 		return session.selectOne("shopmanage.selectShopInfo", memberId);
 	}
+	
+	@Override
+	public Product selectProduct(Product product) {
+		return session.selectOne("shopmanage.selectProduct", product);
+	}
 
 	@Override
 	public List<Product> selectProductList(Product product) {
 		return session.selectList("shopmanage.selectProductList", product);
+	}
+	
+	@Override
+	public int selectProductListCount(Product product) {
+		return session.selectOne("shopmanage.selectProductListCount",product);
 	}
 
 	@Override
@@ -49,6 +59,26 @@ public class ShopManageDaoImpl implements ShopManageDao{
 	@Override
 	public int deleteProduct(Product product) {
 		return session.update("shopmanage.deleteProduct", product);
+	}
+	
+	@Override
+	public int deleteProductImage(Product product) {
+		return session.delete("shopmanage.deleteProductImage", product);
+	}
+
+	@Override
+	public int updateProduct(Product product) {
+		return session.update("shopmanage.updateProduct", product);
+	}
+
+	@Override
+	public List<Product> selectTransactionList(Product product) {
+		return session.selectList("shopmanage.selectTransactionList", product);
+	}
+
+	@Override
+	public int selectTransactionListCount(Product product) {
+		return session.selectOne("shopmanage.selectTransactionListCount",product);
 	}
 
 }

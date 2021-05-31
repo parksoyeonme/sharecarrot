@@ -24,19 +24,20 @@ public class StoreReviewsDaoImpl implements StoreReviewsDao {
 	}
 
 	@Override
-	public List<StoreReviews> selectStoreReviewsList(String shopId, Map<String, Object> param) {
-		int cPage =(int)param.get("cPage");
+	public List<StoreReviews> selectStoreReviewsList(String shopId) {
 		
-		int limit = (int)param.get("numPerPage");
-		int offset = (cPage -1)* limit;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		return session.selectList("storereviews.selectStoreReviewsList",shopId,rowBounds);
+		return session.selectList("storereviews.selectStoreReviewsList",shopId);
 	}
 
 	@Override
 	public int getTotalContents(String shopId) {
 		return session.selectOne("storereviews.getTotalContents",shopId);
+	}
+
+	@Override
+	public int selectStoreReviewListSize(String shopId) {
+		// TODO Auto-generated method stub
+		return session.selectOne("storereviews.selectStoreReviewListSize",shopId);
 	}
 
 	

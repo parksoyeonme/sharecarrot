@@ -28,6 +28,7 @@ import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
+import com.kh.sharecarrot.utils.model.vo.jjimListExt;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -76,7 +77,7 @@ public class ProductController {
 		
 		
 		//로그인 회원에 한해서 찜목록 불러오기
-		List<JjimList> jjimList = null;
+		List<jjimListExt> jjimList = null;
 		if(principal != null) {
 			String memberId = principal.getName();
 			jjimList = utilsService.selectJjimList(memberId);

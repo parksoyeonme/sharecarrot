@@ -34,28 +34,7 @@
 	where shop_id =#{myShopId}
 	</update>
 	
-	<select id= "selectShopOne" resultMap="shopMap">
-	select * from shop where 1=1
-	<if test="memberId == null || memberId.equals('')">
-	and shop_id = #{shopId}
-	</if>
-	<if test="memberId != null || !memberId.equals('')">
-	and member_id = #{memberId}
-	</if>
-	</select>
-<!--  
-	<select id="selectshopProductList" resultMap="shopProductMap">
-	select s.shop_id, p.product_id,p.product_name, p.product_price, pi.product_img_renamed
-	from 
-	shop s
-	inner join product p on  s.shop_id = p.shop_id
-	inner join product_image pi
-	on pi.product_id = p.product_id
-	where s.shop_id = #{shopId}
-	 
 	
-	</select>
-	-->
 	<select id= "selectMembershopId" resultType="String">
 	select shop_id from shop where member_id = #{memberId}
 	</select>
@@ -81,54 +60,5 @@
 	where shop_id = #{shopId}
 	</select>
 
-	  
-	<select id="selectProfilOne" resultMap="shopmemberMap">
-		select profile_renamed
-		 from shop s join member m
-	       on s.member_id = m.member_id
-	       where shop_id =#{shopId}
-	</select>
-	
-	
-
- 
-	<resultMap type="shop" id="shopmemberMap">
-		<id column="shop_id" property="shopId" />
-		<result column="shop_total_score" property="shopTotalScore" />
-		<result column="shop_visit_count" property="shopVisitCount" />
-		<result column="shop_sell_count" property="shopSellCount" />
-		<result column="shop_memo" property="shopMemo" />
-		<result column="member_id" property="memberId" />
-		<collection property="Member" ofType="Member">
-			<id column="member_id" property="memberId"/>
-				<result column="member_password" property="memberPassword"/>
-				<result column="member_name" property="memberName"/>
-				<result column="birthday" property="birthday"/>
-				<result column="email" property="email"/>
-				<result column="phone" property="phone"/>
-				<result column="enabled" property="enabled"/>
-				<result column="quit_yn" property="quitYn"/>
-				<result column="member_enroll_date" property="memberEnrollDate"/>
-				<result column="profile_original" property="profileOriginal"/>
-				<result column="profile_renamed" property="profileRenamed"/>
-				<result column="member_addr" property="memberAddr"/>
-				<result column="loc_code" property="locCode"/>
-
-		</collection>
-		
-	</resultMap>
-
-
-	<resultMap type="shop" id="shopMap">
-		<id column="shop_id" property="shopId" />
-		<result column="shop_total_score" property="shopTotalScore" />
-		<result column="shop_visit_count" property="shopVisitCount" />
-		<result column="shop_sell_count" property="shopSellCount" />
-		<result column="shop_memo" property="shopMemo" />
-		<result column="member_id" property="memberId" />
-	</resultMap>
-
-	
-	
 
 </mapper>

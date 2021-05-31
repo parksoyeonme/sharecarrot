@@ -6,20 +6,13 @@
 	
 	<select id= "selectBuyer" resultMap="memberMap">
 		select profile_renamed, member_id
-		 from member
-		where member_Id in (
-		select member_Id
-		from transaction_history
-		where product_id=#{productId})
+		from member
+		where member_Id in ( select member_Id
+							from transaction_history
+							where product_id=#{productId})
 	</select>
 
-	<resultMap type="TransactionHistory" id="TransactionHistoryMap">
-		<id column="product_id" property="productId"/>
-			<result column="review_yn" property="reviewYn"/>
-			<result column="shop_id" property="shopId"/>
-			<result column="member_id" property="memberId"/>
-	</resultMap>
-	
+
 	<resultMap type="member" id="memberMap">
 		<id column="member_id" property="memberId"/>
 		<result column="member_password" property="memberPassword"/>

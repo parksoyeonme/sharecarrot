@@ -1,3 +1,4 @@
+  
 package com.kh.sharecarrot.shop.model.dao;
 
 import java.util.List;
@@ -14,11 +15,6 @@ public interface ShopDao {
 
 	int updateVisitCount(String shopId);
 
-	Shop selectShopOne(Map<String, Object> param);
-
-	List<Product> selectshopProductList(String shopId);
-
-
 	int selectOpenDay(String shopId);
 
 
@@ -27,8 +23,6 @@ public interface ShopDao {
 
 	Shop selectShop(String shopId);
 
-
-	Member selectProfilOne(String shopId);
 
 	String selectMembershopId(String memberId);
 
@@ -41,4 +35,3 @@ public interface ShopDao {
 
 
 }
-

@@ -5,7 +5,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>   
-<jsp:include page="/WEB-INF/views/common/history.jsp" /> 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <style>
 #imgSlider{
@@ -168,7 +167,6 @@ function chatting_popup(){
 
 <hr/>
 
-
 <script>
    function insertJjim(){
       //로그인 한경우에만 폼제출
@@ -204,7 +202,15 @@ function chatting_popup(){
       $("#jjimFrm").submit();
       </sec:authorize>
    }
+   
+   
+   const productId = '${product.productId}';
+   const productName = '${product.productName}';
+   const productImg = '${product.productImageList[0].productImgRenamed}'
+   const productPrice = '${product.productPrice}'
 </script>
+<script src="../resources/js/productDetail.js"></script>
+<jsp:include page="/WEB-INF/views/common/history.jsp" /> 
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
