@@ -342,7 +342,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$(document).on('click', '.page-link', function(){
+	$(document).on('click', '.page-product', function(){
 		productPaging($(this).data('page'));
 	});
 	
@@ -400,13 +400,12 @@ $(document).ready(function(){
 				tbody.append(tbodyHtml);
 				
 				//페이징
-				console.log(paging);
 				var pagingHtml = '';
 				
 				if(paging.minNum == 1){
-					pagingHtml += '<li class="page-item disabled"><a class="page-link" href="#">&lt;&lt;</a></li>';
+					pagingHtml += '<li class="page-item disabled"><a class="page-link page-product" href="#">&lt;&lt;</a></li>';
 				}else{
-					pagingHtml += '<li class="page-item"><a class="page-link" href="#" data-page="' + (paging.minNum - 1) + '">&lt;&lt;</a></li>';
+					pagingHtml += '<li class="page-item"><a class="page-link page-product" href="#" data-page="' + (paging.minNum - 1) + '">&lt;&lt;</a></li>';
 				}
 				
 				for(var i = paging.minNum; i <= paging.maxNum; i++){
@@ -414,15 +413,15 @@ $(document).ready(function(){
 						break;
 					}
 					if(i == paging.pageNum){
-						pagingHtml += '<li class="page-item active"><a class="page-link">' + i + '</a></li>';
+						pagingHtml += '<li class="page-item active"><a class="page-link page-product">' + i + '</a></li>';
 					}else{
-						pagingHtml += '<li class="page-item"><a class="page-link" href="javascript:void(0);" data-page="' + i + '">' + i + '</a></li>';
+						pagingHtml += '<li class="page-item"><a class="page-link page-product" href="javascript:void(0);" data-page="' + i + '">' + i + '</a></li>';
 					}
 				}
 				if(paging.maxNum >= paging.maxPageNum){
-					pagingHtml += '<li class="page-item disabled"><a class="page-link" href="#">&gt;&gt;</a></li>';
+					pagingHtml += '<li class="page-item disabled"><a class="page-link page-product" href="#">&gt;&gt;</a></li>';
 				}else{
-					pagingHtml += '<li class="page-item"><a class="page-link" href="#" data-page="' + (paging.maxNum + 1) + '">&gt;&gt;</a></li>';
+					pagingHtml += '<li class="page-item"><a class="page-link page-product" href="#" data-page="' + (paging.maxNum + 1) + '">&gt;&gt;</a></li>';
 				}
 				
 				$('#paging').empty();
@@ -556,8 +555,6 @@ $(document).ready(function(){
 				</tr>
 			</thead>
 			<tbody id="productListTbody" style="table-layout: fixed;">
-			
-			
 			</tbody>
 		</table>
 	</div>

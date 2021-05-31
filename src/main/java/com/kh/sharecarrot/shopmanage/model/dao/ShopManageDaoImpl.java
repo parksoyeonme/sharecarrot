@@ -71,5 +71,14 @@ public class ShopManageDaoImpl implements ShopManageDao{
 		return session.update("shopmanage.updateProduct", product);
 	}
 
+	@Override
+	public List<Product> selectTransactionList(Product product) {
+		return session.selectList("shopmanage.selectTransactionList", product);
+	}
+
+	@Override
+	public int selectTransactionListCount(Product product) {
+		return session.selectOne("shopmanage.selectTransactionListCount",product);
+	}
 
 }

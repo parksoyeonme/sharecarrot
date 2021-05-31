@@ -28,17 +28,6 @@ public class ShopDaoImpl implements ShopDao{
 	}
 
 
-
-	@Override
-	public Shop selectShopOne(Map<String, Object> param) {
-		return session.selectOne("shop.selectShopOne", param);
-	}
-
-	@Override
-	public List<Product> selectshopProductList(String shopId) {
-		return session.selectList("shop.selectshopProductList", shopId);
-	}
-
 	@Override
 	public int selectOpenDay(String shopId) {
 		return session.selectOne("shop.selectOpenDay", shopId);
@@ -54,10 +43,7 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectOne("shop.selectShop", shopId);
 	}
 
-	@Override
-	public Member selectProfilOne(String shopId) {
-		return session.selectOne("shop.selectProfilOne", shopId);
-	}
+	
 
 	@Override
 

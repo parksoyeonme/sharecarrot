@@ -18,7 +18,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 <section id="my-store-container" class="ms_container">
-       
+        <br /><br />
     <div class="container">
             <div class="row">
                 <div class="col-lg-3" style="height: 220px; border: 2px solid #FA8440;">
@@ -37,23 +37,25 @@
                             <div style="font-size: 36px; font-weight: bold;">
                                 ${shop.memberId}
                             </div>
-                            <div style="float: left; width: 22%; font-weight: bold;">
-                               <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
-                            </div>
-                            <div style="float: left; width: 11%;">
-                                ${openday}일
-                            </div>
-                            <div style="float: left; width: 22%; font-weight: bold;">
-                                <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
-                            </div>
-                            <div style="float: left; width: 11%;">
-                                ${shop.shopVisitCount}명
-                            </div>
-                            <div style="float: left; width: 21%; font-weight: bold;">
-                              <i class="fas fa-shopping-cart" style="font-size: 23px;"></i>상품판매
-                            </div>
-                            <div style="float: left; width: 13%;">
-                                ${sellCount}개
+                            <div style="margin-top: 5px;">
+	                            <div style="float: left; width: 22%; font-weight: bold;">
+	                               <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
+	                            </div>
+	                            <div style="float: left; width: 11%;">
+	                                ${openday}일
+	                            </div>
+	                            <div style="float: left; width: 22%; font-weight: bold;">
+	                                <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
+	                            </div>
+	                            <div style="float: left; width: 11%;">
+	                                ${shop.shopVisitCount}명
+	                            </div>
+	                            <div style="float: left; width: 21%; font-weight: bold;">
+	                              <i class="fas fa-shopping-cart" style="font-size: 23px;"></i>상품판매
+	                            </div>
+	                            <div style="float: left; width: 13%;">
+	                                ${sellCount}개
+	                            </div>
                             </div>
                         </li>
                     </ul>
@@ -63,20 +65,21 @@
                     <!-- 내상점관리/신고하기버튼 -->
                      <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
 	                    <c:if test="${loginMemberId == memberId}">
-	                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
+	                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class='btn btn-warning'>내상점관리</a>
 	                 	</c:if>
 	                 	<sec:authorize access="isAuthenticated()">
-	                    	<a href="${pageContext.request.contextPath }/report/reportForm.do" class="gomystore-button">신고하기</a>
+	                 		<c:if test="${loginMemberId != memberId}">
+	                    		<a href="${pageContext.request.contextPath }/report/reportForm.do" class='btn btn-warning'>신고하기</a>
+	                    	</c:if>
 	                    </sec:authorize>
                       </div>
 
                 </div>
             </div>
-             
-    </div>
+	 </div>
                
             
-            <br>
+            <br />
             <div class="col-lg-10">
                <ul class="nav nav-tabs">
 				  <li class="nav-item">

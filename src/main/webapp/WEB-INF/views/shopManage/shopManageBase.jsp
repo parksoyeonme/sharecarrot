@@ -66,11 +66,13 @@ $(document).ready(function(){
 	}
 	
 	
+	
+	
 });
 </script>
 
 
-<div class="container-fluid">
+<div class="container-fluid" style="width: 1024px;">
 	<div class="row my-3">
 		<div class="col-md-12">
 			<ul class="nav nav-pills">
