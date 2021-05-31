@@ -13,7 +13,8 @@
 <meta charset="UTF-8">
 <title>Chatting</title>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.js" integrity="sha512-Kdp1G1My+u1wTb7ctOrJxdEhEPnrVxBjAg8PXSvzBpmVMfiT+x/8MNua6TH771Ueyr/iAOIMclPHvJYHDpAlfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js" integrity="sha512-tL4PIUsPy+Rks1go4kQG8M8/ItpRMvKnbBjQm4d2DQnFwgcBYRRN00QdyQnWSCwNMsoY/MfJY8nHp2CzlNdtZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -105,20 +106,22 @@
 // const ws = new SockJS("http://" + location.host + "${pageContext.request.contextPath}/mmm);
 //1.웹소켓객체 -> stomp 객체 전달
 
+
 const ws = new SockJS("${pageContext.request.contextPath}/chat");
 const stompClient = Stomp.over(ws);
+
 
 //2.connect핸들러 작성. 구독
 stompClient.connect({}, (frame) => {
 	console.log("stomp connected : ", frame);
 	
-	stompClient.subscribe("/buyerChattinRoom.do", (frame) => {
-		console.log("message from /buyerChattinRoom.do : ", frame);
-		const msgObj = JSON.parse(frame.body);
-		console.log(msgObj);
-		const {from, to, content, type, time} = msgObj;
-		alert(content + "\n" + new Date(time));
-	});
+// 	stompClient.subscribe("/buyerChattinRoom.do", (frame) => {
+// 		console.log("message from /buyerChattinRoom.do : ", frame);
+// 		const msgObj = JSON.parse(frame.body);
+// 		console.log(msgObj);
+// 		const {from, to, content, type, time} = msgObj;
+// 		alert(content + "\n" + new Date(time));
+// 	});
 	
 	stompClient.subscribe("/chat/buyerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id}", (message) => {
 		console.log("message from /chat/buyerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id} : ", message);
@@ -129,26 +132,30 @@ stompClient.connect({}, (frame) => {
  
 //3.메세지 발행
 $("#sendBtn").click(() => {
-	var roomBuyerId = ${buyer_id};
-	var shopId = ${shop_id};
+	
+// 	var $message = #('#message');
+// 	console.log($message);
+	
+	var roomBuyerId = '${buyer_id}';
+	var shopId = '${shop_id}';
 	var message = 'test';
 	var flag = 1;
 	//db에 저장
-	$.ajax({
+// 	$.ajax({
         
-        type:"POST",
-//         url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomBuyerId=${buyer_id}&shopId=${shop_id}&message=" + $message.val(),
-        url:"${pageContext.request.contextPath}/chat/chatEnroll.do",
-        data: {
-			roomBuyerId : roomBuyerId,
-			shopId : 'shopId',
-			message: 'message',
-			flag: 'flag',
-		},
-		success:function(data){
-            console.log('채팅 메세지 db 등록 성공');
-        }                
-    });
+//         type:"POST",
+// //         url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomBuyerId=${buyer_id}&shopId=${shop_id}&message=" + $message.val(),
+//         url:"${pageContext.request.contextPath}/chat/chatEnroll.do",
+//         data: {
+// 			roomBuyerId : roomBuyerId,
+// 			shopId : shopId,
+// 			message: 'message',
+// 			flag: flag
+// 		},
+// 		success:function(data){
+//             console.log('채팅 메세지 db 등록 성공');
+//         }                
+//     });
 	
 	//보낼 메세지 테이블에 추가
 	

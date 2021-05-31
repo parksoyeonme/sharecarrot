@@ -24,13 +24,13 @@ const stompClient = Stomp.over(ws);
 stompClient.connect({}, (frame) => {
 	console.log("stomp connected : ", frame);
 	
-	stompClient.subscribe("/sellerChattinRoom.do", (frame) => {
-		console.log("message from /sellerChattinRoom.do : ", frame);
-		const msgObj = JSON.parse(frame.body);
-		console.log(msgObj);
-		const {from, to, content, type, time} = msgObj;
-		alert(content + "\n" + new Date(time));
-	});
+// 	stompClient.subscribe("/sellerChattinRoom.do", (frame) => {
+// 		console.log("message from /sellerChattinRoom.do : ", frame);
+// 		const msgObj = JSON.parse(frame.body);
+// 		console.log(msgObj);
+// 		const {from, to, content, type, time} = msgObj;
+// 		alert(content + "\n" + new Date(time));
+// 	});
 	
 	stompClient.subscribe("/sellerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id}", (message) => {
 		console.log("message from /sellerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id} : ", message);
@@ -40,36 +40,58 @@ stompClient.connect({}, (frame) => {
 //3.메세지 발행
 function sendBtnClick(){
 	
+// 	var $message = #('#message');
+// 	console.log($message);
+	
+	var roomBuyerId = '${buyer_id}';
+	var shopId = '${shop_id}';
+	var message = 'test';
+	var flag = 1;
 	//db에 저장
-		//db에 저장
-	$.ajax({
+// 	$.ajax({
         
-        type:"POST",
-//         url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomBuyerId=${buyer_id}&shopId=${shop_id}&message=" + $message.val(),
-        url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomBuyerId=${buyer_id}&shopId=${shop_id}&message=test&flag=0",
-        success:function(data){
-            console.log('채팅 메세지 db 등록 성공');
-        }                
-    });
+//         type:"POST",
+// //         url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomSellerId=${buyer_id}&shopId=${shop_id}&message=" + $message.val(),
+//         url:"${pageContext.request.contextPath}/chat/chatEnroll.do",
+//         data: {
+// 			roomBuyerId : roomBuyerId,
+// 			shopId : shopId,
+// 			message: 'message',
+// 			flag: flag
+// 		},
+// 		success:function(data){
+//             console.log('채팅 메세지 db 등록 성공');
+//         }                
+//     });
 	
 	//보낼 메세지 테이블에 추가
 	
 	
-	//메세지 전송
-	const message = document.getElementByID("message").value;
-	const url = "/sellerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id}";
+	const $message = $("#message");
+	const url = "/sellerChattinRoom.do?roomSellerId=${buyer_id}&shopId=${shop_id}"; // $("#stomp-url option:selected")
 	
-	if(message == '') return;
+	if($message.val() == '') return;
 
 	sendMessage(url);
 };
 
 function sendMessage(url){
-	const msg = document.getElementByID("message").value();
+// 	const msg = document.getElementByID("message").value();
+// 	const message = {
+// 		from : 'buyer',
+// 		to : 'seller',
+// 		content : msg,
+// 		type : "chat",
+// 		time : Date.now()
+// 	};
+	
+// 	stompClient.send(url, {}, JSON.stringify(message));
+// // 	stompClient.send(url, {}, $("#message").val());
+// 	$("#message").val(''); // 초기화
 	const message = {
-		from : 'buyer',
-		to : 'seller',
-		content : msg,
+		from : 'seller',
+		to : 'buyer',
+		content : $("#message").val(),
 		type : "chat",
 		time : Date.now()
 	};
