@@ -41,4 +41,9 @@ public class Product {
 		private String locName;
 		
 		private String pageNum;
+		
+		private String reviewYn;
+		private String memberId;
+		
+		private String transactionType;
 }

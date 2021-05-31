@@ -8,6 +8,9 @@
         	from review_comment
     </select>
     
+    
+
+    
     <insert id="insertReviewComment">
         insert into review_comment values
         	(
@@ -20,10 +23,27 @@
         	)
     </insert>
     
-    <select id="selectReviewCommentOne" resultType="reviewComment">
+    
+<!--     <select id="selectReviewCommentOne" resultType="ReviewComment">
         select review_comment_no, review_content,member_id,review_no
         	from review_comment
-        	where review_no = #{reviewNo}
+        	where review_no = #{reviewNo} and review_comment_del_flag ='N'
+        	
+    </select> -->
+    
+     <select id="selectReviewCommentOne" resultType="ReviewComment">
+        select review_comment_no, review_content,member_id,review_no
+        	from review_comment
+        	where review_comment_del_flag ='N'
+        	
     </select>
+  
+    
+    <update id="deleteReviewComment">
+    update review_comment
+    set review_comment_del_flag ='Y'
+    where review_comment_no = #{reviewCommentNo} and review_no =#{reviewNo} and review_comment_del_flag ='N'
+    
+    </update>
     
 </mapper>

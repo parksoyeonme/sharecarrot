@@ -16,54 +16,11 @@
 /*=====지우기=====*/
 
 /*=====지우기=====*/
-.tabs {
-    display: flex;
-}
-.tabs .tab {
-    text-align: center;
-    line-height: 30px;
-    width: 216px;
-    height: 35px;
-    cursor: pointer;
-    background-color: #FA8440;
-    color: rgb(20, 19, 19);
-    position: relative;
-    border-top-right-radius: 34px;
-    border-top-left-radius: 6px;
-    border: 2px solid #9e9e9e;
-}
+
 .content-mystorepro {
     border: 2px solid black;
     margin-left: 20px;
   
-}
-.itemss {
-    display: none;
-    padding: 10px;
-    background-color: #fff;
-    position: relative;
-}
-.itemss::before {
-    content: "";
-    position: absolute;
-    /*top: -4px;*/
-    left: 0;
-    width: 386px;
-    height: 4px;
-    background-color: rgb(255, 255, 255);
-}
-.itemss:nth-child(2)::before {
-    left: 390px;
- 	/*top: -4px;*/
-    background-color: rgb(255, 255, 255);
-}
-.itemss:nth-child(3)::before {
-    left: 188px;
-    top: -4px;
-    background-color: rgb(255, 255, 255);
-}
-.itemss.active {
-    display: inline-block;
 }
 
 #shopMemo{
@@ -73,23 +30,7 @@
 	font-size: 20px;
 }
 /*내상점관리 버튼*/
-.gomystore-button {
-    -webkit-border-radius: 7;
-    -moz-border-radius: 7;
-    border-radius: 7px;
-    font-size: 13px;
-    background: #FA8440;
-    padding: 10px 20px;
-    margin-left: 41px;
-    text-decoration: none;
-}
-.gomystore-button:hover {
-    text-decoration: none;
-}
-.gomystore-button:active {
-    position: relative;
-    top: 1px;
-}
+
 
 /*전체*/
 .div-division > .left {
@@ -117,21 +58,19 @@
     border: none;
     font-size: 14px;
     
-    }
-    #btnrowprice{
+}
+#btnrowprice{
     width: 37px;
     background: none;
     border: none;
     font-size: 14px;
-    
-    }
-    #btnhighprice{
+ }
+ #btnhighprice{
     width: 37px;
     background: none;
     border: none;
     font-size: 14px;
-    
-    }
+}
 
 /*상품나열하기*/
 .wrap-pro {
@@ -155,56 +94,18 @@ div.box {
     font-weight: bold;
 }
 .div-division2 > .left2 {
-    width: 9%;
+    width: 10%;
     float: left;
     box-sizing: border-box;
+    font-size: 18px;
 
 }
 .div-division2 > .right2 {
-    width: 91%;
+    width: 89%;
     float: right;
     box-sizing: border-box;
-
+	font-size: 18px;
 }
-/*상점후기*/
-.tg {
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-top: 42px;
-}
-.tg td {
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    overflow: hidden;
-    padding: 10px 5px;
-    word-break: normal;
-}
-.tg th {
-    width: 387px;
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    overflow: hidden;
-    padding: 10px 5px;
-    word-break: normal;
-}
-.tg .tg-0lax {
-    text-align: left;
-    vertical-align: top
-}
-
-
-#sidebar {
-    float: right;
-    padding: 10px;
-}
-
 
 #productImg{
     height: 119px;
@@ -214,7 +115,3 @@ div.box {
 	
 }
 
-#updateContent{
-	width: 392px;
-    height: 90px;
-}

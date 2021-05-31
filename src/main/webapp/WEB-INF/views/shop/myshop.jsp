@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <jsp:include page="/WEB-INF/views/common/history.jsp" />
   
@@ -12,16 +13,23 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script> 
 <!--icon-->
  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-<script>
-   console.log('test');
-</script>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 <section id="my-store-container" class="ms_container">
-        <hr />
-     <div class="container">
+        <br /><br />
+    <div class="container">
             <div class="row">
                 <div class="col-lg-3" style="height: 220px; border: 2px solid #FA8440;">
-                    <div><img id="profileImg" src='${pageContext.request.contextPath}/resources/upload/member/${profile}' style="width: 112%;; height: 217px; margin-left: -12px;"></div>
+	                <c:choose>
+		                <c:when test="${empty profile} == null">
+		                	<div><img id="profileImg" src='${pageContext.request.contextPath}/resources/images/noProfile.png' style="width: 112%;; height: 217px; margin-left: -12px;"></div>
+		                </c:when>
+		                <c:otherwise>
+		                    <div><img id="profileImg" src='${pageContext.request.contextPath}/resources/upload/member/${profile}' style="width: 112%;; height: 217px; margin-left: -12px;"></div>
+		                </c:otherwise>
+	                </c:choose>
                 </div>
                 <div class="col-lg-7" style="width: 590px; height: 220px; background-color: #ef9a0f;">
                     <ul class="amount">
@@ -29,98 +37,77 @@
                             <div style="font-size: 36px; font-weight: bold;">
                                 ${shop.memberId}
                             </div>
-                            <div style="float: left; width: 22%; font-weight: bold;">
-                               <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
+                            <div style="margin-top: 5px;">
+	                            <div style="float: left; width: 22%; font-weight: bold;">
+	                               <i class="fas fa-store" style="font-size:23px;"></i>상점오픈일
+	                            </div>
+	                            <div style="float: left; width: 11%;">
+	                                ${openday}일
+	                            </div>
+	                            <div style="float: left; width: 22%; font-weight: bold;">
+	                                <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
+	                            </div>
+	                            <div style="float: left; width: 11%;">
+	                                ${shop.shopVisitCount}명
+	                            </div>
+	                            <div style="float: left; width: 21%; font-weight: bold;">
+	                              <i class="fas fa-shopping-cart" style="font-size: 23px;"></i>상품판매
+	                            </div>
+	                            <div style="float: left; width: 13%;">
+	                                ${sellCount}개
+	                            </div>
                             </div>
-                            <div style="float: left; width: 11%;">
-<%--                                  ${shop.shopTotalScore}일 --%>
-                                 ${openday}일
-                            </div>
-                            <div style="float: left; width: 22%; font-weight: bold;">
-                                <i class="fas fa-users" style="font-size:23px;"></i>상점방문수
-                            </div>
-                            <div style="float: left; width: 11%;">
-                                ${shop.shopVisitCount}명
-                            </div>
-                            <div style="float: left; width: 21%; font-weight: bold;">
-                              <i class="fas fa-shopping-cart" style="font-size: 23px;"></i>상품판매
-                            </div>
-                          
-                            <div style="float: left; width: 13%;">
-                                ${sellCount}개
-                            </div>
-                           
                         </li>
                     </ul>
                     <div id="shopMemo">
-                     
                     	${shop.shopMemo}
                     </div>
-                    
+                    <!-- 내상점관리/신고하기버튼 -->
                      <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
-                    <c:if test="${loginMemberId == memberId}">
-                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class="gomystore-button">내상점관리</a>
-                 	</c:if>
-                 	<sec:authorize access="isAuthenticated()">
-                    <a href="${pageContext.request.contextPath }/report/reportForm.do" class="gomystore-button">신고하기</a>
-                    </sec:authorize>
+	                    <c:if test="${loginMemberId == memberId}">
+	                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class='btn btn-warning'>내상점관리</a>
+	                 	</c:if>
+	                 	<sec:authorize access="isAuthenticated()">
+	                 		<c:if test="${loginMemberId != memberId}">
+	                    		<a href="${pageContext.request.contextPath }/report/reportForm.do" class='btn btn-warning'>신고하기</a>
+	                    	</c:if>
+	                    </sec:authorize>
                       </div>
-                  
-                    <script>
-                       const tempParam = {
-                             shopId: "${shop.shopId}",
-                       }
-                    </script>
+
                 </div>
-                <div id="sidebar" class="col-lg-2">
-                  
-                    
-                    </div>
-                </div>
+            </div>
+	 </div>
                
             
-               
-            </div>
-            <br>
-            <div class="col-lg-9" style="margin-left: 55px;">
-                <div class="main">
-                    <div class="tabs" style="margin-left: 20px;">
-                        <div class="tab" data-tab-target="#tab1">
-                            <p>상품</p>
-                        </div>
-                        <div class="tab" data-tab-target="#tab2">
-                            <p>상점후기</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-mystorepro">
-                    <div id="tab1" data-tab-content class="itemss active">
-                        <jsp:include page="myshopProductList.jsp"></jsp:include>
-                    </div>
-                    <div id="tab2" data-tab-content class="itemss">
-                        <jsp:include page="myshopReviewList.jsp"></jsp:include>
-                     </div>
-                </div>
+            <br />
+            <div class="col-lg-10">
+               <ul class="nav nav-tabs">
+				  <li class="nav-item">
+				    <a class="nav-link active" data-toggle="tab" href="#myshopProduct">상품</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" data-toggle="tab" href="#myshopStoreReview">상점후기</a>
+				  </li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane fade show active" id="myshopProduct">
+						<jsp:include page="myshopProductList.jsp"></jsp:include>
+					</div>
+					<div class="tab-pane fade" id="myshopStoreReview">
+						<jsp:include page="myshopReviewList.jsp"></jsp:include>
+					</div>
+				</div>			
+
             </div>
            
          
        
-    </div>
-    </section>
+ 
+</section>
 <script>
-        const tabs = document.querySelectorAll("[data-tab-target]");
-        const tabcon = document.querySelectorAll("[data-tab-content]");
-        tabs.forEach((tab) => {
-            tab.addEventListener("click", () => {
-                const target = document.querySelector(tab.dataset.tabTarget);
-                tabcon.forEach((tabc_all) => {
-                    tabc_all.classList.remove("active");
-                });
-                target.classList.add("active");
-            });
-        });
-        
-
-    </script>
+	const tempParam = {
+	      shopId: "${shop.shopId}",
+	}
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

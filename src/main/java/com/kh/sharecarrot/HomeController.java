@@ -33,6 +33,7 @@ import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
+import com.kh.sharecarrot.utils.model.vo.jjimListExt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,7 +67,7 @@ public class HomeController {
 		
 		log.info("principal = {}", principal);
 		//로그인을 한 경우에만 찜 목록 불러오는 코드
-		List<JjimList> jjimList = null;
+		List<jjimListExt> jjimList = null;
 		if(principal != null) {
 			String longinMemberId = principal.getName();
 			jjimList = utilsService.selectJjimList(longinMemberId);

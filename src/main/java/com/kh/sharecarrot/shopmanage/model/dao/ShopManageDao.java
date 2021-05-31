@@ -41,6 +41,10 @@ public interface ShopManageDao {
 	//상품 변경
 	int updateProduct(Product product);
 
+	//거래내역 리스트
+	List<Product> selectTransactionList(Product product);
 	
+	//거래내역 카운트
+	int selectTransactionListCount(Product product);
 
 }
