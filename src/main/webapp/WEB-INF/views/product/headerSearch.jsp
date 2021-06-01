@@ -25,11 +25,11 @@ function productDetail(productId){
 
 
 <section id="search-container" class="ms_container">
-     <div class="container">
+	<div class="container">
 	     <div class="row">
 	         
 	     </div>
-	</div>
+
     <div class="col-lg-9" style="margin-left: 55px;">
         <div class="content-product">
             <div class="div-division" style="font-size: 20px;">검색결과 (${productListSize}개)
@@ -52,6 +52,7 @@ function productDetail(productId){
 			<div id="pagebar">${pageBar}</div>
         </div>
     </div>
+		</div>    
 </section>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

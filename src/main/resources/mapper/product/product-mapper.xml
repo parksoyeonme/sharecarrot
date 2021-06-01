@@ -77,7 +77,7 @@
 	</select>
 	
 	<select id="searchTitleSize" resultType="_int">
-		select count(*) from product
+		select count(*) from product 
 		where product_name like '%' ||  #{productName} || '%'
 	</select>
 
