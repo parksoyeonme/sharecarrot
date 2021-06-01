@@ -19,99 +19,80 @@
 //1.웹소켓객체 -> stomp 객체 전달
 const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
+var table;
+var row;
+var html = "";
+var div = "";
 
 //2.connect핸들러 작성. 구독
 stompClient.connect({}, (frame) => {
 	console.log("stomp connected : ", frame);
 	
-// 	stompClient.subscribe("/sellerChattinRoom.do", (frame) => {
-// 		console.log("message from /sellerChattinRoom.do : ", frame);
-// 		const msgObj = JSON.parse(frame.body);
-// 		console.log(msgObj);
-// 		const {from, to, content, type, time} = msgObj;
-// 		alert(content + "\n" + new Date(time));
-// 	});
-	
 // 	stompClient.subscribe("/chattinRoom.do?roomNo=${roomNo}", (message) => {
-	stompClient.subscribe("/chattinRoom/${roomNo}", (message) => {
+	stompClient.subscribe("/chattingRoom/${roomNo}", (message) => {
 			
 		const msgObj = JSON.parse(message.body);
-// 		console.log(msgObj);
 		const {roomBuyerId, roomSellerId, messageText, roomNo, messageDate} = msgObj;
-// 		alert(content + "\n" + new Date(time));
-	
-		console.log(from);
-		console.log("<sec:authentication property='principal.username' />");
-		var table;
-		var row;
-		var html = "";
-// 		//현재 로그인된 사용자와, 메세지를 보낸 사용자가 다른 경우
-// 		if("<sec:authentication property='principal.username' />" != roomBuyerId){
-// 			//구매자
-// 			if(${flag} == 0){
-		//roomBuyerId가 null인 경우는 seller가 보낸 메세지.
-		//즉, seller가 보낸 메세지가 오른쪽으로 가게 정렬
+
 		if('${flag}' == 0){
-			
-			if(roomSellerId==null){
-				console.log("구매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag0_buyer_tbl');  //행을 추가할 테이블 							
-			}
-			//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
-			else if(roomSellerId!=null){
-				console.log("판매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag0_seller_tbl');  //행을 추가할 테이블	
+			if(roomSellerId!=null){
+// 				console.log("판매자한테 받았습니다.");
+// 				console.log(message);
+				table = document.getElementById('flag0_buyer_tbl');  //행을 추가할 테이블	
+// 				console.log(table);
+				
+				if(table == null){
+					div = document.getElementById('previous_message');					
+					html += "<table id='#flag1_seller_tbl'>";
+					html += "<tr>";
+					html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
+					html += "</tr>";
+					html += "</table>";
+					
+					div.append(html);	
+				}else{
+					html += "<tr>";
+					html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
+					html += "</tr>";
+					table.append(html);
+				}
+				
 			}
 		}else if('${flag}' == 1){
-			
-			if(roomBuyerId==null){
-				console.log("구매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag1_buyer_tbl');  //행을 추가할 테이블 							
-			}
-			//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
-			else if(roomBuyerId!=null){
-				console.log("판매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag1_seller_tbl');  //행을 추가할 테이블	
+			if(roomBuyerId!=null){
+// 				console.log("구매자한테 받았습니다.");
+// 				console.log(message);
+				table = document.getElementById('flag1_seller_tbl');  //행을 추가할 테이블	
+// 				console.log(table);
+				
+				if(table == null){
+					div = document.getElementById('previous_message');	
+					html += "<table id='#flag1_seller_tbl'>";
+					html += "<tr>";
+					html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
+					html += "</tr>";
+					html += "</table>";
+					div.append(html);
+				}else{
+					html += "<tr>";
+					html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
+					html += "</tr>";
+					table.append(html);
+				}
+				
+				
 			}
 		}
 		
 		
-		html += "<tr>";
-		html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
-		html += "</tr>";
-		table.append(html);	
+
 		
 	});
 });
  
 //3.메세지 발행
-function sendBtnClick(){
-	
-// 	var $message = #('#message');
-// 	console.log($message);
-	//db에 저장
-// 	$.ajax({
-        
-//         type:"POST",
-// //         url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomSellerId=${buyer_id}&shopId=${shop_id}&message=" + $message.val(),
-//         url:"${pageContext.request.contextPath}/chat/chatEnroll.do",
-//         data: {
-// 			roomBuyerId : roomBuyerId,
-// 			shopId : shopId,
-// 			message: 'message',
-// 			flag: flag
-// 		},
-// 		success:function(data){
-//             console.log('채팅 메세지 db 등록 성공');
-//         }                
-//     });
-	
+function sendBtnClick(){	
 	//보낼 메세지 테이블에 추가
-	
 	
 	const $message = $("#message");
 	const url = "/chat/chattingRoom/${roomNo}"; // $("#stomp-url option:selected")
@@ -121,10 +102,14 @@ function sendBtnClick(){
 	sendMessage(url);
 };
 
+var html = "";
+var $table;
+
 function sendMessage(url){
 	var flag = ${flag};
 	var sender;
 	var receiver;
+
 	if(${flag}==0){
 		sender = '${buyer_id}';
 		receiver = null;
@@ -140,6 +125,42 @@ function sendMessage(url){
 		roomNo : '${roomNo}',
 		messageDate : Date.now()
 	};
+	
+// 	console.log('보낼 때 : ' + '${flag}');
+	
+// 	if('${flag}' == 0){
+		
+// 		if(receiver==null){
+// 			console.log("구매자한테 받았습니다.");
+// 			console.log(message);
+// 			$table = $('#flag0_buyer_tbl');  //행을 추가할 테이블 							
+// 		}
+// 		//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
+// 		else if(receiver!=null){
+// 			console.log("판매자한테 받았습니다.");
+// 			console.log(message);
+// 			$table = $('#flag0_seller_tbl');  //행을 추가할 테이블	
+// 		}
+// 	}else if('${flag}' == 1){
+		
+// 		if(sender==null){
+// 			console.log("구매자한테 받았습니다.");
+// 			console.log(message);
+// 			$table = $('#flag1_buyer_tbl');  //행을 추가할 테이블 							
+// 		}
+// 		//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
+// 		else if(sender!=null){
+// 			console.log("판매자한테 받았습니다.");
+// 			console.log(message);
+// 			$table = $('#flag1_seller_tbl');  //행을 추가할 테이블	
+// 		}
+// 	}
+	
+// 	console.log($table);
+// 	html += "<tr>";
+// 	html += "<td><textarea style='resize: none; border: none;'readonly >$('#message').val()</textarea></td>";
+// 	html += "</tr>";
+// 	$table.append(html);	
 	
 	stompClient.send(url, {}, JSON.stringify(message));
 	$("#message").val(''); // 초기화

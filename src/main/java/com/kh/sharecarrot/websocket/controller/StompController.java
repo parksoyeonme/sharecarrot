@@ -33,7 +33,7 @@ public class StompController {
 			@DestinationVariable String roomNo) {
 		log.info("{}",msg);
 		//db저장 로직등이 가능
-		int result = chattingService.insertChattingMessage(msg);
+//		int result = chattingService.insertChattingMessage(msg);
 		return msg;
 	}
 
