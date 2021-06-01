@@ -14,104 +14,104 @@
     box-sizing: border-box;
 }
 /*=====지우기=====*/
-
 /*=====지우기=====*/
-
 .content-mystorepro {
     border: 2px solid black;
     margin-left: 20px;
-  
 }
-
-#shopMemo{
-	margin-top: 41px;
-	margin-left: 48px;
-	height: 72px;
-	font-size: 20px;
+#shopMemo {
+    margin-top: 41px;
+    margin-left: 48px;
+    height: 72px;
+    font-size: 20px;
 }
 /*내상점관리 버튼*/
-
-
 /*전체*/
 .div-division > .left {
     width: 40px;
     float: left;
     box-sizing: border-box;
     font-size: 20px;
-    
 }
-
 .div-division > .right {
     width: 94%;
     float: right;
     box-sizing: border-box;
     font-size: 20px;
-
 }
-#btn_group{
-	float: right;
-	margin-top: -17px;
+#btn_group {
+    float: right;
+    margin-top: -17px;
 }
-#btncurrent{
-    width: 37px;
-    background: none;
-    border: none;
-    font-size: 14px;
-    
-}
-#btnrowprice{
-    width: 37px;
-    background: none;
-    border: none;
-    font-size: 14px;
- }
- #btnhighprice{
+#btncurrent {
     width: 37px;
     background: none;
     border: none;
     font-size: 14px;
 }
-
+#btnrowprice {
+    width: 37px;
+    background: none;
+    border: none;
+    font-size: 14px;
+}
+#btnhighprice {
+    width: 37px;
+    background: none;
+    border: none;
+    font-size: 14px;
+}
 /*상품나열하기*/
+.product-table {
+    margin-left: 10px;
+}
 .wrap-pro {
     float: left;
 }
-div.box {
-    padding: 58px;
-    margin: 21px 5px 5px;
+.product {
+    position: relative;
+    height: 276px;
+    color: rgb(33, 33, 33);
+    margin: 10px;
+    cursor: pointer;
 }
-.box1 {
-   
-    height: 99px;
-    width: 140px;
-    border: 1px solid;
+.product-box {
+    height: 70%;
+    display: block;
+    overflow: hidden;
+    border-radius: 8px;
+    width: 211px;
 }
- .pro-title {
-    margin-left: 20px;
+#productImg {
+    display: block;
+    width: 85%;
+    height: 93%;
+    object-fit: cover;
+    margin-left: 14px;
+    margin-top: 5px;
+    border-radius: 8px;
 }
- .pro-price {
-    margin-left: 97px;
-    font-weight: bold;
+.pro-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 175px;
+    margin-left: 16px;
+}
+.pro-price {
+    font-family: Tahoma, sans-serif;
+    font-weight: 700;
+    margin-left: 16px;
 }
 .div-division2 > .left2 {
     width: 10%;
     float: left;
     box-sizing: border-box;
     font-size: 18px;
-
 }
 .div-division2 > .right2 {
     width: 89%;
     float: right;
     box-sizing: border-box;
-	font-size: 18px;
+    font-size: 18px;
 }
-
-#productImg{
-    height: 119px;
-    width: 140px;
-    margin-top: -56px;
-    margin-left: -57px;
-	
-}
-

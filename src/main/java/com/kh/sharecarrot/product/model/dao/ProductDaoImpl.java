@@ -19,15 +19,33 @@ public class ProductDaoImpl implements ProductDao {
 	private SqlSessionTemplate session;
 
 	@Override
-	public List<Product> searchLocation(String locName) {
-		return session.selectList("product.searchLocation", locName);
+	public List<Product> searchLocation(Map<String, Object> param) {
+		int cPage =(int)param.get("cPage");
+		int limit = (int)param.get("numPerPage");
+		int offset = (cPage -1)* limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("product.searchLocation", param, rowBounds);
+
+	}
+	
+	@Override
+	public int searchLocationSize(String locName) {
+		return session.selectOne("product.searchLocationSize",locName);
 	}
 
 	@Override
-	public List<Product> searchTitle(String productName) {
-		return session.selectList("product.searchTitle", productName);
+	public List<Product> searchTitle(Map<String, Object> param) {
+		int cPage =(int)param.get("cPage");
+		int limit = (int)param.get("numPerPage");
+		int offset = (cPage -1)* limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("product.searchTitle", param, rowBounds);
 	}
 	
+	@Override
+	public int searchTitleSize(String productName) {
+		return session.selectOne("product.searchTitleSize",productName);
+	}
 	
 	@Override
 	public ProductDetail selectProductDetail(String productId) {
@@ -68,12 +86,7 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public List<Product> selectProductList(Map<String, Object> param) {
-		int cPage =(int)param.get("cPage");
-		
-		int limit = (int)param.get("numPerPage");
-		int offset = (cPage -1)* limit;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("product.selectProductList", param, rowBounds);
+		return session.selectList("product.selectProductList", param);
 	}
 
 	@Override
