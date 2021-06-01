@@ -17,7 +17,7 @@
 <script>
 
 //1.웹소켓객체 -> stomp 객체 전달
-const ws = new SockJS("${pageContext.request.contextPath}/chat");
+const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
 
 //2.connect핸들러 작성. 구독
@@ -32,8 +32,59 @@ stompClient.connect({}, (frame) => {
 // 		alert(content + "\n" + new Date(time));
 // 	});
 	
-	stompClient.subscribe("/sellerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id}", (message) => {
-		console.log("message from /sellerChattinRoom.do?roomBuyerId=${buyer_id}&shopId=${shop_id} : ", message);
+// 	stompClient.subscribe("/chattinRoom.do?roomNo=${roomNo}", (message) => {
+	stompClient.subscribe("/chattinRoom/${roomNo}", (message) => {
+			
+		const msgObj = JSON.parse(message.body);
+// 		console.log(msgObj);
+		const {roomBuyerId, roomSellerId, messageText, roomNo, messageDate} = msgObj;
+// 		alert(content + "\n" + new Date(time));
+	
+		console.log(from);
+		console.log("<sec:authentication property='principal.username' />");
+		var table;
+		var row;
+		var html = "";
+// 		//현재 로그인된 사용자와, 메세지를 보낸 사용자가 다른 경우
+// 		if("<sec:authentication property='principal.username' />" != roomBuyerId){
+// 			//구매자
+// 			if(${flag} == 0){
+		//roomBuyerId가 null인 경우는 seller가 보낸 메세지.
+		//즉, seller가 보낸 메세지가 오른쪽으로 가게 정렬
+		if('${flag}' == 0){
+			
+			if(roomSellerId==null){
+				console.log("구매자한테 받았습니다.");
+				console.log(message);
+					table = document.getElementById('flag0_buyer_tbl');  //행을 추가할 테이블 							
+			}
+			//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
+			else if(roomSellerId!=null){
+				console.log("판매자한테 받았습니다.");
+				console.log(message);
+					table = document.getElementById('flag0_seller_tbl');  //행을 추가할 테이블	
+			}
+		}else if('${flag}' == 1){
+			
+			if(roomBuyerId==null){
+				console.log("구매자한테 받았습니다.");
+				console.log(message);
+					table = document.getElementById('flag1_buyer_tbl');  //행을 추가할 테이블 							
+			}
+			//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
+			else if(roomBuyerId!=null){
+				console.log("판매자한테 받았습니다.");
+				console.log(message);
+					table = document.getElementById('flag1_seller_tbl');  //행을 추가할 테이블	
+			}
+		}
+		
+		
+		html += "<tr>";
+		html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
+		html += "</tr>";
+		table.append(html);	
+		
 	});
 });
  
@@ -42,11 +93,6 @@ function sendBtnClick(){
 	
 // 	var $message = #('#message');
 // 	console.log($message);
-	
-	var roomBuyerId = '${buyer_id}';
-	var shopId = '${shop_id}';
-	var message = 'test';
-	var flag = 1;
 	//db에 저장
 // 	$.ajax({
         
@@ -68,7 +114,7 @@ function sendBtnClick(){
 	
 	
 	const $message = $("#message");
-	const url = "/sellerChattinRoom.do?roomSellerId=${buyer_id}&shopId=${shop_id}"; // $("#stomp-url option:selected")
+	const url = "/chat/chattingRoom/${roomNo}"; // $("#stomp-url option:selected")
 	
 	if($message.val() == '') return;
 
@@ -76,28 +122,26 @@ function sendBtnClick(){
 };
 
 function sendMessage(url){
-// 	const msg = document.getElementByID("message").value();
-// 	const message = {
-// 		from : 'buyer',
-// 		to : 'seller',
-// 		content : msg,
-// 		type : "chat",
-// 		time : Date.now()
-// 	};
+	var flag = ${flag};
+	var sender;
+	var receiver;
+	if(${flag}==0){
+		sender = '${buyer_id}';
+		receiver = null;
+	}else if(${flag} == 1){
+		sender = null;
+		receiver = '${seller_id}';
+	}
 	
-// 	stompClient.send(url, {}, JSON.stringify(message));
-// // 	stompClient.send(url, {}, $("#message").val());
-// 	$("#message").val(''); // 초기화
 	const message = {
-		from : 'seller',
-		to : 'buyer',
-		content : $("#message").val(),
-		type : "chat",
-		time : Date.now()
+		roomBuyerId : sender,
+		roomSellerId : receiver,
+		messageText : $("#message").val(),
+		roomNo : '${roomNo}',
+		messageDate : Date.now()
 	};
 	
 	stompClient.send(url, {}, JSON.stringify(message));
-// 	stompClient.send(url, {}, $("#message").val());
 	$("#message").val(''); // 초기화
 }
 </script>
@@ -108,7 +152,7 @@ function sendMessage(url){
 </head>
 
 <body>
-	 <div style="text-align:center;">
+	<div style="text-align:center;">
 	 	<h2>
 	 		<!-- 구매자의 경우 -->
 	 		<c:if test="${flag eq 0}">
@@ -121,15 +165,16 @@ function sendMessage(url){
 	 	</h2>
 	 </div>
 	 <div id="previous_message" style="height:270px; width:480px; overflow:scroll;">
+
 	  <c:forEach items="${chattingMessageList}" var="message">
 		<!-- 구매자의 경우 -->
 			<c:choose>
 				<c:when test="${flag eq 0}">
 					<c:choose>
 			  			<c:when test="${empty message.roomSellerId}">
-			  			<div id="msg" style="width:480px; text-align:right;">
+			  			<div id="buyerMsg" style="width:480px; text-align:right;">
 							<div style="display: inline-block; margin-right:10px;">
-								<table>	
+								<table id="flag0_buyer_tbl">	
 									<tr>
 										<td>
 											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
@@ -145,7 +190,7 @@ function sendMessage(url){
 						<c:when test="${not empty message.roomSellerId}">
 						<div id="message" style="width:480px; text-align:left;">
 							<div style="display: inline-block; margin-right:10px;">
-								<table>	
+								<table id="flag0_seller_tbl">	
 									<tr>
 										<td>
 											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
@@ -160,7 +205,46 @@ function sendMessage(url){
 						</c:when>
 					</c:choose>
 				</c:when>
-			</c:choose>					
+			</c:choose>		
+			<!-- 판매자의 경우 -->
+			<c:choose>
+				<c:when test="${flag eq 1}">
+					<c:choose>
+			  			<c:when test="${empty message.roomBuyerId}">
+			  			<div id=sellerMsg style="width:480px; text-align:right;">
+							<div style="display: inline-block;">
+								<table id="flag1_buyer_tbl">	
+									<tr>
+										<td>
+											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+										</td>
+										<td>
+											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										</td>
+									</tr>
+								</table>			
+							</div>
+						</div>
+						</c:when>
+						<c:when test="${not empty message.roomBuyerId}">
+						<div id="message" style="width:480px; text-align:left;">
+							<div style="display: inline-block;">
+								<table id="flag1_seller_tbl">	
+									<tr>
+										<td>
+											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										</td>
+										<td>
+											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+										</td>
+									</tr>
+								</table>
+							</div>			
+						</div>
+						</c:when>
+					</c:choose>
+				</c:when>
+			</c:choose>			
 		</c:forEach>
 	</div>
 <div id="chatting_message" style="height:40px;">

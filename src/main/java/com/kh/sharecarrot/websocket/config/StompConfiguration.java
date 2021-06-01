@@ -16,7 +16,7 @@ public class StompConfiguration implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry
-			.addEndpoint("/chat")
+			.addEndpoint("/stomp")
 			.withSockJS();
 	}
 
@@ -31,8 +31,7 @@ public class StompConfiguration implements WebSocketMessageBrokerConfigurer {
 //		
 		//2. application을 통해서 처리하는 경우. @MessageMapping("/a")로 연결된다.
 		registry
-			.setApplicationDestinationPrefixes("/buyerChattinRoom.do")
-			.setApplicationDestinationPrefixes("/sellerChattinRoom.do");
+			.setApplicationDestinationPrefixes("/chat");
 	}
 
 	
