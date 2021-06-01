@@ -5,6 +5,8 @@ import java.util.List;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shop.model.vo.Shop;
+import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 
 public interface ShopManageDao {
 	
@@ -46,5 +48,11 @@ public interface ShopManageDao {
 	
 	//거래내역 카운트
 	int selectTransactionListCount(Product product);
+
+	//찜리스트 조회
+	List<JjimList> selectProductJjimList(Product product);
+
+	//거래내역 저장
+	int insertTransactionHistory(TransactionHistory history);
 
 }

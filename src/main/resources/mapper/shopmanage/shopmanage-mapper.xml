@@ -213,5 +213,23 @@
 		and 	b.product_ynh = #{productYnh}
 		</if>
 	</select>
+	
+	<select id="selectProductJjimList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.utils.model.vo.JjimList">
+		select 	jjim_no
+				, product_id
+				, member_id
+		from 	jjim_list
+		where 	product_id= #{productId}
+	</select>
+	
+	<insert id="insertTransactionHistory" parameterType="com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory">
+		insert into transaction_history
+		values (
+			#{productId}
+			, 'N'
+			, #{shopId}
+			, #{memberId}
+		)
+	</insert>
 
 </mapper>

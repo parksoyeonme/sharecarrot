@@ -21,6 +21,8 @@ import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.shopmanage.model.dao.ShopManageDao;
+import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -264,6 +266,17 @@ public class ShopManageServiceImpl implements ShopManageService{
 		map.put("maxNum", maxNum);
 		map.put("maxPageNum", maxPageNum);
 		return map;
+	}
+
+	@Override
+	public List<JjimList> selectProductJjimList(Product product) {
+		return shopManageDao.selectProductJjimList(product);
+	}
+
+	@Override
+	public int insertTransactionHistory(TransactionHistory history) {
+		history.setShopId(getShopInfo().getShopId());
+		return shopManageDao.insertTransactionHistory(history);
 	}
 
 }

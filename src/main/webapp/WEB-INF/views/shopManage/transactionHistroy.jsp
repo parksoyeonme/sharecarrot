@@ -50,7 +50,6 @@ $(document).ready(function(){
 		}
 		
 		var status = $('.btn-active').data('status');
-		
 		$.ajax({
 			url : 'selectTransactionList.do'
 			, type : "POST"
@@ -164,10 +163,10 @@ $(document).ready(function(){
 		<!-- 판매구매탭 -->
 		<ul class="nav nav-pills nav-justified">
 			<li class="nav-item">
-				<a class="nav-link nav-status active" data-tab="buy" aria-target="page" href="#" id="buyTab">판매</a>
+				<a class="nav-link nav-status active" data-tab="buy" aria-target="page" href="#" id="sellTab">판매</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link nav-status" data-tab="sell" href="#" id="sellTab">구매</a>
+				<a class="nav-link nav-status" data-tab="sell" href="#" id="buyTab">구매</a>
 			</li>
 		</ul>
 		
