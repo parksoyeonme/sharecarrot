@@ -46,4 +46,6 @@ public class Product {
 		private String memberId;
 		
 		private String transactionType;
+		 
+		private String jjimCnt;
 }

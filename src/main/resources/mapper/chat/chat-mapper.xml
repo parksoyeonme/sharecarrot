@@ -27,6 +27,11 @@
 		values(seq_chatting_room_no.nextval,#{roomBuyerId}, #{roomSellerId})
 	</insert>
 	
+	<insert id="insertChattingMessage">
+		insert into chatting_message
+		values(#{messageText}, #{messageDate}, #{roomNo}, #{roomBuyerId}, #{roomSellerId})
+	</insert>
+	
 	<resultMap type="chattingmessage" id="chattingmessageMap">
 		<result column="message_text" property="messageText"/>
 		<result column="message_date" property="messageDate"/>
