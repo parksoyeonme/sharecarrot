@@ -62,4 +62,11 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.selectOneReportImage(no);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectReportByDate(String searchDate) {
+		return reportDao.selectReportByDate(searchDate);
+	}
+
+	
+
 }

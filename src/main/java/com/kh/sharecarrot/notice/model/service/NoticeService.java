@@ -20,6 +20,15 @@ public interface NoticeService {
 
 	int insertNotice(Notice notice);
 
+
+	int deleteForm(int no);
+
+	int noticeUpdateForm(Notice notice);
+
+	
+
+	
+
 	
 
 

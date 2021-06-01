@@ -2,6 +2,7 @@ package com.kh.sharecarrot.notice.controller;
 
 import java.io.File;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +28,6 @@ import com.kh.sharecarrot.notice.model.service.NoticeService;
 import com.kh.sharecarrot.notice.model.vo.Notice;
 import com.kh.sharecarrot.notice.model.vo.NoticeImage;
 
-
-
-
-
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -42,11 +39,13 @@ public class NoticeController {
 	private NoticeService NoticeService;
 	
 	@GetMapping("/noticeList.do")
-	public void NoticeList(Model model, @RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
+	public void NoticeList(Model model, @RequestParam(defaultValue = "1") int cPage, 
+							@RequestParam(defaultValue = "") String searchKeyword,
+							HttpServletRequest request) {
 		
 		Map<String, Object> param = new HashMap<>();
 		int numPerPage = 10;
-		
+		param.put("searchKeyword", searchKeyword);
 		param.put("numPerPage", numPerPage);
 		param.put("cPage", cPage);
 		
@@ -88,10 +87,7 @@ public class NoticeController {
 							  RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 
 		try {
-			
-			System.out.println("################################################### notice.getBoardTitle() : " + notice.getBoardDeleteYn());
-			
-			
+
 			int reuslt = NoticeService.insertNotice(notice);
 			redirectAttr.addFlashAttribute("msg", "게시글 등록이 완료되었습니다.");	
 		} catch (Exception e) {
@@ -99,6 +95,40 @@ public class NoticeController {
 			throw e; // spring container에게 예외 전파
 		}
 			
+		return "redirect:/notice/noticeList.do";
+	}
+	
+	@GetMapping("/noticeUpdateForm.do")
+	public void noticeUpdateForm(@RequestParam(required = true) int no, Model model) {
+		//1.업무로직 
+		Notice notice = NoticeService.selectOneNoticeDetail(no);
+		log.info("notice = {}", notice);
+		//2. jsp위임
+		model.addAttribute("notice", notice);
+		log.info("null");
+	}
+	
+	@PostMapping("/noticeUpdateForm.do")
+	public String noticeUpdateForm(Notice notice, RedirectAttributes redirectAttr) {
+		//1.업무로직 
+		log.info("noticeUpdateForm - no : {}", notice);
+		int result = NoticeService.noticeUpdateForm(notice);
+		String msg = result > 0 ? "수정 성공" : "수정 실패";
+		
+		//2. 리다이렉트 및 사용자 피드백
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/notice/noticeList.do";
+	}
+	
+	@PostMapping("/deleteForm.do")
+	public String deleteForm(@RequestParam int no, RedirectAttributes redirectAttr) {
+		log.info("deleteForm.do TEst");
+		//1. 업무로직
+		int result = NoticeService.deleteForm(no);
+		String msg = result > 0 ? "삭제 성공" : "삭제 실패";
+		//2. 리다이렉트 및 사용자피드백
+		redirectAttr.addFlashAttribute("msg", msg);
 		return "redirect:/notice/noticeList.do";
 	}
 	

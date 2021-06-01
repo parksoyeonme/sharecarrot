@@ -16,5 +16,7 @@ public interface ReportDao {
 	int insertReportImg(ReportImage reportImg);
 	List<ReportImage> selectReprotImageDetail(int no);
 	ReportImage selectOneReportImage(int no);
+	List<Map<String, Object>> selectReportByDate(String searchDate);
+	
 
 }
