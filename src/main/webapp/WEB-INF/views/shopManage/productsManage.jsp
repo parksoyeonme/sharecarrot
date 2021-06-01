@@ -346,6 +346,11 @@ $(document).ready(function(){
 		productPaging($(this).data('page'));
 	});
 	
+	$(document).on('click', '.img-manage', function(){
+		var productId = $(this).parent().nextAll('.product-id').val();
+		location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productId;
+	});
+	
 	function selectProductList(search){
 		$.ajax({
 			url : "selectProductList.do"
@@ -366,7 +371,7 @@ $(document).ready(function(){
 					tbodyHtml += '<tr>';
 					if(item.productImageList[0]){
 						tbodyHtml += '<td class="align-middle" style="width:10%;">';
-						tbodyHtml += '<img class="img-thumbnail" style="object-fit:cover;" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
+						tbodyHtml += '<img class="img-thumbnail img-manage" role="button" style="object-fit:cover;" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
 						tbodyHtml += '</td>';
 					}else{
 						tbodyHtml += '<td class="align-middle" style="width:10%;"></td>';
@@ -388,7 +393,7 @@ $(document).ready(function(){
 					tbodyHtml += '</select></td>';
 					tbodyHtml += '<td class="align-middle" style="width:20%;">' + item.productName + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:10%;">' + item.productPrice + '</td>';
-					tbodyHtml += '<td class="align-middle" style="width:10%;">찜/댓글</td>';
+					tbodyHtml += '<td class="align-middle" style="width:10%;">' + item.jjimCnt + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:10%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:10%;">';
 					tbodyHtml += '<button class="btn btn-primary updateBtn">수정</button>';
@@ -549,7 +554,7 @@ $(document).ready(function(){
 					<th scope="col">판매상태</th>		
 					<th scope="col">상품명</th>		
 					<th scope="col">가격</th>		
-					<th scope="col">찜/댓글</th>		
+					<th scope="col">찜</th>		
 					<th scope="col">등록일</th>		
 					<th scope="col">수정/삭제</th>		
 				</tr>

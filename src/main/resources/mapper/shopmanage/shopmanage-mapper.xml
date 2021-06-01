@@ -76,16 +76,25 @@
 		from
 			(select a.*, rownum as rnum
 			from
-				(select 	product_id
-						, product_name
-						, product_price
-						, product_ynh
-						, product_reg_date
-						, product_content
-						, product_del_flag
-						, shop_id
-						, category_code
-				from 	product
+				(select a.product_id
+						, a.product_name
+						, a.product_price
+						, a.product_ynh
+						, a.product_reg_date
+						, a.product_content
+						, a.product_del_flag
+						, a.shop_id
+						, a.category_code
+						, nvl(b.cnt, 0) as jjim_cnt
+				from 	product a
+				left outer 
+                join (
+                    	select 	product_id
+                    			, count(product_id) as cnt
+                    	from 	jjim_list
+                    	group by product_id
+                ) b
+                on a.product_id = b.product_id
 				where 	product_del_flag = 'N'
 				<if test="shopId != '' and shopId != null">
 				and 	shop_id = #{shopId}
