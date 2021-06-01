@@ -11,7 +11,7 @@
 function chatting_popup(roomBuyerId){
 // 	var loginUser = <sec:authentication property="principal.memberId"/>;
 // 	var shopId = ${product.shopId};
-	var url = "${pageContext.request.contextPath}/chat/sellerChattingRoom.do?roomBuyerId=" + roomBuyerId + "&shopId=${shopId}";
+	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=" + roomBuyerId + "&shopId=${shopId}";
 	console.log(url);
 	var popupWidth = 500;
 	var popupHeight = 400;

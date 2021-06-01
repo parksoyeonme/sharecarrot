@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Shop {
+public class Shop{
 		private String shopId;
 		private int shopTotalScore;
 		private int shopVisitCount;
