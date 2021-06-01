@@ -68,12 +68,7 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public List<Product> selectProductList(Map<String, Object> param) {
-		int cPage =(int)param.get("cPage");
-		
-		int limit = (int)param.get("numPerPage");
-		int offset = (cPage -1)* limit;
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		return session.selectList("product.selectProductList", param, rowBounds);
+		return session.selectList("product.selectProductList", param);
 	}
 
 	@Override

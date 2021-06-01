@@ -51,21 +51,25 @@
         } else {
             for (var i = 0; i < data.productList.length; i++) {
                 if (i == 0) {
-                    html += "<table>";
-                    html += "<tr>";
+                    html += "<table class='product-table'>";
                 }
-                html += "<td><div class='box box1 boxC ' onclick='productDetail(" + data.productList[i].productId + ")'>" + "<img id='productImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>" + "</div>";
+                if (i % 5 == 0) {
+                    html += "<tr>";
+                    console.log(i);
+                }
+                html += "<td class='product'><div class='product-box' onclick='productDetail(" + data.productList[i].productId + ")'>" + "<img id='productImg' src='${pageContext.request.contextPath}/resources/upload/product/" + data.productImageList[i].productImgRenamed + "'>" + "</div>";
                 html += "<div class='pro-title'>" + data.productList[i].productName + "</div>";
-                html += "<div class='pro-price'>" + data.productList[i].productPrice + "</div>";
+                html += "<div class='pro-price'>" + data.productList[i].productPrice + "원</div>";
                 html += "</td>";
-                if (i == data.productList.length - 1) {
+                if ((i + 1) % 5 == 0) {
                     html += "</tr>";
+                }
+                if (i == data.productList.length - 1) {
                     html += "</table>";
                 }
             }
         }
         $('#product-list').append(html);
-        $('#pagebar').append(data.pageBar);
     }
 </script>
 <div class="div-division">
@@ -78,4 +82,3 @@
     </div>
 </div>
 <div id="product-list"></div>
-<div id="pagebar"></div>
