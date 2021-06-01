@@ -46,28 +46,12 @@ stompClient.connect({}, (frame) => {
 		const msgObj = JSON.parse(message.body);
 		const {roomBuyerId, roomSellerId, messageText, roomNo, messageDate} = msgObj;
 		var time = new Date(messageDate);
-		var hour = "";
-		var minute = "";
-		var second = "";
-		
-		console.log(time.getSeconds());
-		
-		if(time.getHours().length == 1){
-			hour = "0" + time.getHours();
-		}
-		if(time.getMinutes().length == 1){
-			minute = "0" + time.getMinutes();
-		}
-		console.log(minute);
-		if(time.getSeconds().length == 1){
-			second = '0' + time.getSeconds();
-		}
-		
-		console.log(hour);
-		console.log(minute);
-		console.log(second);
-		
-		var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " + hour + ":" + minute + ":" + second;
+		var hour = time.getHours();
+		var minute = time.getMinutes();
+		var second = time.getSeconds();
+				
+		var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " 
+		+ (("0" + hour).slice(-2)) + ":" + (("0" + minute).slice(-2)) + ":" + (("0"+second).slice(-2));
 // 		console.log(realtime);
 		$div = "";
 		html = "";
@@ -164,9 +148,10 @@ function sendMessage(url){
 		roomNo : '${roomNo}',
 		messageDate : Date.now()
 	};
-	
+
 	var time = new Date(Date.now());
-	var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();	
+	var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " 
+	+ (("0" + time.getHours()).slice(-2)) + ":" + (("0" + time.getMinutes()).slice(-2)) + ":" + (("0" + time.getSeconds()).slice(-2));	
 	
 	if('${flag}' == 0){
 		
