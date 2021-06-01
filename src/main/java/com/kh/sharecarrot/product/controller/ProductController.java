@@ -87,47 +87,6 @@ public class ProductController {
 			String memberId = principal.getName();
 			jjimList = utilsService.selectJjimList(memberId);
 		}
-		
-		Cookie[] cookies = request.getCookies();
-		log.info("cookie length : {}", cookies.length);
-		log.info("cookie length : {}", cookies[0]);
-//		Cookie[] cookies = request.getCookies();
-//		log.info("cookie length : {}", cookies.length);
-//        if(cookies.length == 3) {
-//        	cookies[0] = new Cookie("latest0",
-//                    cookies[1].toString());
-//        	cookies[1] = new Cookie("latest1",
-//        			cookies[2].toString());
-//        	cookies[2] = new Cookie("latest2",
-//        			product.toString());
-//        }else if(cookies.length == 2) {
-//        	cookies[2] = new Cookie("latest2",
-//        			product.toString());
-//        }else if(cookies.length == 1) {
-//        	cookies[1] = new Cookie("latest1",
-//        			product.toString());
-//        }else if(cookies.length == 0) {
-//        	cookies[0] = new Cookie("latest0",
-//        			product.toString());
-//        }
-		
-//		if(cookies.length == 4) {
-//        	response.addCookie(new Cookie("latest0",
-//                    cookies[2].toString()));
-//        	response.addCookie(new Cookie("latest1",
-//        			cookies[3].toString()));
-//        	response.addCookie(new Cookie("latest2",
-//        			product.toString()));
-//        }else if(cookies.length == 3) {
-//        	response.addCookie(new Cookie("latest2",
-//        			product.toString()));
-//        }else if(cookies.length == 2) {
-//        	response.addCookie(new Cookie("latest1",
-//        			product.toString()));
-//        }else if(cookies.length == 1) {
-//        	response.addCookie(new Cookie("latest0",
-//        			product.toString()));
-//        }
         
 		model.addAttribute("product", product);
 		model.addAttribute("category", category);
