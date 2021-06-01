@@ -28,56 +28,31 @@ $(() => {
 		location.href = `${pageContext.request.contextPath}/notice/noticeDetail.do?no=\${no}`;
 	});
 	
-    $( "#searchTitle" ).autocomplete({
-      source: function(request, response){
-    	  //서버통신 이후 success메소드에서 response를 호출할 것!
-    	  //console.log(request); // 사용자 입력값
-    	  //console.log(response); // response([{label:?, value:?}, {label:?, value:?},....])
-    	  
-    	  //ajax호출
-    	  $.ajax({
-    		  url: `${pageContext.request.contextPath}/notic/searchTitle.do`,
-    		  data: {
-    			  searchTitle: request.term
-    		  },
-    		  //method: "GET",
-    		  //dataType: "json"
-    		  success(data){
-    			  //console.log(data);
-    			  var res = $.map(data, (board) => ({
-    				  label: board.title,
-    				  value: board.title,
-    				  no: board.no
-    			  }));
-    			  //console.log(res);
-    			  response(res);
-    		  },
-    		  error(xhr, status, err){
-    			  console.log(xhr, status, err);
-    		  }
-    		  
-    	  })
-    	  
-      },
-      focus: function(){ return false },
-      select: function(e, selected){
-    	  //console.log(e);
-    	  //console.log(selected.item.no);
-    	  const no = selected.item.no;
-    	  location.href = `${pageContext.request.contextPath}/notice/noticeDetail.do?no=\${no}`;
-      }
-    });
+	//검색버튼 클릭했을때
+	$(searchNoitcButton).click(e =>{
+		//검색창
+		const searchNoticeTitle = $("#searchNoticeTitle");
+		//사용자가 입력한값
+		const searchKeyword = searchNoticeTitle.val();
+		//검색내용이 비어있다면 취소
+		if(!searchNoticeTitle){
+			alert('검색어를 입력해주세요.');
+			return;
+		}
+		else {
+			location.href=`${pageContext.request.contextPath}/notice/noticeList.do?searchKeyword=\${searchKeyword}`;
+		}	
+	});
 });
 </script>
 <section id="board-container" class="container">
 	<h1>공지사항</h1>
 	<div class="searchlist">
-	<select id="clikesearch" required>
-	  <option value="select">검색</option>
-	  <option value="date">날짜</option>
+	<select id="clickesearch" required>
+	  <option value="title">제목</option>
 	</select>
-	<input type="text" placeholder="검색.." id="searchTitle" />
-	<input type="button" value="검색" id="searchButton" />
+	<input type="text" placeholder="검색.." id="searchNoticeTitle" />
+	<input type="button" value="검색" id="searchNoitcButton" />
 	</div>
 	<table id="tbl-board" class="table table-striped table-hover">
 		<tr>
@@ -98,7 +73,9 @@ $(() => {
 		
 	</table>
 	${pageBar}
+	<sec:authorize access="hasRole('ADMIN')">
 	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goNoticeForm();"/>
+	</sec:authorize>
 </section> 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

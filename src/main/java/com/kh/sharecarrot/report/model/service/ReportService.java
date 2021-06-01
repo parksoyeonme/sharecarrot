@@ -20,4 +20,8 @@ public interface ReportService {
 	List<ReportImage> selectReprotImageDetail(int no);
 
 	ReportImage selectOneReportImage(int no);
+
+	List<Map<String, Object>> selectReportByDate(String searchDate);
+
+	
 }

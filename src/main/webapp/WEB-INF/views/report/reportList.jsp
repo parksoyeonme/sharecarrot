@@ -16,11 +16,12 @@
  }
 </style>
 <script>
-function goReportForm(){
+/* function goReportForm(){
 	location.href = "${pageContext.request.contextPath}/report/reportForm.do";
-}
+} */
 
 $(() => {
+	//상세보기페이지
 	$("tr[data-no]").click(e => {
 		var $tr = $(e.target).parent();
 		var no = $tr.data("no");
@@ -28,56 +29,29 @@ $(() => {
 		location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${no}`;
 	});
 	
-    $( "#searchTitle" ).autocomplete({
-      source: function(request, response){
-    	  //서버통신 이후 success메소드에서 response를 호출할 것!
-    	  //console.log(request); // 사용자 입력값
-    	  //console.log(response); // response([{label:?, value:?}, {label:?, value:?},....])
-    	  
-    	  //ajax호출
-    	  $.ajax({
-    		  url: `${pageContext.request.contextPath}/report/searchTitle.do`,
-    		  data: {
-    			  searchTitle: request.term
-    		  },
-    		  //method: "GET",
-    		  //dataType: "json"
-    		  success(data){
-    			  //console.log(data);
-    			  var res = $.map(data, (board) => ({
-    				  label: board.title,
-    				  value: board.title,
-    				  no: board.no
-    			  }));
-    			  //console.log(res);
-    			  response(res);
-    		  },
-    		  error(xhr, status, err){
-    			  console.log(xhr, status, err);
-    		  }
-    		  
-    	  })
-    	  
-      },
-      focus: function(){ return false },
-      select: function(e, selected){
-    	  //console.log(e);
-    	  //console.log(selected.item.no);
-    	  const no = selected.item.no;
-    	  location.href = `${pageContext.request.contextPath}/report/reportDetail.do?no=\${no}`;
-      }
-    });
+	//검색버튼 클릭했을때
+	$(searchDateButton).click(e =>{
+		//검색창
+		const searchDate = $("#searchDate");
+		//사용자가 입력한값
+		const searchKeyword = searchDate.val();
+		//검색내용이 비어있다면 취소
+		if(!searchKeyword){
+			alert('검색어를 입력해주세요.');
+			return;
+		}
+		else {
+			location.href=`${pageContext.request.contextPath}/report/reportList.do?searchKeyword=\${searchKeyword}`;
+		}	
+	});
+	
 });
 </script>
 <section id="board-container" class="container">
 	<h1>신고 합니다</h1>
 	<div class="searchlist">
-	<select id="clikesearch" required>
-	  <option value="select">검색</option>
-	  <option value="date">날짜</option>
-	</select>
-	<input type="text" placeholder="검색.." id="searchTitle" />
-	<input type="button" value="검색" id="searchButton" />
+	<input type="date"  id="searchDate" />
+	<input type="button"  value="검색" id="searchDateButton" />
 	</div>
 	<table id="tbl-board" class="table table-striped table-hover">
 		<tr>
@@ -104,7 +78,7 @@ $(() => {
 		
 	</table>
 	${pageBar}
-	<input type="button" value="신고하기" id="btn-add" class="btn btn-outline-success" onclick="goReportForm();"/>
+	<!-- <input type="button" value="신고하기" id="btn-add" class="btn btn-outline-success" onclick="goReportForm();"/> -->
 </section> 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

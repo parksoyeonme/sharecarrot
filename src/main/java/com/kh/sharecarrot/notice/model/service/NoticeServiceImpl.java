@@ -2,6 +2,7 @@ package com.kh.sharecarrot.notice.model.service;
 
 import java.util.List;
 
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,18 @@ public class NoticeServiceImpl implements NoticeService {
 		return result;
 	}
 
+	@Override
+	public int deleteForm(int no) {
+		return noticeDao.deleteForm(no);
+	}
+
+	@Override
+	public int noticeUpdateForm(Notice notice) {
+		return noticeDao.noticeUpdateForm(notice);
+	}
+
+	
+	
 	
 
 }
