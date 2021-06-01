@@ -253,10 +253,10 @@ $(document).ready(function(){
 								<table id="flag0_buyer_tbl">	
 									<tr>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 									</tr>
 								</table>			
@@ -268,11 +268,11 @@ $(document).ready(function(){
 							<div class="submsg">
 								<table id="flag0_seller_tbl">	
 									<tr>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
 									</tr>
 								</table>
@@ -292,10 +292,10 @@ $(document).ready(function(){
 								<table id="flag1_buyer_tbl">	
 									<tr>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 									</tr>
 								</table>			
@@ -307,11 +307,11 @@ $(document).ready(function(){
 							<div class="submsg">
 								<table id="flag1_seller_tbl">	
 									<tr>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
 									</tr>
 								</table>
