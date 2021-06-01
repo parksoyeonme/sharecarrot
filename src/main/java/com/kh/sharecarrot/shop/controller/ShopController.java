@@ -115,15 +115,11 @@ public class ShopController {
 	@RequestMapping(value="/myshopProductList.do", method={RequestMethod.POST,RequestMethod.GET},
 			produces ="application/text; charset=utf8")
 	public String myshopProductList(@RequestParam(required = false) String shopId,
-			@RequestParam(defaultValue ="1" ) int cPage,
 			@RequestParam Map<String,Object> param,
 			Model model,			
 			HttpServletResponse response, HttpServletRequest request) throws IOException {
 
-		int numPerPage = 5;
-		log.debug("cPage = {}", cPage);
-			param.put("numPerPage", numPerPage);
-			param.put("cPage", cPage);
+		
 			param.put("shopId", shopId);
 			
 		List<Product> productList = productService.selectProductList(param);
@@ -138,20 +134,11 @@ public class ShopController {
 			productImageList.addAll(proimgList);
 		}
 		
-		//pagebar
-		int totalContents = productService.getTotalContents(shopId);
-		String url = request.getRequestURI();
-		log.debug("totalContents = {}",totalContents);
-		log.debug("url = {}", url);
-		String pageBar = ShareCarrotUtils.getPageBar(totalContents, cPage, numPerPage, url);
-		
-
 		JSONObject obj = new JSONObject();
 				
 		obj.put("productList", productList);
 		obj.put("productImageList", productImageList);
 		obj.put("productListSize", productListSize);
-		obj.put("pageBar", pageBar);
 		String resp = obj.toString();
 				
 		return resp;
@@ -179,7 +166,7 @@ public class ShopController {
 		
 	    int storeReviewListSize = storeReviewsService.selectStoreReviewListSize(shopId);
 
-		int j = 0;
+		
 
 		Iterator<StoreReviews> iter = storeReviewList.iterator();
 		while(iter.hasNext()) {
@@ -189,7 +176,7 @@ public class ShopController {
 			buyerList.addAll(bList);
 			reviewImageList.addAll(imgList);
 
-			j++;
+			
 		}
 		
 		List<ReviewComment> reviewCommentlist = reviewCommentService.selectReviewCommentOne();
@@ -229,5 +216,4 @@ public class ShopController {
 		return reviewCommentService.deleteReviewComment(reviewComment);
 	}
 
-	
 }
