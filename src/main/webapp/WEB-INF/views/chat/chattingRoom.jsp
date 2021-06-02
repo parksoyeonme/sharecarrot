@@ -49,6 +49,16 @@ td.leftmsg{
 
 <script>
 
+// 자동 이동
+$(document).ready(function(){
+	var scrollPosition = $("#last").offset().top;
+
+	$("#previous_message").animate({
+		scrollTop: scrollPosition
+	}, 1000);
+});
+
+	
 //1.웹소켓객체 -> stomp 객체 전달
 const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
@@ -356,7 +366,9 @@ $(document).ready(function(){
 				</c:when>
 			</c:choose>			
 		</c:forEach>
+	    <p id="last"></p>
 	</div>
+    <!-- 이동용 -->
 </div>
 <div id="send_message" style="width:580px; height:40px; margin-top:10px;">
 	<table>
