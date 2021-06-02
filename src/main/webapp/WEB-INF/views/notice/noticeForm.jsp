@@ -41,6 +41,9 @@ function noticeValidate(){
 		onsubmit="return noticeValidate();">
 		<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" required>
 		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
+		
+		
+		
 		<!-- <input type="text" class="form-control" name="shopId" id="shopId" value="t8" readonly required> -->
 		<!-- input:file소스 : https://getbootstrap.com/docs/4.1/components/input-group/#custom-file-input 
 		<div class="input-group mb-3" style="padding:0px;">
