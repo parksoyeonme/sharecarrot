@@ -123,11 +123,16 @@
 				</td>
 			</tr>
 		</table>
-		<input type="submit" value="가입" >
-		<input type="reset" value="취소">
+		<input type="submit" class="btn btn-outline-secondary" value="가입" >
+		<input type="reset" onclick="cancel();" class="btn btn-outline-secondary" value="취소">
 	</form>
 </div>
 <script>
+function cancel(){
+	location.href = location.href = "${pageContext.request.contextPath}";
+}
+
+
 // 이메일 인증용 코드
 var code = "";  
 $(() => {
