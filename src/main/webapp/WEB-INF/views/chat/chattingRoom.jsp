@@ -72,6 +72,8 @@ stompClient.connect({}, (frame) => {
 				html += "</div>";
 				
 				$div.append(html);	
+				$div.scrollTop($div[0].scrollHeight);
+
 			}
 		}else if('${flag}' == 1){
 			if(roomBuyerId!=null){
@@ -90,8 +92,10 @@ stompClient.connect({}, (frame) => {
 				html += "</table>";
 				html += "</div>";
 				html += "</div>";
-				
+				$div.scrollTop($('#scrollDiv').prop('scrollHeight'));
+
 				$div.append(html);
+				$div.scrollTop($div[0].scrollHeight);
 			}
 		}
 		
@@ -167,7 +171,8 @@ function sendMessage(url){
 			inputHtml += "</table>";
 			inputHtml += "</div>";
 			inputHtml += "</div>";
-			$dv.append(inputHtml);	
+			$dv.append(inputHtml);
+			$dv.scrollTop($dv[0].scrollHeight);
 		}
 	}else if('${flag}' == 1){
 		if(sender==null){
@@ -184,7 +189,9 @@ function sendMessage(url){
 			inputHtml += "</div>";
 			inputHtml += "</div>";
 			$dv.append(inputHtml);	
+			$dv.scrollTop($dv[0].scrollHeight);
 		}
+		
 	}
 	
 // 	console.log($table);
@@ -240,7 +247,7 @@ $(document).ready(function(){
 	 	
 
 	 </div>
-	 <div id="previous_message" style="height:270px; width:580px; overflow:scroll;">
+	 <div id="previous_message" style="height:270px; width:580px; overflow:auto;">
 
 	  <c:forEach items="${chattingMessageList}" var="message">
 		<!-- 구매자의 경우 -->
