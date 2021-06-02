@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 <jsp:param value="공지사항" name="title"/>
 </jsp:include>
@@ -46,8 +47,10 @@ $(() => {
 });
 </script>
 <section id="board-container" class="container">
-	<h1>공지사항</h1>
-	<div class="searchlist">
+	<div style="text-align:center; margin-top:30px;">
+		<h1>공지사항</h1>
+	</div>
+	<div class="searchlist" style="margin-bottom:10px;">
 	<select id="clickesearch" required>
 	  <option value="title">제목</option>
 	</select>
@@ -73,7 +76,7 @@ $(() => {
 		
 	</table>
 	${pageBar}
-	<sec:authorize access="hasRole('ADMIN')">
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goNoticeForm();"/>
 	</sec:authorize>
 </section> 

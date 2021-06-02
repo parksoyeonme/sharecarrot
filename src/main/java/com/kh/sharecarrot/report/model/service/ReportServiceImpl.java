@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.sharecarrot.report.model.dao.ReportDao;
 import com.kh.sharecarrot.report.model.vo.Report;
 import com.kh.sharecarrot.report.model.vo.ReportImage;
+import com.kh.sharecarrot.shop.model.vo.Shop;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -66,6 +67,12 @@ public class ReportServiceImpl implements ReportService {
 	public List<Map<String, Object>> selectReportByDate(String searchDate) {
 		return reportDao.selectReportByDate(searchDate);
 	}
+
+	@Override
+	public Shop selectOneShop(String shopId) {
+		return reportDao.selectOneShop(shopId);
+	}
+
 
 	
 

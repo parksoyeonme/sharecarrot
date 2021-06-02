@@ -19,8 +19,10 @@ div#board-container label.custom-file-label{text-align:left;}
 	<input type="text" class="form-control" name="memberId" value="${notice.memberId}" readonly required>
     <textarea class="form-control" name="Content" placeholder="내용" required>${notice.boardContent}</textarea>
 </div>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
 <input type="button" class="btn btn-primary form-control" value="수정" onclick="noticeUpdateForm(${notice.boardNo});"/>
 <input type="button" class="btn btn-primary form-control" value="삭제" onclick="deleteForm(${notice.boardNo});"/>
+</sec:authorize>
 <form:form
 			id="deleteFrm"
 			method="post"
