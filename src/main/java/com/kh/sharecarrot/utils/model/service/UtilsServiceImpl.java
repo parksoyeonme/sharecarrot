@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.sharecarrot.chatting.model.vo.ChattingRoom;
 import com.kh.sharecarrot.utils.model.dao.UtilsDao;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
@@ -45,6 +46,11 @@ public class UtilsServiceImpl implements UtilsService {
 	@Override
 	public int deleteJjim(Map<String, Object> param) {
 		return utilsDao.deleteJjim(param);
+	}
+
+	@Override
+	public List<Integer> selectChattingRoomList(String loginMemberId) {
+		return utilsDao.selectChattingRoomList(loginMemberId);
 	}
 
 }

@@ -69,7 +69,7 @@
 	                 	</c:if>
 	                 	<sec:authorize access="isAuthenticated()">
 	                 		<c:if test="${loginMemberId != memberId}">
-	                    		<a href="${pageContext.request.contextPath }/report/reportForm.do" class='btn btn-warning'>신고하기</a>
+	                    		<a href="${pageContext.request.contextPath }/report/reportForm.do?shopId=${shop.shopId}" class='btn btn-warning'>신고하기</a>
 	                    	</c:if>
 	                    </sec:authorize>
                       </div>
@@ -77,7 +77,6 @@
                 </div>
             </div>
 	 </div>
-               
             
             <br />
             <div class="col-lg-10">

@@ -26,10 +26,10 @@
 
 <script>
 function chatting_popup(){
-// 	var loginUser = <sec:authentication property="principal.memberId"/>;
 // 	var shopId = ${product.shopId};
-	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
-
+	<sec:authorize access='isAuthenticated()'>
+	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&roomSellerId=${product.memberId}";
+	</sec:authorize>
 	var popupWidth = 600;
 	var popupHeight = 420;
 	var popupX = (window.screen.width / 2) - (popupWidth / 2);
@@ -41,7 +41,6 @@ function chatting_popup(){
 
 
 </script>
-
 <!-- Img Slider 영역 -->
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
@@ -116,7 +115,7 @@ function chatting_popup(){
       <h5>상점정보</h5>
       <hr/>
          <div>
-            <a href="${pageContext.request.contextPath}/shop/myshop.do">
+            <a href="${pageContext.request.contextPath}/shop/myshop.do?shopId=${product.shopId}">
                <img id='memberProfile' src="${pageContext.request.contextPath}/resources/upload/member/${product.profileRenamed}"/>
                <b>${product.memberId}</b>
                <sub>${product.locName}</sub>
@@ -149,7 +148,7 @@ function chatting_popup(){
    
       
       <div class="col">
-      <h5 class="d-inline">연관상품</h5><sub>${category}</sub>
+      <h5 class="d-inline">연관상품</h5><sub>-${category}-</sub>
       <hr/>
       <div id="productList" class='row' style="text-align:center;">
       <c:forEach items="${productList}" var="product" begin="1" end="3">
