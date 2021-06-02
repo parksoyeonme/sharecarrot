@@ -42,7 +42,7 @@
 		       , MEMBER_ID
 		       , SHOP_ID
 		    FROM REPORT_BOARD
-		   WHERE REPORT_NO = #{no}
+		   WHERE REPORT_NO = #{reportNo}
 	</select>
 	
 	<select id="selectReprotImageDetail" resultType="reportImage">
@@ -53,7 +53,7 @@
 		       FROM REPORT_BOARD A
 	      LEFT JOIN REPORT_IMAGE B
 		         ON A.REPORT_NO = B.REPORT_NO
-		      WHERE A.REPORT_NO = #{no}
+		      WHERE A.REPORT_NO = #{reportNo}
 		   ORDER BY B.REPORT_IMG_ID ASC
 	</select>
 <!-- 
@@ -68,7 +68,7 @@
 		UPDATE REPORT_BOARD
            SET REPORT_PROCESS_YN = 'Y'
              , REPORT_PROCESSING_DATE = SYSDATE
-         WHERE REPORT_NO = #{no}
+         WHERE REPORT_NO = #{reportNo}
 	</update>
 	
 	<select id="getTotalContents" resultType="_int">
@@ -125,5 +125,13 @@
 		   FROM REPORT_IMAGE
 		  WHERE REPORT_IMG_ID = #{reportNo}
 	</select>
-
+ <select id="selectOneShop" resultType="Shop">
+ 	SELECT * FROM
+ 	SHOP 
+ 	WHERE SHOP_ID = #{shopId}
+ 
+ 
+ 
+ 
+ </select>
 </mapper>

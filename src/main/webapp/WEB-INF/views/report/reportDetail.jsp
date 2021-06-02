@@ -20,6 +20,7 @@ div#board-container label.custom-file-label{text-align:left;}
 	</button>
 	</c:forEach>
 	<input type="text" class="form-control" name="memberId" value="${report.memberId}" readonly required>
+	<input type="text" class="form-control" name="shopId" value="${report.shopId}" readonly required>
     <textarea class="form-control" name="content" placeholder="내용" required>${report.reportContent}</textarea>
 </div>
 <input type="button" class="btn btn-primary form-control" value="정지" onclick="goReprtList(${report.reportNo});" />

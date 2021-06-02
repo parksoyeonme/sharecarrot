@@ -119,7 +119,7 @@ function myshop_head_click(){
                     <sec:authorize access="isAuthenticated()">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do?memberId=<sec:authentication property='principal.username'/>">동네생활게시판</a></li>
                     </sec:authorize>
-                    <sec:authorize access="hasRole('ADMIN')">
+ 					<sec:authorize access="hasRole('ROLE_ADMIN')">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do">신고게시판</a></li>
                     </sec:authorize>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do">공지사항</a></li>

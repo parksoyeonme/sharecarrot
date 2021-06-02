@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.kh.sharecarrot.report.model.vo.Report;
 import com.kh.sharecarrot.report.model.vo.ReportImage;
+import com.kh.sharecarrot.shop.model.vo.Shop;
 
 public interface ReportService {
 	List<Report> selectReportList(Map<String, Object> param);
@@ -22,6 +23,8 @@ public interface ReportService {
 	ReportImage selectOneReportImage(int no);
 
 	List<Map<String, Object>> selectReportByDate(String searchDate);
+
+	Shop selectOneShop(String shopId);
 
 	
 }
