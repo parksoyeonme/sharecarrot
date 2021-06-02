@@ -13,8 +13,8 @@ function chatting_popup(roomBuyerId){
 // 	var shopId = ${product.shopId};
 	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=" + roomBuyerId + "&shopId=${shopId}";
 	console.log(url);
-	var popupWidth = 500;
-	var popupHeight = 400;
+	var popupWidth = 600;
+	var popupHeight = 420;
 	var popupX = (window.screen.width / 2) - (popupWidth / 2);
 	// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
 	var popupY= (window.screen.height / 2) - (popupHeight / 2) - 50;

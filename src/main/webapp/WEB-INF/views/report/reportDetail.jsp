@@ -7,9 +7,8 @@
 	<jsp:param value="게시판 상세보기" name="title"/>
 </jsp:include>
 <style>
-div#board-container{width:400px;}
-input, button, textarea {margin-bottom:15px;}
-button { overflow: hidden; }
+div#board-container{width:400px; margin:0 auto; text-align:center;}
+div#board-container input{margin-bottom:15px;}
 /* 부트스트랩 : 파일라벨명 정렬*/
 div#board-container label.custom-file-label{text-align:left;}
 </style>
@@ -22,9 +21,8 @@ div#board-container label.custom-file-label{text-align:left;}
 	</c:forEach>
 	<input type="text" class="form-control" name="memberId" value="${report.memberId}" readonly required>
     <textarea class="form-control" name="content" placeholder="내용" required>${report.reportContent}</textarea>
-	<input type="datetime-local" class="form-control" name="regDate" value='<fmt:formatDate value="${report.reportDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>'>
 </div>
-<input type="button" class="btn btn-outline-success" value="정지" onclick="goReprtList(${report.reportNo});" />
+<input type="button" class="btn btn-primary form-control" value="정지" onclick="goReprtList(${report.reportNo});" />
 <script>
 function goReprtList(no){
 	if(confirm("해당 내용을 처리하시겠습니까?")){

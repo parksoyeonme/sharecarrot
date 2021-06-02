@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+
+
+/* 상품 부분 */
+.item-wrapper {
+  position: relative;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+}
+.item {
+  position: relative;
+  width: 17.25%;
+  height: 100%;
+  color: rgb(33, 33, 33);
+  margin: 10px;
+  cursor: pointer;
+}
+
+.item-photo {
+  width: 150px;
+  height: 150px;
+  display: block;
+  overflow: hidden;
+}
+
+.item-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+.item-detail {
+  height: 30%;
+  padding: 15px 10px;
+}
+
+.pro-title {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.item-price {
+  font-family: Tahoma, sans-serif;
+  font-weight: 700;
+}
+/* 상품 부분 끝 */
+

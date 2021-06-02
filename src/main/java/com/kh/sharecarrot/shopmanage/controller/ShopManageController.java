@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shopmanage.model.service.ShopManageService;
+import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -134,6 +136,18 @@ public class ShopManageController {
 		map.addAttribute("transactionList", shopManageService.selectTransactionList(product));
 		map.addAttribute("paging", shopManageService.getTransactionListPaging(product));
 		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/selectProductJjimList.do")
+	public List<JjimList> selectProductJjimList(Product product){
+		return shopManageService.selectProductJjimList(product);
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/insertTransactionHistory.do")
+	public int insertTransactionHistory(TransactionHistory history){
+		return shopManageService.insertTransactionHistory(history);
 	}
 
 }
