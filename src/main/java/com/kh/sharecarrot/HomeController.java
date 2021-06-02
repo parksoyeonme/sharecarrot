@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.sharecarrot.chatting.model.vo.ChattingRoom;
 import com.kh.sharecarrot.main.model.service.MainService;
 import com.kh.sharecarrot.main.model.vo.MainProduct;
 import com.kh.sharecarrot.member.model.vo.Member;
@@ -65,14 +66,15 @@ public class HomeController {
 			HttpServletRequest request,
 			Principal principal) { 
 		
-		log.info("principal = {}", principal);
-		//로그인을 한 경우에만 찜 목록 불러오는 코드
+		
 		List<jjimListExt> jjimList = null;
 		if(principal != null) {
-			String longinMemberId = principal.getName();
-			jjimList = utilsService.selectJjimList(longinMemberId);
+			//로그인을 한 경우에만 찜 목록 불러오는 코드
+			String loginMemberId = principal.getName();
+			jjimList = utilsService.selectJjimList(loginMemberId);
 			log.info("jjim = {}" ,jjimList);
 			
+			//로그인을 한 경우에만 채팅방 목록을 불러오는 코드		
 		}
 		
 		
@@ -111,7 +113,6 @@ public class HomeController {
 		model.addAttribute("jjimList", jjimList);
 		model.addAttribute("locCode", locCode);
 		model.addAttribute("listLength", listLength);
-		
 		return "forward:/index.jsp";
 	}
 	
@@ -137,6 +138,16 @@ public class HomeController {
 	@GetMapping("/error/accessDenied.do")
 	public void accessDenied() {
 		
+	}
+	
+	@GetMapping("/chat/selectRoomNo.do")
+	@ResponseBody
+	public List<Integer> selectRoomNo(String loginMemberId, Model model) {
+		List<Integer> chattingRoomList = null;
+		if(loginMemberId != null)
+			chattingRoomList = utilsService.selectChattingRoomList(loginMemberId);
+//		model.addAttribute("chattingRoomList", chattingRoomList);
+		return chattingRoomList;
 	}
 	
 

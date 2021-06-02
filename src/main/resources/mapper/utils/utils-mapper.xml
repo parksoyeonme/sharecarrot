@@ -51,10 +51,15 @@
 			<result column="product_id" property="productId"/>
 		</collection>
 	</resultMap>
-
+	
 	
 	<delete id="deleteJjim">
 		delete from jjim_list
 		where product_id = #{productId} and member_id = #{memberId}
 	</delete>
+	
+	<select id="selectChattingRoomList" resultType="_int">
+		select room_no from chatting_room
+		where room_buyer_id = #{loginMemberId} or room_seller_id = #{loginMemberId}
+	</select>
 </mapper>

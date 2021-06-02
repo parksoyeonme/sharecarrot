@@ -196,7 +196,7 @@
 
     /* 지역 선택시 Ajax 요청 */
     $locationOption.on("change", function(){
-      console.log($locationOption.val());
+      
       // var locCode = this.value;
       // console.log(locCode);
 
@@ -209,7 +209,7 @@
         url:"${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
         success: data =>{
           const list_div = document.getElementById("item-list");
-          console.log(data);
+          
           if(data.length > 0){
             list_div.className ="items";
             button_more.className="bttn btn-more btn-large";
@@ -260,7 +260,7 @@
       //   alert("지역을 먼저 선택해주세요");
       //     return false;
       // }
-        console.log($locationOption.val(), $categoryOption.val());
+        
 
         $.ajax({
         type:"POST",
@@ -271,7 +271,7 @@
         },
         url:"${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
         success: data =>{
-          console.log(data);
+          
           let list_div = document.getElementById("item-list");
           list_div.className= "items";
           btnMore.className= "button-more";
@@ -311,7 +311,7 @@
         },
         url:"${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
         success: data =>{
-          console.log(data);
+          
           let list_div = document.getElementById("item-list");
 
           // while ( list_div.hasChildNodes() ) { 
