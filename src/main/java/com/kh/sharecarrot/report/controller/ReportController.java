@@ -1,9 +1,9 @@
 package com.kh.sharecarrot.report.controller;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,11 +32,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.sharecarrot.common.ShareCarrotUtils;
-import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.report.model.exception.ReportException;
 import com.kh.sharecarrot.report.model.service.ReportService;
 import com.kh.sharecarrot.report.model.vo.Report;
 import com.kh.sharecarrot.report.model.vo.ReportImage;
+import com.kh.sharecarrot.shop.model.vo.Shop;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -96,16 +96,26 @@ public class ReportController {
 		return "redirect:/report/reportList.do";
 	}
 
-	@GetMapping("/reportForm.do")
-	public void reportForm() {
+	
+	  @GetMapping("/reportForm.do") 
+	  public void reportForm(Model model, @RequestParam String shopId) {
+	        //String shopId = pri.getName();
+	       // model.addAttribute("shopId", shopId);
 
-	}
+//	        log.info("@@@@shopId = {}",shopId);
+	        
+	        Shop shop = reportService.selectOneShop(shopId);
+	        model.addAttribute("shop", shop);
+	        log.debug("report = {}", shop);
+
+		}
+	
+	 
 
 	@PostMapping("/reportEnroll.do")
 	public String reportEnroll(@ModelAttribute Report report,
 			@RequestParam(value = "upfile", required = false) MultipartFile[] upFiles, HttpServletRequest request,
 			RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
-
 		try {
 			// 파일저장
 			// saveDir
@@ -145,7 +155,7 @@ public class ReportController {
 			throw e; // spring container에게 예외 전파
 		}
 
-		return "redirect:/report/reportList.do";
+		return "redirect:/shop/myshop.do?shopId="+report.getShopId();
 	}
 
 	@GetMapping(value = "/fileDownload.do", produces = "application/octet-stream;charset=utf-8")

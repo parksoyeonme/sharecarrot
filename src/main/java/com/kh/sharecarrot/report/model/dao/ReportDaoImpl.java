@@ -8,9 +8,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.sharecarrot.board.model.vo.BoardLike;
 import com.kh.sharecarrot.report.model.vo.Report;
 import com.kh.sharecarrot.report.model.vo.ReportImage;
+import com.kh.sharecarrot.shop.model.vo.Shop;
 
 @Repository
 public class ReportDaoImpl implements ReportDao {
@@ -67,6 +67,12 @@ public class ReportDaoImpl implements ReportDao {
 	@Override
 	public List<Map<String, Object>> selectReportByDate(String searchDate) {
 		return session.selectList("report.selectReportByDate", searchDate);
+	}
+
+	@Override
+	public Shop selectOneShop(String shopId) {
+		return session.selectOne("report.selectOneShop",shopId);
+		
 	}
 
 	

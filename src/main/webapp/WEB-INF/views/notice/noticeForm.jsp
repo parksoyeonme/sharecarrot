@@ -31,6 +31,10 @@ function noticeValidate(){
 	return true;
 }
 
+function cancel(){
+	location.href=	"${pageContext.request.contextPath}/notice/noticeList.do";
+}
+
 </script>
 <div id="board-container">
 	<form 
@@ -42,6 +46,7 @@ function noticeValidate(){
 		<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" required>
 		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
 		
+<<<<<<< HEAD
 		
 		
 		<!-- <input type="text" class="form-control" name="shopId" id="shopId" value="t8" readonly required> -->
@@ -65,13 +70,15 @@ function noticeValidate(){
 		  </div>
 		</div>
 		-->
+=======
+>>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 		
 		
 		
 	    <textarea class="form-control" name="boardContent" placeholder="내용" required></textarea>
 		<br />
 		<input type="submit" class="btn btn-primary form-control"value="글등록" >
-		<input type="button" class="btn btn-primary form-control" value="취소" >
+		<input type="button" onclick="cancel();" class="btn btn-primary form-control" value="취소" >
 	</form>
 </div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

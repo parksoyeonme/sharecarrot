@@ -14,6 +14,7 @@ div#board-container input{margin-bottom:15px;}
 /* 부트스트랩 : 파일라벨명 정렬*/
 div#board-container label.custom-file-label{text-align:left;}
 </style>
+<<<<<<< HEAD
 <!-- <div id="board-container" class="mx-auto text-center"> -->
 <%-- 	<input type="text" class="form-control" placeholder="제목" name="noticeTitle" id="noticeTitle" value="${notice.boardTitle}" required> --%>
 <%-- 	<input type="text" class="form-control" name="memberId" value="${notice.memberId}" readonly required> --%>
@@ -21,6 +22,17 @@ div#board-container label.custom-file-label{text-align:left;}
 <!-- </div> -->
 <%-- <input type="button" class="btn btn-primary form-control" value="수정" onclick="noticeUpdateForm(${notice.boardNo});"/> --%>
 <%-- <input type="button" class="btn btn-primary form-control" value="삭제" onclick="deleteForm(${notice.boardNo});"/> --%>
+=======
+<div id="board-container" class="mx-auto text-center">
+	<input type="text" class="form-control" placeholder="제목" name="noticeTitle" id="noticeTitle" value="${notice.boardTitle}" required>
+	<input type="text" class="form-control" name="memberId" value="${notice.memberId}" readonly required>
+    <textarea class="form-control" name="Content" placeholder="내용" required>${notice.boardContent}</textarea>
+</div>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+<input type="button" class="btn btn-primary form-control" value="수정" onclick="noticeUpdateForm(${notice.boardNo});"/>
+<input type="button" class="btn btn-primary form-control" value="삭제" onclick="deleteForm(${notice.boardNo});"/>
+</sec:authorize>
+>>>>>>> branch 'master' of https://github.com/jinhak94/sharecarrot.git
 <form:form
 			id="deleteFrm"
 			method="post"
