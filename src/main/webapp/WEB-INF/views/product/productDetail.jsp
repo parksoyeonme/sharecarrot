@@ -28,7 +28,7 @@
 function chatting_popup(){
 // 	var shopId = ${product.shopId};
 	<sec:authorize access='isAuthenticated()'>
-	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
+	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&roomSellerId=${product.memberId}";
 	</sec:authorize>
 	var popupWidth = 600;
 	var popupHeight = 420;
@@ -41,6 +41,7 @@ function chatting_popup(){
 
 
 </script>
+${product }
 <!-- Img Slider 영역 -->
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
