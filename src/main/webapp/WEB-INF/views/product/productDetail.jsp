@@ -41,7 +41,6 @@ function chatting_popup(){
 
 
 </script>
-${product }
 <!-- Img Slider 영역 -->
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
