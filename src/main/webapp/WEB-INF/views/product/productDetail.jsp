@@ -148,7 +148,7 @@ function chatting_popup(){
    
       
       <div class="col">
-      <h5 class="d-inline">연관상품</h5><sub>${category}</sub>
+      <h5 class="d-inline">연관상품</h5><sub>-${category}-</sub>
       <hr/>
       <div id="productList" class='row' style="text-align:center;">
       <c:forEach items="${productList}" var="product" begin="1" end="3">
