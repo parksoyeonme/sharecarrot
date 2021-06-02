@@ -20,12 +20,32 @@ div.submsg {
 div.leftmsg {
 	width:560px; text-align:left;
 }
-
+div#previous_message{
+	background-color: rgb(178, 199, 217);
+}
+div#title{
+	background-color: rgb(169, 189, 206);
+}
+td.rightmsg{
+		box-sizing: border-box;
+		background-color: rgb(255, 235, 51);
+		border-radius: 5px;
+		padding-right: 5px;
+		padding-left : 5px;
+}
+td.leftmsg{
+		box-sizing: border-box;
+		background-color: white;
+		border-radius: 5px;
+		padding-right: 5px;
+		padding-left : 5px;
+}
 </style>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.js" integrity="sha512-Kdp1G1My+u1wTb7ctOrJxdEhEPnrVxBjAg8PXSvzBpmVMfiT+x/8MNua6TH771Ueyr/iAOIMclPHvJYHDpAlfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js" integrity="sha512-tL4PIUsPy+Rks1go4kQG8M8/ItpRMvKnbBjQm4d2DQnFwgcBYRRN00QdyQnWSCwNMsoY/MfJY8nHp2CzlNdtZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />	
 
 <script>
 
@@ -64,7 +84,8 @@ stompClient.connect({}, (frame) => {
 				html += "<div class='submsg'>";
 				html += "<table id='#flag0_buyer_tbl'>";
 				html += "<tr>";
-				html += "<td style='width:150px;'><p>"+ messageText +"</p></td>";
+				html += "<td style='width:5px;'></td>";
+				html += "<td class='leftmsg' style='width:150px;'><p>"+ messageText +"</p></td>";
 				html += "<td>" + realtime + "</td>";
 				html += "</tr>";
 				html += "</table>";
@@ -72,6 +93,8 @@ stompClient.connect({}, (frame) => {
 				html += "</div>";
 				
 				$div.append(html);	
+				$div.scrollTop($div[0].scrollHeight);
+
 			}
 		}else if('${flag}' == 1){
 			if(roomBuyerId!=null){
@@ -84,14 +107,17 @@ stompClient.connect({}, (frame) => {
 				html += "<div class='submsg'>";
 				html += "<table id='#flag1_seller_tbl'>";
 				html += "<tr>";
-				html += "<td style='width:150px;'><p>"+ messageText +"</p></td>";
+				html += "<td style='width:5px;'></td>";
+				html += "<td class='rightmsg' style='width:150px;'><p>"+ messageText +"</p></td>";
 				html += "<td>" + realtime + "</td>";
 				html += "</tr>";
 				html += "</table>";
 				html += "</div>";
 				html += "</div>";
-				
+				$div.scrollTop($('#scrollDiv').prop('scrollHeight'));
+
 				$div.append(html);
+				$div.scrollTop($div[0].scrollHeight);
 			}
 		}
 		
@@ -162,12 +188,13 @@ function sendMessage(url){
 			inputHtml += "<table id='#flag0_buyer_tbl'>";
 			inputHtml += "<tr>";
 			inputHtml += "<td>" + realtime + "</td>";
-			inputHtml += "<td style='width:150px;'><p>"+ $("#message").val() +"</p></td>";
+			inputHtml += "<td class='rightmsg' style='width:150px;'><p>"+ $("#message").val() +"</p></td>";
 			inputHtml += "</tr>";
 			inputHtml += "</table>";
 			inputHtml += "</div>";
 			inputHtml += "</div>";
-			$dv.append(inputHtml);	
+			$dv.append(inputHtml);
+			$dv.scrollTop($dv[0].scrollHeight);
 		}
 	}else if('${flag}' == 1){
 		if(sender==null){
@@ -178,13 +205,15 @@ function sendMessage(url){
 			inputHtml += "<table id='#flag1_seller_tbl'>";
 			inputHtml += "<tr>";
 			inputHtml += "<td>" + realtime + "</td>";
-			inputHtml += "<td style='width:150px;'><p>"+ $("#message").val() +"</p></td>";
+			inputHtml += "<td class='rightmsg' style='width:150px;'><p>"+ $("#message").val() +"</p></td>";
 			inputHtml += "</tr>";
 			inputHtml += "</table>";
 			inputHtml += "</div>";
 			inputHtml += "</div>";
 			$dv.append(inputHtml);	
+			$dv.scrollTop($dv[0].scrollHeight);
 		}
+		
 	}
 	
 // 	console.log($table);
@@ -215,7 +244,8 @@ $(document).ready(function(){
 </head>
 
 <body>
-	<div style="text-align:center;">
+<div id="total">
+	<div id="title" style="text-align:center;">
 	 	
 	 		<!-- 구매자의 경우 -->
 	 		<c:if test="${flag eq 0}">
@@ -240,8 +270,10 @@ $(document).ready(function(){
 	 	
 
 	 </div>
-	 <div id="previous_message" style="height:270px; width:580px; overflow:scroll;">
-
+	 <div id="previous_message" style="height:270px; width:580px; overflow:auto;">
+	  <!-- 공간 이격용 -->
+	  <p></p>
+<!-- 	  <input type='button' style='height:1px; margin-top:0px; visibility:hidden'/> -->
 	  <c:forEach items="${chattingMessageList}" var="message">
 		<!-- 구매자의 경우 -->
 			<c:choose>
@@ -255,7 +287,7 @@ $(document).ready(function(){
 										<td>
 											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
-										<td style='width:150px;'>
+										<td class='rightmsg' style='width:150px;'>
 											<p>${message.messageText}</p>	
 										</td>
 									</tr>
@@ -268,7 +300,8 @@ $(document).ready(function(){
 							<div class="submsg">
 								<table id="flag0_seller_tbl">	
 									<tr>
-										<td style='width:150px;'>
+										<td style="width:5px;"></td>
+										<td class='leftmsg' style='width:150px;'>
 											<p>${message.messageText}</p>	
 										</td>
 										<td>
@@ -294,7 +327,7 @@ $(document).ready(function(){
 										<td>
 											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
-										<td style='width:150px;'>
+										<td class='rightmsg' style='width:150px;'>
 											<p>${message.messageText}</p>	
 										</td>
 									</tr>
@@ -307,7 +340,8 @@ $(document).ready(function(){
 							<div class="submsg">
 								<table id="flag1_seller_tbl">	
 									<tr>
-										<td style='width:150px;'>
+										<td style="width:5px;"></td>
+										<td class='leftmsg' style='width:150px;'>
 											<p>${message.messageText}</p>	
 										</td>
 										<td>
@@ -323,7 +357,8 @@ $(document).ready(function(){
 			</c:choose>			
 		</c:forEach>
 	</div>
-<div id="chatting_message" style="width:580px; height:40px; margin-top:10px;">
+</div>
+<div id="send_message" style="width:580px; height:40px; margin-top:10px;">
 	<table>
 		<tr>
 			<td>
