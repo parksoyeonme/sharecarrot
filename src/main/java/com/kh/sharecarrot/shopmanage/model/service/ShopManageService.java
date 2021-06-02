@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
+import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 
 public interface ShopManageService {
 
@@ -45,5 +47,11 @@ public interface ShopManageService {
 	
 	//거래내역 리스트 페이징
 	Map<String,Integer> getTransactionListPaging(Product product);
+
+	//거래완료시 찜리스트 조회
+	List<JjimList> selectProductJjimList(Product product);
+	
+	//거래완료시 이력 저장
+	int insertTransactionHistory(TransactionHistory history);
 
 }

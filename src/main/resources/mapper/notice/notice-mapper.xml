@@ -11,7 +11,10 @@
 		       , BOARD_CONTENT
 		       , MEMBER_ID
 		    FROM BOARD
-		   WHERE BOARD_CATEGORY = 'C6'
+		   <if test="searchKeyword != null and searchKeyword != '' ">
+			WHERE  BOARD_CATEGORY = 'C6' 
+			AND BOARD_TITLE like '%' || #{searchKeyword} || '%'
+			</if>
 		ORDER BY BOARD_NO DESC
 	</select>
 	<resultMap type="notice" id="noticeListMap">
@@ -38,7 +41,7 @@
 		       , MEMBER_ID
 		   FROM BOARD
 		   WHERE BOARD_CATEGORY = 'C6'
-		   AND BOARD_NO = #{no}
+		   AND BOARD_NO = #{boardNo}
 	</select>
 	
 	<update id="updatenoticeYn">
@@ -70,5 +73,21 @@
 			from dual
 		</selectKey>
 	</insert>
+	<update id="noticeUpdateForm">
+		UPDATE 
+			BOARD
+		SET
+			BOARD_TITLE = #{boardTitle},
+			BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_CATEGORY = 'C6'
+		AND	BOARD_NO = #{boardNo}
+	</update>
+	
+	<delete id="deleteForm">
+		delete from
+			BOARD
+		where 
+			BOARD_NO = #{boardNo}
+	</delete>
   
 </mapper>

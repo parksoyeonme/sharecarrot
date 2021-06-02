@@ -11,10 +11,11 @@ $(document).ready(function(){
 	var imgFileList = new Array();
 	
 	//수정 모달
-	var myModal = new bootstrap.Modal($('#productUpdateModal'), {
-					  keyboard: false
-					  , backdrop: 'static'
-				});
+	var updateModal = new bootstrap.Modal($('#productUpdateModal'), {keyboard: false, backdrop: 'static'});
+	var compModal = new bootstrap.Modal($('#completeModal'),{keyboard: false, backdrop: 'static'});
+	
+	//이전판매상태
+	var preProductYnh;
 	
 	//탭 초기화
 	$('#productManageNav').on('shown.bs.tab',function(){
@@ -22,35 +23,47 @@ $(document).ready(function(){
 	});
 	
 	//판매상태 변경
-	$(document).on('change', '.product-ynh', function(){
+	$(document).on('focus','.product-ynh',function(){
+		preProductYnh = $(this).val();
+	}).on('change', '.product-ynh', function(){
 		var productId = $(this).parent().nextAll('.product-id').val();
 		var productYnh = $(this).val();
+		var ajaxData;
 		
-		if(!confirm('상태를 변경하시겠습니까?')){
-			return;
-		}
-		
-		$.ajax({
-			url : 'updateProductYnh.do'
-			, type : "POST"
-			, data : {"productId" : productId, "productYnh" : productYnh}
-			, beforeSend : function(xhr){
-				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-            }
-			, success : function(result){
-				if(result > 0){
-					alert('상태 변경 완료');
-					return;
-				}else{
-					alert('상태 변경 실패');
+		if(productYnh == 'Y'){
+			$(this).val(preProductYnh);
+			
+			$.ajax({
+				url : 'selectProductJjimList.do'
+				, type : "POST"
+				, data : {"productId" : productId}
+				, beforeSend : function(xhr){
+					xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	            }
+				, success : function(result){
+					var html = '';
+					$.each(result,function(index,item){
+						html += '<option value="' + item.memberId  + '">' + item.memberId + '</option>'
+					});
+					$('#completeSelect').empty();
+					$('#completeSelect').append(html);
+					
+					$('#completeProductId').val(productId);
+					compModal.show();
+				}
+				, error : function(jqXHR){
+					alert('조회 실패');
 					return;
 				}
-			}
-			, error : function(jqXHR){
-				alert('상태 변경 실패');
+			});
+		}else{
+			if(!confirm('상태를 변경하시겠습니까?')){
+				$(this).val(preProductYnh);
 				return;
 			}
-		});
+			updateProductYnh(productId, productYnh);
+		}
+		
 	});
 	
 	//상품 검색 버튼
@@ -63,7 +76,7 @@ $(document).ready(function(){
 		var productId = $(this).parent().nextAll('.product-id').val();
 		
 		if(!confirm('상품정보를 수정하시겠습니까?')){
-			return;
+			return false;
 		}
 		
 		$.ajax({
@@ -114,7 +127,7 @@ $(document).ready(function(){
 				}
 				$('#imagePreviewModal').append(imgHtml);
 				
-				myModal.show();
+				updateModal.show();
 			}
 			, error : function(jqXHR){
 				alert('상품 수정 실패');
@@ -269,7 +282,7 @@ $(document).ready(function(){
 		}
 		
 		if(!confirm('상품을 수정 하시겠습니까?')){
-			return;
+			return false;
 		}
 		 
 		if(productImageList.length != 0){
@@ -291,7 +304,7 @@ $(document).ready(function(){
 				, success : function(result){
 					if(result > 0){
 						alert('상품 수정에 성공하였습니다.');
-						myModal.hide();
+						updateModal.hide();
 						selectProductList();
 						return;
 					}
@@ -329,7 +342,7 @@ $(document).ready(function(){
 				, success : function(result){
 					if(result > 0){
 						alert('상품 수정에 성공하였습니다.');
-						myModal.hide();
+						updateModal.hide();
 						selectProductList();
 						return;
 					}
@@ -351,6 +364,92 @@ $(document).ready(function(){
 		location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productId;
 	});
 	
+	$('#completeCheck').on('change', function(){
+		var check = $('#completeCheck').prop('checked');
+			$('#completeInput').val('');
+			$('#completeAlert').hide();
+		if(check){
+			$('#completeWrite').show();
+			$('#completeJjim').hide();
+		}else{
+			$('#completeJjim').show();
+			$('#completeWrite').hide();
+		}
+	});
+	
+	$('#completeBtn').on('click', function(){
+		var check = $('#completeCheck').prop('checked');
+		var productId = $('#completeProductId').val();
+		var memberId;
+		if(check){
+			memberId = $('#completeInput').val();
+		}else{
+			memberId = $('#completeSelect').val();
+		}
+
+		if(memberId == '' || memberId == null){
+			alert('아이디를 선택하거나 입력 해주세요.');
+			return;
+		}
+		
+		if(!confirm('판매 완료 하시겠습니까?')){
+			return;
+		}
+		
+		$.ajax({
+			url : "insertTransactionHistory.do"
+			, type : "POST"
+			, data : {"productId": productId, "memberId" : memberId}
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            }
+			, success : function(result){
+				if(result > 0){
+					updateProductYnh(productId, 'Y');
+					alert('판매 완료!');
+					compModal.hide();
+					selectProductList();
+					return;
+				}else{
+					alert('error');
+					return;
+				}
+			}
+			, error : function(jqXHR){
+				alert('error');
+				return;
+			}
+		});
+		
+	});
+	
+	$('#completeModal').on('hidden.bs.modal', function(){
+		$('#completeInput').val('');
+		$('#completeAlert').hide();
+		$('#completeCheck').removeProp('checked');
+		$('#completeJjim').show();
+		$('#completeWrite').hide();
+	});
+	
+	$('#completeInput').on('focusout', function(){
+		var id = $('#completeInput').val();
+		$.ajax({
+			url : "${pageContext.request.contextPath}/member/checkIdDuplicate.do"
+			, type : "GET"
+			, data : {id}
+			, success : function(result){
+				if(result.usable){
+					$('#completeAlert').show();
+					$('#completeInput').val('');
+					return;
+				}else{
+					$('#completeAlert').hide();
+					return;
+				}
+			}
+		})
+	});
+	
 	function selectProductList(search){
 		$.ajax({
 			url : "selectProductList.do"
@@ -370,33 +469,36 @@ $(document).ready(function(){
 				$.each(productList,function(index,item){
 					tbodyHtml += '<tr>';
 					if(item.productImageList[0]){
-						tbodyHtml += '<td class="align-middle" style="width:10%;">';
+						tbodyHtml += '<td class="align-middle" style="width:20%;">';
 						tbodyHtml += '<img class="img-thumbnail img-manage" role="button" style="object-fit:cover;" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
 						tbodyHtml += '</td>';
 					}else{
-						tbodyHtml += '<td class="align-middle" style="width:10%;"></td>';
+						tbodyHtml += '<td class="align-middle" style="width:20%;"></td>';
 					}
-					tbodyHtml += '<td class="align-middle" style="width:10%;"><select class="form-select product-ynh">';
+					tbodyHtml += '<td class="align-middle" style="width:15%;">';
 					if(item.productYnh == 'N'){
+						tbodyHtml += '<select class="form-select product-ynh">';
 						tbodyHtml += '<option value="N" selected>판매중</option>';
 						tbodyHtml += '<option value="H">예약중</option>';
 						tbodyHtml += '<option value="Y">판매완료</option>';
 					}else if(item.productYnh == 'H'){
+						tbodyHtml += '<select class="form-select product-ynh">';
 						tbodyHtml += '<option value="N">판매중</option>';
 						tbodyHtml += '<option value="H" selected>예약중</option>';
 						tbodyHtml += '<option value="Y">판매완료</option>';
 					}else if(item.productYnh == 'Y'){
-						tbodyHtml += '<option value="N">판매중</option>';
-						tbodyHtml += '<option value="H">예약중</option>';
+						tbodyHtml += '<select class="form-select product-ynh" disabled>';
 						tbodyHtml += '<option value="Y" selected>판매완료</option>';
 					}
 					tbodyHtml += '</select></td>';
 					tbodyHtml += '<td class="align-middle" style="width:20%;">' + item.productName + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:10%;">' + item.productPrice + '</td>';
-					tbodyHtml += '<td class="align-middle" style="width:10%;">' + item.jjimCnt + '</td>';
+					tbodyHtml += '<td class="align-middle" style="width:5%;">' + item.jjimCnt + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:10%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
-					tbodyHtml += '<td class="align-middle" style="width:10%;">';
+					tbodyHtml += '<td class="align-middle" style="width:15%;">';
+					if(item.productYnh != 'Y'){
 					tbodyHtml += '<button class="btn btn-primary updateBtn">수정</button>';
+					}
 					tbodyHtml += '<button class="btn btn-danger deleteBtn">삭제</button>';
 					tbodyHtml += '</td>';
 					tbodyHtml += '<input type="hidden" class="product-id" value="' + item.productId + '"/>';
@@ -435,6 +537,29 @@ $(document).ready(function(){
 			, error : function(jqXHR){
 				alert('로딩 실패');
 				location.href="/sharecarrot";
+				return;
+			}
+		});
+	}
+	
+	function updateProductYnh(productId, productYnh){
+		$.ajax({
+			url : 'updateProductYnh.do'
+			, type : "POST"
+			, data : {"productId" : productId, "productYnh" : productYnh}
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            }
+			, success : function(result){
+				if(result > 0){
+					return;
+				}else{
+					alert('상태 변경 실패');
+					return;
+				}
+			}
+			, error : function(jqXHR){
+				alert('상태 변경 실패');
 				return;
 			}
 		});
@@ -668,6 +793,54 @@ $(document).ready(function(){
  			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" id="productUpdateBtn">수정</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="completeModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">구매자 아이디 선택</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body py-0">
+				<div class="col-12 row my-3">
+					<div class="col-3 offset-8 text-end pe-1">아이디입력</div>
+					<div class="col-1 px-0">
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" id="completeCheck">
+						</div>
+					</div>
+				</div>
+				<div class="col-12 row my-3" id="completeJjim">
+					<div class="col-3">
+						<span class="align-middle">찜리스트</span>
+					</div>
+					<div class="col-9">
+						<select class="form-select" id="completeSelect">
+						</select>
+					</div>
+				</div>
+				<div class="col-12 row my-3" id="completeWrite" style="display: none;">
+					<div class="col-3">
+						<span class="align-middle">아이디</span>
+					</div>
+					<div class="col-9">
+						<input class="form-control" id="completeInput">
+					</div>
+				</div>
+				<div class="col-12 row my-0" id="completeAlert" style="display: none;">
+					<div class="col-9 offset-3">
+						<span class="h6 text-danger">존재하지 않는 아이디입니다.</span>
+					</div>
+				</div>
+				<input type="hidden" id="completeProductId">;
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="completeBtn">판매 완료</button>
 			</div>
 		</div>
 	</div>

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shop.model.vo.Shop;
+import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
+import com.kh.sharecarrot.utils.model.vo.JjimList;
 
 @Repository
 public class ShopManageDaoImpl implements ShopManageDao{
@@ -79,6 +81,16 @@ public class ShopManageDaoImpl implements ShopManageDao{
 	@Override
 	public int selectTransactionListCount(Product product) {
 		return session.selectOne("shopmanage.selectTransactionListCount",product);
+	}
+
+	@Override
+	public List<JjimList> selectProductJjimList(Product product) {
+		return session.selectList("shopmanage.selectProductJjimList", product);
+	}
+
+	@Override
+	public int insertTransactionHistory(TransactionHistory history) {
+		return session.insert("shopmanage.insertTransactionHistory", history);
 	}
 
 }

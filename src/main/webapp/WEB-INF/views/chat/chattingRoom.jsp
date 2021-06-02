@@ -9,110 +9,109 @@
 
 <!DOCTYPE html>
 <html>
+
+<style>
+div.rightmsg {
+	width:560px; text-align:right;
+}
+div.submsg {
+	display: inline-block; margin-right:10px;
+}
+div.leftmsg {
+	width:560px; text-align:left;
+}
+
+</style>
+
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.js" integrity="sha512-Kdp1G1My+u1wTb7ctOrJxdEhEPnrVxBjAg8PXSvzBpmVMfiT+x/8MNua6TH771Ueyr/iAOIMclPHvJYHDpAlfQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js" integrity="sha512-tL4PIUsPy+Rks1go4kQG8M8/ItpRMvKnbBjQm4d2DQnFwgcBYRRN00QdyQnWSCwNMsoY/MfJY8nHp2CzlNdtZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 
 <script>
 
 //1.웹소켓객체 -> stomp 객체 전달
 const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
+var html = "";
+var $div = "";
 
 //2.connect핸들러 작성. 구독
 stompClient.connect({}, (frame) => {
 	console.log("stomp connected : ", frame);
 	
-// 	stompClient.subscribe("/sellerChattinRoom.do", (frame) => {
-// 		console.log("message from /sellerChattinRoom.do : ", frame);
-// 		const msgObj = JSON.parse(frame.body);
-// 		console.log(msgObj);
-// 		const {from, to, content, type, time} = msgObj;
-// 		alert(content + "\n" + new Date(time));
-// 	});
 	
 // 	stompClient.subscribe("/chattinRoom.do?roomNo=${roomNo}", (message) => {
-	stompClient.subscribe("/chattinRoom/${roomNo}", (message) => {
+	stompClient.subscribe("/chattingRoom/${roomNo}", (message) => {
 			
 		const msgObj = JSON.parse(message.body);
-// 		console.log(msgObj);
 		const {roomBuyerId, roomSellerId, messageText, roomNo, messageDate} = msgObj;
-// 		alert(content + "\n" + new Date(time));
-	
-		console.log(from);
-		console.log("<sec:authentication property='principal.username' />");
-		var table;
-		var row;
-		var html = "";
-// 		//현재 로그인된 사용자와, 메세지를 보낸 사용자가 다른 경우
-// 		if("<sec:authentication property='principal.username' />" != roomBuyerId){
-// 			//구매자
-// 			if(${flag} == 0){
-		//roomBuyerId가 null인 경우는 seller가 보낸 메세지.
-		//즉, seller가 보낸 메세지가 오른쪽으로 가게 정렬
+		var time = new Date(messageDate);
+		var hour = time.getHours();
+		var minute = time.getMinutes();
+		var second = time.getSeconds();
+				
+		var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " 
+		+ (("0" + hour).slice(-2)) + ":" + (("0" + minute).slice(-2)) + ":" + (("0"+second).slice(-2));
+// 		console.log(realtime);
+		$div = "";
+		html = "";
+		console.log(messageDate);
 		if('${flag}' == 0){
-			
-			if(roomSellerId==null){
-				console.log("구매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag0_buyer_tbl');  //행을 추가할 테이블 							
-			}
-			//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
-			else if(roomSellerId!=null){
-				console.log("판매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag0_seller_tbl');  //행을 추가할 테이블	
+			if(roomSellerId!=null){
+// 				div = document.getElementById('previous_message');					
+				$div = $('#previous_message');					
+				html += "<div class='leftmsg'>";
+				html += "<div class='submsg'>";
+				html += "<table id='#flag0_buyer_tbl'>";
+				html += "<tr>";
+				html += "<td style='width:150px;'><p>"+ messageText +"</p></td>";
+				html += "<td>" + realtime + "</td>";
+				html += "</tr>";
+				html += "</table>";
+				html += "</div>";
+				html += "</div>";
+				
+				$div.append(html);	
 			}
 		}else if('${flag}' == 1){
-			
-			if(roomBuyerId==null){
-				console.log("구매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag1_buyer_tbl');  //행을 추가할 테이블 							
-			}
-			//buyer가 보낸 메세지가 오른쪽으로 가게 정렬
-			else if(roomBuyerId!=null){
-				console.log("판매자한테 받았습니다.");
-				console.log(message);
-					table = document.getElementById('flag1_seller_tbl');  //행을 추가할 테이블	
+			if(roomBuyerId!=null){
+// 				console.log("구매자한테 받았습니다.");
+// 				console.log(message);
+// 				console.log(table);
+				
+				$div = $('#previous_message');
+				html += "<div class='leftmsg'>";
+				html += "<div class='submsg'>";
+				html += "<table id='#flag1_seller_tbl'>";
+				html += "<tr>";
+				html += "<td style='width:150px;'><p>"+ messageText +"</p></td>";
+				html += "<td>" + realtime + "</td>";
+				html += "</tr>";
+				html += "</table>";
+				html += "</div>";
+				html += "</div>";
+				
+				$div.append(html);
 			}
 		}
 		
 		
-		html += "<tr>";
-		html += "<td><textarea style='resize: none; border: none;'readonly >"+ messageText +"</textarea></td>";
-		html += "</tr>";
-		table.append(html);	
+
 		
 	});
 });
  
 //3.메세지 발행
-function sendBtnClick(){
-	
-// 	var $message = #('#message');
-// 	console.log($message);
-	//db에 저장
-// 	$.ajax({
-        
-//         type:"POST",
-// //         url:"${pageContext.request.contextPath}/chat/chatEnroll.do?roomSellerId=${buyer_id}&shopId=${shop_id}&message=" + $message.val(),
-//         url:"${pageContext.request.contextPath}/chat/chatEnroll.do",
-//         data: {
-// 			roomBuyerId : roomBuyerId,
-// 			shopId : shopId,
-// 			message: 'message',
-// 			flag: flag
-// 		},
-// 		success:function(data){
-//             console.log('채팅 메세지 db 등록 성공');
-//         }                
-//     });
-	
+function sendBtnClick(){	
 	//보낼 메세지 테이블에 추가
 	
 	
+	if($("#message").val().length > 100){
+		alert('글자수는 100자를 넘을 수 없습니다.');
+		//글자수 제한의 경우 썼던 글자 지우고 싶으면 아래 주석 풀기
+// 		$("#message").val(''); 
+		return;
+	}
 	const $message = $("#message");
 	const url = "/chat/chattingRoom/${roomNo}"; // $("#stomp-url option:selected")
 	
@@ -121,10 +120,19 @@ function sendBtnClick(){
 	sendMessage(url);
 };
 
+var $dv = "";
+var inputHtml = "";
+
+
 function sendMessage(url){
+	
+
 	var flag = ${flag};
 	var sender;
 	var receiver;
+	$dv = "";
+	inputHtml = "";
+	
 	if(${flag}==0){
 		sender = '${buyer_id}';
 		receiver = null;
@@ -140,10 +148,65 @@ function sendMessage(url){
 		roomNo : '${roomNo}',
 		messageDate : Date.now()
 	};
+
+	var time = new Date(Date.now());
+	var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " 
+	+ (("0" + time.getHours()).slice(-2)) + ":" + (("0" + time.getMinutes()).slice(-2)) + ":" + (("0" + time.getSeconds()).slice(-2));	
+	
+	if('${flag}' == 0){
+		
+		if(receiver==null){
+			$dv = $('#previous_message');	
+			inputHtml += "<div class='rightmsg'>";
+			inputHtml += "<div class='submsg'>";
+			inputHtml += "<table id='#flag0_buyer_tbl'>";
+			inputHtml += "<tr>";
+			inputHtml += "<td>" + realtime + "</td>";
+			inputHtml += "<td style='width:150px;'><p>"+ $("#message").val() +"</p></td>";
+			inputHtml += "</tr>";
+			inputHtml += "</table>";
+			inputHtml += "</div>";
+			inputHtml += "</div>";
+			$dv.append(inputHtml);	
+		}
+	}else if('${flag}' == 1){
+		if(sender==null){
+//			console.log(table);		
+			$dv = $('#previous_message');
+			inputHtml += "<div class='rightmsg'>";
+			inputHtml += "<div class='submsg'>";
+			inputHtml += "<table id='#flag1_seller_tbl'>";
+			inputHtml += "<tr>";
+			inputHtml += "<td>" + realtime + "</td>";
+			inputHtml += "<td style='width:150px;'><p>"+ $("#message").val() +"</p></td>";
+			inputHtml += "</tr>";
+			inputHtml += "</table>";
+			inputHtml += "</div>";
+			inputHtml += "</div>";
+			$dv.append(inputHtml);	
+		}
+	}
+	
+// 	console.log($table);
+// 	html += "<tr>";
+// 	html += "<td><textarea style='resize: none; border: none;'readonly >$('#message').val()</textarea></td>";
+// 	html += "</tr>";
+// 	$table.append(html);	
 	
 	stompClient.send(url, {}, JSON.stringify(message));
 	$("#message").val(''); // 초기화
+	$("#message").focus();
 }
+
+$(document).ready(function(){
+	// 엔터로도 채팅 보낼 수 있게 처리
+	$("#message").keydown(function (key) {
+		if(key.keyCode == 13){//키가 13이면 실행 (엔터는 13)
+			sendBtnClick();
+		}
+	});
+});
+
 </script>
 
 <head>
@@ -153,18 +216,31 @@ function sendMessage(url){
 
 <body>
 	<div style="text-align:center;">
-	 	<h2>
+	 	
 	 		<!-- 구매자의 경우 -->
 	 		<c:if test="${flag eq 0}">
-	 			${seller_id}와의 채팅
+	 			<h2>${seller_id}와의 채팅</h2>
+			 	<table style="width:471px;">
+			 		<tr>
+			 			<td style="text-align:left; padding-left : 10px;"> 상대 : ${seller_id} </td>
+			 			<td style="text-align:right; padding-right: 30px;"> 나 : ${buyer_id}  </td>
+			 		</tr>
+			 	</table>
 	 		</c:if>
 	 		<!-- 판매자의 경우 -->
 	  	<c:if test="${flag eq 1}">
-	 			${buyer_id}와의 채팅
+	 			<h2>${buyer_id}와의 채팅</h2>
+			 	<table style="width:471px;">
+			 		<tr>
+			 			<td style="text-align:left; padding-left : 10px;"> 상대 : ${buyer_id} </td>
+			 			<td style="text-align:right; padding-right: 30px;"> 나 : ${seller_id}  </td>
+			 		</tr>
+			 	</table>
 	 		</c:if>
-	 	</h2>
+	 	
+
 	 </div>
-	 <div id="previous_message" style="height:270px; width:480px; overflow:scroll;">
+	 <div id="previous_message" style="height:270px; width:580px; overflow:scroll;">
 
 	  <c:forEach items="${chattingMessageList}" var="message">
 		<!-- 구매자의 경우 -->
@@ -172,15 +248,15 @@ function sendMessage(url){
 				<c:when test="${flag eq 0}">
 					<c:choose>
 			  			<c:when test="${empty message.roomSellerId}">
-			  			<div id="buyerMsg" style="width:480px; text-align:right;">
-							<div style="display: inline-block; margin-right:10px;">
+			  			<div class="rightmsg">
+							<div class="submsg">
 								<table id="flag0_buyer_tbl">	
 									<tr>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 									</tr>
 								</table>			
@@ -188,15 +264,15 @@ function sendMessage(url){
 						</div>
 						</c:when>
 						<c:when test="${not empty message.roomSellerId}">
-						<div id="message" style="width:480px; text-align:left;">
-							<div style="display: inline-block; margin-right:10px;">
+						<div class="leftmsg">
+							<div class="submsg">
 								<table id="flag0_seller_tbl">	
 									<tr>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
 									</tr>
 								</table>
@@ -211,15 +287,15 @@ function sendMessage(url){
 				<c:when test="${flag eq 1}">
 					<c:choose>
 			  			<c:when test="${empty message.roomBuyerId}">
-			  			<div id=sellerMsg style="width:480px; text-align:right;">
-							<div style="display: inline-block;">
+			  			<div class="rightmsg">
+							<div class="submsg">
 								<table id="flag1_buyer_tbl">	
 									<tr>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 									</tr>
 								</table>			
@@ -227,15 +303,15 @@ function sendMessage(url){
 						</div>
 						</c:when>
 						<c:when test="${not empty message.roomBuyerId}">
-						<div id="message" style="width:480px; text-align:left;">
-							<div style="display: inline-block;">
+						<div class="leftmsg">
+							<div class="submsg">
 								<table id="flag1_seller_tbl">	
 									<tr>
-										<td>
-											<textarea style="resize: none; border: none;"readonly >${message.messageText}</textarea>	
+										<td style='width:150px;'>
+											<p>${message.messageText}</p>	
 										</td>
 										<td>
-											<fmt:formatDate value="${message.messageDate}" pattern="MM.dd HH:mm:ss" /> 
+											<fmt:formatDate value="${message.messageDate}" pattern="M.d HH:mm:ss" /> 
 										</td>
 									</tr>
 								</table>
@@ -247,14 +323,14 @@ function sendMessage(url){
 			</c:choose>			
 		</c:forEach>
 	</div>
-<div id="chatting_message" style="height:40px;">
+<div id="chatting_message" style="width:580px; height:40px; margin-top:10px;">
 	<table>
 		<tr>
 			<td>
 				<span>메세지 : </span>&nbsp;
 			</td>
 			<td>
-				<input type="text" id="message" name="message" class="form-control" style="width:330px;" placeholder="보낼 메세지를 입력하세요.">
+				<input type="text" id="message" name="message" class="form-control" style="width:400px;" placeholder="보낼 메세지를 입력하세요.">
 			</td>
 			<td>
 				<input type="button" id="sendBtn" name="sendBtn" onclick="sendBtnClick();" value="보내기"/>

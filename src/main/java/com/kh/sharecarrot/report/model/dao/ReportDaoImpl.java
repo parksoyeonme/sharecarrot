@@ -41,7 +41,7 @@ public class ReportDaoImpl implements ReportDao {
 		int offset = (cPage - 1) * limit; // 1 -> 0, 2 -> 5, 3 -> 10....
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return session.selectList("report.selectReportList", null, rowBounds);
+		return session.selectList("report.selectReportList", param, rowBounds);
 	}
 
 	@Override
@@ -63,5 +63,12 @@ public class ReportDaoImpl implements ReportDao {
 	public ReportImage selectOneReportImage(int no) {
 		return session.selectOne("report.selectOneReportImage", no);
 	}
+
+	@Override
+	public List<Map<String, Object>> selectReportByDate(String searchDate) {
+		return session.selectList("report.selectReportByDate", searchDate);
+	}
+
+	
 	
 }

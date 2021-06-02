@@ -25,7 +25,7 @@ public class NoticeDaoImpl implements NoticeDao {
 		int offset = (cPage - 1) * limit; // 1 -> 0, 2 -> 5, 3 -> 10....
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return session.selectList("notice.selectNoticetList", null, rowBounds);
+		return session.selectList("notice.selectNoticetList", param, rowBounds);
 	}
 
 	@Override
@@ -49,6 +49,18 @@ public class NoticeDaoImpl implements NoticeDao {
 			return session.insert("notice.insertNotice", notice);
 	}
 
+	@Override
+	public int deleteForm(int no) {
+		return session.delete("notice.deleteForm", no);
+	}
+
+	@Override
+	public int noticeUpdateForm(Notice notice) {
+		return session.update("notice.noticeUpdateForm", notice);
+	}
+
+	
+	
 	
 
 	
