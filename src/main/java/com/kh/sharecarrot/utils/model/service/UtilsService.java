@@ -3,6 +3,7 @@ package com.kh.sharecarrot.utils.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.sharecarrot.chatting.model.vo.ChattingRoom;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
@@ -21,5 +22,7 @@ public interface UtilsService {
 	String selectLocationCode(String loginId);
 
 	int deleteJjim(Map<String, Object> param);
+
+	List<Integer> selectChattingRoomList(String loginMemberId);
 
 }

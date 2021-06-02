@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.sharecarrot.chatting.model.vo.ChattingRoom;
 import com.kh.sharecarrot.utils.model.vo.Category;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
@@ -46,6 +47,11 @@ public class UtilsDaoImpl implements UtilsDao {
 	@Override
 	public int deleteJjim(Map<String, Object> param) {
 		return session.delete("utils.deleteJjim", param);
+	}
+
+	@Override
+	public List<Integer> selectChattingRoomList(String loginMemberId) {
+		return session.selectList("utils.selectChattingRoomList", loginMemberId);
 	}
 	
 
