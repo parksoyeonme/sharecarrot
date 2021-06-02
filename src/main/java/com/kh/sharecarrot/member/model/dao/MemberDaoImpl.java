@@ -1,5 +1,7 @@
 package com.kh.sharecarrot.member.model.dao;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,6 +28,11 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public int memberUpdate(Member updateMember) {
 		return session.update("member.memberUpdate",updateMember);
+	}	
+
+	@Override
+	public int memberPasswordUpdate(Member updateMember) {
+		return session.update("member.memberPasswordUpdate",updateMember);
 	}
 
 	@Override
@@ -37,4 +44,20 @@ public class MemberDaoImpl implements MemberDao{
 	public String selectShopMember(String memberId) {
 		return session.selectOne("member.selectShopMember", memberId);
 	}
+
+	@Override
+	public String findId(Map<String, Object> param) {
+		
+		return session.selectOne("member.findId", param);
+	}
+
+	@Override
+	public Member searchPassword(Map<String, Object> param) {
+		return session.selectOne("member.searchPassword", param);
+	}
+
+
+	
+	
+	
 }

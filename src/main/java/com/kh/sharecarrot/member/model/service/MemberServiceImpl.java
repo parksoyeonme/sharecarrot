@@ -1,5 +1,7 @@
 package com.kh.sharecarrot.member.model.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,6 +47,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public int memberPasswordUpdate(Member updateMember) {
+		return memberDao.memberPasswordUpdate(updateMember);
+	}
+	
+	@Override
 	public int setAuthority(Authority auth) {
 		return memberDao.setAuthority(auth);
 	}
@@ -53,5 +60,21 @@ public class MemberServiceImpl implements MemberService {
 	public String selectShopMember(String memberId) {
 		return memberDao.selectShopMember(memberId);
 	}
+
+	@Override
+	public String findId(Map<String, Object> param) {
+		return memberDao.findId(param);
+	}
+
+	@Override
+	public Member searchPassword(Map<String, Object> param) {
+		
+		return memberDao.searchPassword(param);
+	}
+
+	
+
+	
+	
 	
 }

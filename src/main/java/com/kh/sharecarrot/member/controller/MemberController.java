@@ -12,9 +12,11 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -305,4 +307,137 @@ public class MemberController {
 	   
 	    return "redirect:/member/memberDetail.do";
     }	
+    
+    @GetMapping("/findId.do")
+    public void findId() {
+    	
+    }
+    
+    @PostMapping("/findId.do")
+    public String findId(
+    					@RequestParam String memberName,
+    					@RequestParam String email,
+    					Model model){
+    	log.info("log={}, {}", memberName, email);
+    	Map<String, Object> param = new HashMap<>();
+    	param.put("memberName", memberName);
+    	param.put("email", email);
+    	String memberId = memberService.findId(param);
+    	log.info("memberId = {}", memberId);
+    	//null처리
+    	if(memberId != null) {
+    		model.addAttribute("memberId", memberId);    		
+    	}
+    	
+    	//이걸 어쩐담... 
+    	
+    	return "/member/checkId";
+    	
+    }
+    
+    @GetMapping("/findPassword.do")
+    public void findPassword() {
+    	
+    }
+    
+    @PostMapping("/searchPassword.do")
+    public String searchPassword(
+    				@RequestParam String memberId,
+    				@RequestParam String email,
+    				Model model) throws AddressException, MessagingException {
+    	//임시비밀번호 생성
+    	String tempPassword = "123456";
+    
+    	//받아온 데이터로 정보 조회
+    	log.info("log={}, {}", memberId, email);
+    	Map<String, Object> param = new HashMap<>();
+    	param.put("memberId", memberId);
+    	param.put("email", email);
+    	//파라미터를 보내서 해당 멤버 조회되는지 파악
+    	Member member = memberService.searchPassword(param);
+    	if(member == null) {
+            return "/member/checkPassword";
+    	}
+    	log.info("회원정보 = {}", member);
+    	//아 암호화처리..
+    	String encodedPassword = bcryptPasswordEncoder.encode(tempPassword);
+    	member.setMemberPassword(encodedPassword);
+    	
+    	//조회된 회원의 비밀번호를 임시비밀번호로 update
+    	int result = memberService.memberPasswordUpdate(member);
+    	
+    	//임시비밀번호 메일로 전송 -> 그럼 이 메소드는 메일로 비밀번호만 전달??
+    	
+    	 /* 이메일 보내기 */
+        String host = "smtp.naver.com";
+        final String username = "testyongdo1";
+        final String password = "sharecarrot";
+        int port = 465;
+        
+        String recipient = email;
+        String subject = "비밀번호 변경을 위한 임시 비밀번호입니다.";
+        String body = 
+                "홈페이지를 방문해주셔서 감사합니다." +
+                "\n" + 
+                "임시 비밀번호는 " + tempPassword + "입니다." + 
+                "\n" + 
+                "임시는 임시일뿐. 꼭 수정하세요.";
+        
+        Properties props = System.getProperties();
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.ssl.tr ust", host);
+        
+        Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+        	String un=username;
+        	String pw=password;
+        	protected PasswordAuthentication getPasswordAuthentication() {
+        		return new PasswordAuthentication(un, pw);
+        	}
+        });
+        session.setDebug(true);
+        
+        Message mimeMessage = new MimeMessage(session);
+        mimeMessage.setFrom(new InternetAddress("testyongdo1@naver.com"));
+        mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+        mimeMessage.setSubject(subject);
+        mimeMessage.setText(body);
+        Transport.send(mimeMessage);
+        
+        model.addAttribute("email", email);
+
+        return "/member/checkPassword";
+    }
+    
+    @GetMapping("/changePassword.do")
+    public void changePassword() {
+    	
+    }
+    
+    @PostMapping("/changePassword.do")
+    public String changePassword(
+    			@RequestParam String oldPassword,
+    			@RequestParam String newPassword,
+    			@RequestParam String memberId
+    		) {
+    	//받아온 ID로 회원정보 조회
+    	Member member = memberService.selectOneMember(memberId);
+    	//기존 비밀번호와 조회한 회원의 비밀번호 비교(T / F)
+    	Boolean bool = bcryptPasswordEncoder.matches(oldPassword, member.getPassword());
+    	log.info("비밀번호가 같나요? = {}" , bool);
+
+    	if(!bool){
+    		String msg = "비밀번호 수정에 실패했습니다.";
+        	return "redirect:/member/memberDetail.do";
+    	}
+    	
+    	String encodednewPassword = bcryptPasswordEncoder.encode(newPassword);
+    	member.setMemberPassword(encodednewPassword);
+    	//조회된 회원정보 update
+    	int result = memberService.memberPasswordUpdate(member);
+    	String msg = "비밀번호 수정이 완료되었습니다.";
+    	return "redirect:/member/memberDetail.do";
+    }
 }
