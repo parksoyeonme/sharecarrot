@@ -118,10 +118,6 @@
     <!-- 공백 -->
     <br/><br/><br/>
 
-
-    
-    <input type="button" value="시작" onclick="setAlarm()"/>
-    <input type="button" value="중지" onclick="stopAlarm()"/>
 <script>
 toastr.options = {
 	"positionClass": "toast-bottom-right",
