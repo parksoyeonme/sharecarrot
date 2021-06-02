@@ -75,11 +75,11 @@ public class ShopController {
 		
 	}
 	
-	//상품으로 들어오기
+	//상점 들어가기
 	@GetMapping("/myshop.do")
 	public void mystore(Member member, Model model,Map<String, Object> param,
 			@RequestParam String shopId) {
-
+		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
 		//로그인한 memberId
 	    String loginMemberId = ((UserDetails) principal).getUsername();		
@@ -99,7 +99,6 @@ public class ShopController {
 		int openday = shopService.selectOpenDay(shopId);
 		//상품판매횟수
 		int sellCount = shopService.selectsellCount(shopId);
-
 
 		model.addAttribute("memberId", memberId);
 		model.addAttribute("loginMemberId", loginMemberId);
