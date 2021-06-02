@@ -58,6 +58,32 @@
 			member_addr = #{memberAddr}
 		where member_id = #{memberId}		
 	</update>
+	<update id="memberPasswordUpdate">
+		update member
+		set
+			member_password = #{memberPassword}
+		where member_id = #{memberId}		
+	</update>
+	<select id="findId" resultType="String">
+		select
+			m.member_id
+		from
+			member m
+		where
+			m.member_name = #{memberName} and
+			m.email = #{email}
+	</select>
+	<select id="searchPassword" resultMap="memberMap">
+		select
+			*
+		from
+			member m
+		left join authorities a
+			on m.member_id = a.member_id		
+		where
+			m.member_id = #{memberId} and
+			m.email = #{email}
+	</select>
 	<resultMap type="member" id="memberMap">
 		<id column="member_id" property="memberId"/>
 		<result column="member_password" property="memberPassword"/>

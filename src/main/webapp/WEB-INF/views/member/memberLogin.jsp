@@ -22,6 +22,20 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
+<style>
+.findMemberinfo p{
+	text-align: center;
+	margin: 0 auto;
+	text-decoration: none;
+	color: black;
+}
+.findMemberinfo p a:visited{
+	color : black;
+}
+.findMemberinfo p a:hover{
+	text-decoration: none;
+}
+</style>
 <script>
 //jquery onload 함수
 $(() => {
@@ -78,6 +92,13 @@ $(() => {
 							<button type="submit" class="btn btn-outline-success">로그인</button>
 							<button type="button" class="btn btn-outline-success" data-dismiss="modal">취소</button>
 						</div>
+					</div>
+					<div class="findMemberinfo">
+						<p>
+							<a href="${pageContext.request.contextPath}/member/findId.do">아이디 찾기</a>
+							<span> | </span>
+							<a href="${pageContext.request.contextPath}/member/findPassword.do">비밀번호찾기</a>
+						</p>
 					</div>
 				</form:form>
 			</div>
