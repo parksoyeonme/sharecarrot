@@ -69,13 +69,13 @@
 		</div>
 			<hr/>
 		<div class="footer-subdiv">
-			<p>© 2021 Costay, Inc. All rights reserved | 대표 FSS | 사업자등록번호 111-11-11111 
+			<p>© 2021 Sharecarrot, Inc. All rights reserved | 대표 FSS | 사업자등록번호 111-11-11111 
 				<strong>find us on...</strong><br>
-			주소 (06234) 서울 강남구 테헤란로14길 6 남도빌딩 | 이메일 costay@fss.com | 연락처 010-1111-1111</p> 
+			주소 (06234) 서울 강남구 테헤란로14길 6 남도빌딩 | 이메일 sharecarrot@fss.com | 연락처 010-1111-1111</p> 
 			<!-- 이미지버튼 삽입 -->
-            <img src="${pageContext.request.contextPath}/resources/images/instagram.jpg" style="max-height: 45px;">
-            <img src="${pageContext.request.contextPath}/resources/images/facebook.jpg" style="max-height: 45px;">		
-            <img src="${pageContext.request.contextPath}/resources/images/blog.png" style="max-height: 45px;">
+            <img src="${pageContext.request.contextPath}/resources/images/instagram.jpg" onclick="location.href='https://www.instagram.com';" style="cursor: pointer; max-height: 45px;">
+            <img src="${pageContext.request.contextPath}/resources/images/facebook.jpg" onclick="location.href='https://www.facebook.com';" style="cursor: pointer; max-height: 45px;">		
+            <img src="${pageContext.request.contextPath}/resources/images/blog.png" onclick="location.href='http://blog.naver.com';" style="cursor: pointer; max-height: 45px;">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <img src="${pageContext.request.contextPath}/resources/images/language.png" style="max-height: 45px;">
             <span><a>한국</a></span>
