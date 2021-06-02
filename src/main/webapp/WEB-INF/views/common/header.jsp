@@ -118,10 +118,6 @@
     <!-- 공백 -->
     <br/><br/><br/>
 
-
-    
-    <input type="button" value="시작" onclick="setAlarm()"/>
-    <input type="button" value="중지" onclick="stopAlarm()"/>
 <script>
 toastr.options = {
 	"positionClass": "toast-bottom-right",
@@ -133,6 +129,8 @@ toastr.options = {
 const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
 const subArr = [];
+
+const loginMemberId = "<sec:authentication property='principal.username'/>";
 
 stompClient.connect({}, (frame) => { //sock.connect
 	console.log(frame);
@@ -155,10 +153,11 @@ function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러�
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chat/selectRoomNo.do?${_csrf.parameterName}=${_csrf.token}",
 		data : {
-			loginMemberId : "<sec:authentication property='principal.username'/>"
+			loginMemberId
 		},
 		type : 'GET',
 		success : function(data){
+			
 			$(data).each(function(index, item){
 				if(subArr.includes(item)){ // subArr에 해당 방번호가 이미 추가되어있다면
 					return;
@@ -167,8 +166,10 @@ function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러�
 					subArr.push(item);
 					stompClient.subscribe(`/chattingRoom/\${item}`, (frame) => {
 						const msgObj = JSON.parse(frame.body);
+						console.log(msgObj);
 						//메시지 작업처리
-						toastr.info(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
+						if(loginMemberId != msgObj.roomBuyerId)
+							toastr.info(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
 					})					
 				}
 			});
