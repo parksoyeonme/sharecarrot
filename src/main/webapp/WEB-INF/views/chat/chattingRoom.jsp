@@ -24,6 +24,7 @@ div#previous_message{
 	background-color: rgb(178, 199, 217);
 }
 div#title{
+	width:580px;
 	background-color: rgb(169, 189, 206);
 }
 td.rightmsg{
@@ -260,9 +261,10 @@ $(document).ready(function(){
 	 		<!-- 구매자의 경우 -->
 	 		<c:if test="${flag eq 0}">
 	 			<h2>${seller_id}와의 채팅</h2>
-			 	<table style="width:471px;">
+			 	<table style="width:580px;">
 			 		<tr>
 			 			<td style="text-align:left; padding-left : 10px;"> 상대 : ${seller_id} </td>
+			 			<td style="width:250px;"></td>
 			 			<td style="text-align:right; padding-right: 30px;"> 나 : ${buyer_id}  </td>
 			 		</tr>
 			 	</table>
