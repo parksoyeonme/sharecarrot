@@ -1,5 +1,7 @@
 package com.kh.sharecarrot.storereviews.model.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,7 @@ public class StoreReviews {
 	
 	private String reviewCommentText;
 	private String reviewCommentNo;
+	
+	private List<ReviewImage> reviewImageList;
 	
 }

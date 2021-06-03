@@ -21,6 +21,7 @@ import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.shopmanage.model.dao.ShopManageDao;
+import com.kh.sharecarrot.storereviews.model.vo.ReviewImage;
 import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
@@ -281,10 +282,44 @@ public class ShopManageServiceImpl implements ShopManageService{
 	}
 
 	@Override
-	public int insertStoreReview(StoreReviews review) {
+	public int insertStoreReview(HttpServletRequest request, StoreReviews review, List<MultipartFile> list) {
 		int rtn = shopManageDao.insertStoreReview(review);
-		
 		shopManageDao.updateTransactionHisoryReviewYn(review.getProductId());
+		
+		//이미지 업로드 패스 지정
+		String path = request.getServletContext().getRealPath("/resources/upload/review/");
+		File dir = new File(path);
+		if(!dir.exists()) {
+			dir.mkdirs();
+		}
+		
+		//이미지 업로드
+		for(MultipartFile file:list) {
+			String fileName = file.getOriginalFilename();
+			String newName = review.getProductId() + "_" + UUID.randomUUID().toString();
+			String ext = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
+			File imgfile = new File(path + newName + ext);
+			
+			try {
+				file.transferTo(imgfile);
+				
+				ReviewImage imgInfo = new ReviewImage();
+				imgInfo.setReviewImgOrigin(fileName);
+				imgInfo.setReviewImgRenamed(newName + ext);
+				imgInfo.setReviewNo(review.getReviewNo());
+
+				int imgRtn = shopManageDao.insertReviewImage(imgInfo);
+				if(imgRtn <= 0 ) {
+					log.error("이미지 업로드 오류");
+					return 0;
+				}
+			} catch (Exception e) {
+				log.error("이미지 저장오류", e);
+				e.printStackTrace();
+				return 0;
+			}
+		}
+				
 		
 		return rtn;
 	}
@@ -292,6 +327,11 @@ public class ShopManageServiceImpl implements ShopManageService{
 	@Override
 	public StoreReviews selectStoreReview(StoreReviews review) {
 		return shopManageDao.selectStoreReview(review);
+	}
+
+	@Override
+	public List<ReviewImage> selectStoreReviewImage(StoreReviews review) {
+		return shopManageDao.selectStoreReviewImage(review);
 	}
 
 }
