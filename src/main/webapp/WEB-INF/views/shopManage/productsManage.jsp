@@ -837,7 +837,7 @@ $(document).ready(function(){
 						<span class="h6 text-danger">존재하지 않는 아이디입니다.</span>
 					</div>
 				</div>
-				<input type="hidden" id="completeProductId">;
+				<input type="hidden" id="completeProductId">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" id="completeBtn">판매 완료</button>

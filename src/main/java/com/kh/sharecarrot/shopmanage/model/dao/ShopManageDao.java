@@ -5,6 +5,7 @@ import java.util.List;
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shop.model.vo.Shop;
+import com.kh.sharecarrot.storereviews.model.vo.ReviewImage;
 import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
@@ -64,5 +65,11 @@ public interface ShopManageDao {
 
 	//리뷰 조회
 	StoreReviews selectStoreReview(StoreReviews review);
+	
+	//리뷰 이미지 저장
+	int insertReviewImage(ReviewImage imgInfo);
+	
+	//리뷰 이미지 조회
+	List<ReviewImage> selectStoreReviewImage(StoreReviews review);
 
 }
