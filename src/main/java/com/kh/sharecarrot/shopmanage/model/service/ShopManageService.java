@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
+import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 
@@ -53,5 +54,11 @@ public interface ShopManageService {
 	
 	//거래완료시 이력 저장
 	int insertTransactionHistory(TransactionHistory history);
+	
+	//리뷰작성
+	int insertStoreReview(StoreReviews review);
+
+	//리뷰조회
+	StoreReviews selectStoreReview(StoreReviews review);
 
 }

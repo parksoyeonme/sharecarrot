@@ -231,5 +231,34 @@
 			, #{memberId}
 		)
 	</insert>
+	
+	<insert id="insertStoreReview" parameterType="com.kh.sharecarrot.storereviews.model.vo.StoreReviews">
+		insert into store_reviews
+		values (
+			seq_store_reviews_no.nextval
+			, #{reviewTitle}
+			, #{reviewContent}
+			, #{reviewScore}
+			, 'N'
+			, #{productId}
+		)
+	</insert>
+
+	<update id="updateTransactionHisoryReviewYn" parameterType="String">
+		update 	transaction_history
+		set 	review_yn = 'Y'
+		where 	product_id = #{productId}
+	</update>
+	
+	<select id="selectStoreReview" parameterType="com.kh.sharecarrot.storereviews.model.vo.StoreReviews" resultType="com.kh.sharecarrot.storereviews.model.vo.StoreReviews">
+		select 	review_no
+				, review_title
+				, review_content
+				, review_score
+				, product_id
+		from 	store_reviews
+		where 	product_id = #{productId}
+	
+	</select>
 
 </mapper>
