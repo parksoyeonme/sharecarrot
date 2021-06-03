@@ -66,6 +66,7 @@ function cancel(shopId){
 </script>
 <div id="board-container">
 <h1>신고하기</h1>
+<hr/>
 	<form 
 		name="reportFrm" 
 		action="${pageContext.request.contextPath}/report/reportEnroll.do?${_csrf.parameterName}=${_csrf.token}"
