@@ -150,14 +150,17 @@ public class ShopManageController {
 
 	@ResponseBody
 	@RequestMapping(value="/selectStoreReview.do")
-	public StoreReviews selectStoreReview(StoreReviews review){
-		return shopManageService.selectStoreReview(review);
+	public ModelMap selectStoreReview(StoreReviews review){
+		ModelMap map = new ModelMap();
+		StoreReviews vo = shopManageService.selectStoreReview(review);
+		map.addAttribute("review", vo);
+		map.addAttribute("image", shopManageService.selectStoreReviewImage(vo));
+		return map;
 	}
-
 	@ResponseBody
 	@RequestMapping(value="/insertStoreReview.do")
-	public int insertStoreReview(StoreReviews review){
-		return shopManageService.insertStoreReview(review);
+	public int insertStoreReview(HttpServletRequest request, StoreReviews review, MultipartHttpServletRequest multi){
+		return shopManageService.insertStoreReview(request, review, multi.getFiles("imageList"));
 	}
 
 }
