@@ -19,7 +19,6 @@
 	}
 </style>
 <section id="board-container" class="container">
-
 <br />
 	<%-- Nav Bars --%>
 	<ul class="nav nav-tabs nav-fill" id="navBars">
