@@ -8,10 +8,7 @@
 	<jsp:param value="게시글 작성" name="title"/>
 </jsp:include>
 <style>
-div#board-container{width:400px; margin:0 auto; text-align:center;}
-div#board-container input{margin-bottom:15px;}
-/* 부트스트랩 : 파일라벨명 정렬*/
-div#board-container label.custom-file-label{text-align:left;}
+div#board-container{width:800px; height:300px; text-align:center; margin-top:40px; margin-bottom:50px;}
 
 </style>
 <script>
@@ -32,19 +29,42 @@ function noticeValidate(){
 }
 
 </script>
-<div id="board-container">
+<div id="board-container" class="mx-auto text-center">
+
+<h1>공지사항 수정</h1>
+<hr/>
+
 	<form 
 		name="noticeFrm" 
 		action="${pageContext.request.contextPath}/notice/noticeUpdateForm.do?${_csrf.parameterName}=${_csrf.token}"
 		method="post"
 		onsubmit="return noticeValidate();">
-		<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" value="${notice.boardTitle}" required>
-		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
 		
-	    <textarea class="form-control" name="boardContent" placeholder="내용"required>${notice.boardContent}</textarea>
-		<br />
-		<input type="submit" class="btn btn-primary form-control" value="수정" >
-		<input type="button" class="btn btn-primary form-control" value="취소" >
+		<table class="table table-bordered" style="vertical-align:middle">
+			<tr>
+				<td colspan="2">
+					<input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" value="${notice.boardTitle}" required>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				    <textarea class="form-control" name="boardContent" placeholder="내용"required>${notice.boardContent}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" class="btn btn-outline-secondary" style="width:150px;" value="수정" >
+				</td>
+				<td>
+					<input type="button" class="btn btn-outline-secondary" style="width:150px;" value="취소" >
+				</td>
+			</tr>
+		</table>
 		<input type="hidden" name="boardNo" value="${notice.boardNo}">
 	</form>
 </div>
