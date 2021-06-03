@@ -74,7 +74,7 @@ $(document).ready(function () {
                     }
                     l = l + 1;
                 }
-                console.log("l = " + l)
+               // console.log("l = " + l)
                
                 if (buttonCount == 1) {
                     html += "<input type='hidden' value='" + data.reviewCommentlist[l].reviewCommentNo + "'  id='reviewCommentNo' >";
@@ -88,7 +88,7 @@ $(document).ready(function () {
                         html += "<button type='button' style='margin-left: 15px' value='123' id='BtnGoDelete' onclick='delete_review(" + data.reviewCommentlist[l].reviewCommentNo + "," + i + "," + data.storeReviewList[i].reviewNo + ")'class='btn btn-warning'>댓글삭제</button>";
                     }
                     html += "</td></tr>";
-                    console.log("댓글 있음", buttonCount);
+                   // console.log("댓글 있음", buttonCount);
                 }
              
                 if (data.shopMemberId == data.loginMemberId) {
@@ -194,6 +194,7 @@ $(document).ready(function () {
 </script>
 <div class="div-division2">
     <div class="left2">상점후기</div>
-    <div id="reviewCount" class="right2">00개</div>
+    <div id="reviewCount" class="right2"><div style="margin-left:197px;">로그인 후 이용하실 수 있습니다</div></div>
 </div>
-<div id="review-list"></div>
+<div id="review-list">
+</div>
