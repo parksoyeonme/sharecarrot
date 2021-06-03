@@ -30,7 +30,7 @@
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
     <c:if test="${product.productImageList ne null}">
-	    <div class="carousel-item">
+	    <div class="carousel-item active">
 	      <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
 	    </div>
 	    <c:forEach items="${product.productImageList}" var="image">
@@ -38,14 +38,6 @@
 		      <img src="${pageContext.request.contextPath}/resources/upload/product/${image.productImgRenamed}" class="d-block w-100" alt="...">
 		    </div>
 	    </c:forEach>
-       <div class="carousel-item active">
-         <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
-       </div>
-       <c:forEach items="${product.productImageList}" var="image">
-          <div class="carousel-item">
-            <img src="${pageContext.request.contextPath}/resources/upload/product/${image.productImgRenamed}" class="d-block w-100" alt="...">
-          </div>
-       </c:forEach>
     </c:if>
       
   </div>

@@ -17,6 +17,13 @@
 		color: blue;
 		cursor:pointer;
 	}
+	.boardImg{
+		height: 500px;
+		width:100%;
+	}
+	.customTable{
+		border-radius: 30px;
+	}
 </style>
 <section id="board-container" class="container">
 <br />
@@ -67,6 +74,9 @@
 	
 	<script>
 	function goBoardForm(){
+		if(!loginCheck()){
+			return;
+		}
 		location.href="${pageContext.request.contextPath}/board/boardEnroll.do";
 	}
 	
@@ -140,25 +150,46 @@
 				
 				<%--회원정보 헤더--%>
 				var html = "<div class='m-3'>";
-						html = "<table class='table'>";
-						html += "<tr class='table-dark'>";
+						html = "<table class='table customTable'>";
+						html += "<tr class='table-secondary'>";
 							html += "<td>"+elem.memberId+"</td>";
-							html += "<th colspan='2'>["+elem.boardTitle+"]</th>";
-							html += "<td align='right'>"+enDate+"</td>";
-							html += "<td align='right'>"+loc+"</td>";
+							html += "<th colspan='3' style='text-align:right;'>["+elem.boardTitle+"]</th>";
+							html += "<td align='right'>"+loc+"&nbsp;"+enDate+"</td>";
 						html += "</tr>";
 						
-						<%--이미지--%>
-						html += "<tr id='boardImage-tr' class='table-secondary'>";
-							html += "<th colspan='5' style='margin: 0 auto;'>";	
-								$.each(elem.boardImageList, function(index, img){
-									html += "<img src='${pageContext.request.contextPath}/resources/upload/board/"+img.boardImgRenamed+"' class='img-thumbnail' style='width:200px; height:200px;' onclick='window.open(this.src)' />";
-								});
-							html += "</th>";
-						html += "</tr>";
-						
+						<%--이미지--%>		  
+						html += "<tr  class='table-light'><td colspan='5'>";
+							if(elem.boardImageList != null){
+								html += `<div id="imgSlider\${elem.boardNo}" class="carousel slide col" data-bs-ride="carousel">`;
+									html += `<div class="carousel-inner">`;
+										html += `<div class="carousel-item active">`;
+											html += `<img src="${pageContext.request.contextPath}/resources/upload/board/\${elem.boardImageList[0].boardImgRenamed}" class='boardImg' />`;
+										html += `</div>`;
+										$.each(elem.boardImageList, function(index,img){
+											if(index == 0){ 
+												return true;
+											}
+											html += `<div class="carousel-item">`;
+												html += "<img src='${pageContext.request.contextPath}/resources/upload/board/"+img.boardImgRenamed+"' class='boardImg' />";
+											html += `</div>`;
+										});
+									html += `</div>`;
+									html += ` 
+											<button class="carousel-control-prev" type="button" data-bs-target="#imgSlider\${elem.boardNo}" data-bs-slide="prev">
+											    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											    <span class="visually-hidden">Previous</span>
+											  </button>
+											  <button class="carousel-control-next" type="button" data-bs-target="#imgSlider\${elem.boardNo}" data-bs-slide="next">
+											    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+											    <span class="visually-hidden">Next</span>
+											  </button>
+											  `;
+								html += `</div>`;
+							}
+						html += "</td></tr>";
+						    
 						<%--게시글 내용--%>
-						html += "<tr class='table-secondary'><td colspan='5' height='200'>"+elem.boardContent+"</td></tr>";
+						html += "<tr  class='table-light'><td colspan='5' height='200'><b>"+elem.memberId+"</b>&nbsp;"+elem.boardContent+"</td></tr>";
 						
 						<%--좋아요 버튼--%>
 						<%-- 좋아요테이블에 해당게시물의 번호가 포함되어있는지 확인 --%>
@@ -171,20 +202,20 @@
 						</c:forEach>
 						
 						if(likeBool){ <%--좋아요를 누른경우--%>
-							html += `<tr class='table-secondary'><td colspan='5'><img id='likeBtn\${elem.boardNo}' class='likeBtn' src='${pageContext.request.contextPath}/resources/images/board/like.png' onclick="likeBtnTrigger('like\${elem.boardNo}', 'likeCntH\${elem.boardNo}', 'likeCnt\${elem.boardNo}', '\${elem.boardNo}', 'likeBtn\${elem.boardNo}');"/><span class='badge bg-dark rounded-pill ml-3' id='likeCnt\${elem.boardNo}'> \${elem.boardLike} 명이 좋아합니다.</span></td></tr>`;
+							html += `<tr><td colspan='5'  class='table-light'><img id='likeBtn\${elem.boardNo}' class='likeBtn' src='${pageContext.request.contextPath}/resources/images/board/like.png' onclick="likeBtnTrigger('like\${elem.boardNo}', 'likeCntH\${elem.boardNo}', 'likeCnt\${elem.boardNo}', '\${elem.boardNo}', 'likeBtn\${elem.boardNo}');"/><span class='badge bg-dark rounded-pill ml-3' id='likeCnt\${elem.boardNo}'> \${elem.boardLike} 명이 좋아합니다.</span></td></tr>`;
 							html += `<input type='hidden' id='likeCntH\${elem.boardNo}' value='\${elem.boardLike}'/>`;
 							html += `<input type='hidden' id='like\${elem.boardNo}' value='1'>`;
 							
 						} else { <%-- 안누른경우--%>
-							html += `<tr class='table-secondary'><td colspan='5'><img id='likeBtn\${elem.boardNo}' class='likeBtn' src='${pageContext.request.contextPath}/resources/images/board/nolike.png' onclick="likeBtnTrigger('like\${elem.boardNo}', 'likeCntH\${elem.boardNo}',  'likeCnt\${elem.boardNo}', '\${elem.boardNo}', 'likeBtn\${elem.boardNo}');"/><span class='badge bg-dark rounded-pill ml-3' id='likeCnt\${elem.boardNo}'> \${elem.boardLike} 명이 좋아합니다.</span></td></tr>`;
+							html += `<tr><td colspan='5'  class='table-light'><img id='likeBtn\${elem.boardNo}' class='likeBtn' src='${pageContext.request.contextPath}/resources/images/board/nolike.png' onclick="likeBtnTrigger('like\${elem.boardNo}', 'likeCntH\${elem.boardNo}',  'likeCnt\${elem.boardNo}', '\${elem.boardNo}', 'likeBtn\${elem.boardNo}');"/><span class='badge bg-dark rounded-pill ml-3' id='likeCnt\${elem.boardNo}'> \${elem.boardLike} 명이 좋아합니다.</span></td></tr>`;
 							html += `<input type='hidden' id='likeCntH\${elem.boardNo}' value='\${elem.boardLike}'/>`;
 							html += `<input type='hidden' id='like\${elem.boardNo}' value='-1'>`;
 						}
 						
 						
 						<%-- 댓글창 해당 게시물번호에 대한 댓글목록을 불러온다--%>
-						html += "<tr class='table-secondary'>";
-						html += `<td colspan='5' id='commentArea\${elem.boardNo}'>`; 
+						html += "<tr>";
+						html += `<td colspan='5'  class='table-light' id='commentArea\${elem.boardNo}'>`; 
 						html += `<div class="card">`;
 						html += `<div class="card-header bg-light"><i class="fa fa-comment fa"></i> 댓글</div>`;
 						html += `<div class="card-body">`;
@@ -199,10 +230,10 @@
 						
 						
 						<%-- 댓글 등록 버튼 클릭시 게시물번호, CommentText의 Id값을 보내줌--%>
-						html +="<tr class='table-secondary'>"
-							html += "<td colspan='5'>";
+						html +="<tr>"
+							html += "<td colspan='5'  class='table-light'>";
 								html += `<textarea id='boardCommentText\${elem.boardNo}' style='width:85.5%; height:100%;'></textarea>`;
-								html += `<input type='button' class='btn btn-dark pt-3 pb-3' onclick="commentInsert('\${elem.boardNo}', 'boardCommentText\${elem.boardNo}', 1)" value='댓글 등록' style='float:right;'/>`;
+								html += `<input type='button' class='btn btn-dark' onclick="commentInsert('\${elem.boardNo}', 'boardCommentText\${elem.boardNo}', 1)" value='댓글 등록' style='float:right;'/>`;
 							html += "</td>";
 						html += "</tr>";
 						
@@ -210,7 +241,7 @@
 						//로그인 한경우 수정/삭제버튼 추가
 						<sec:authorize access="isAuthenticated()">
 						if(elem.memberId == "<sec:authentication property='principal.username'/>"){
-							html += "<tr><td></td><td></td><td></td><td></td>";
+							html += "<tr  class='table-light'><td></td><td></td><td></td><td></td>";
 							html += "<td align='right'>";
 							html += `<input type='button' class='btn btn-sm btn-secondary" d-inline' onclick="location.href='${pageContext.request.contextPath}/board/boardUpdate.do?boardNo=\${elem.boardNo}';" value='수정'/>|`;
 							html += `<form class='d-inline' name='deleteF' id='deleteFrm\${elem.boardNo}' action='${pageContext.request.contextPath}/board/boardDelete.do?${_csrf.parameterName}=${_csrf.token}' method='POST'>`;
@@ -519,8 +550,10 @@
 	function loginCheck(){
 		<sec:authorize access="isAnonymous()">
 		alert('로그인 후 이용하실 수 있습니다.');
-		return;
+		return false;
 		</sec:authorize>
+		
+		return true;
 	}
 	<%-- 시간포맷 --%>
 	function getFormetDate(date){
