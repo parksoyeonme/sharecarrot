@@ -53,7 +53,7 @@ $(() => {
 	<input type="date"  id="searchDate" />
 	<input type="button"  value="검색" id="searchDateButton" />
 	</div>
-	<table id="tbl-board" class="table table-striped table-hover">
+	<table id="tbl-board" class="table table-bordered" style="vertical-align:middle">
 		<tr>
 			<th>번호</th>
 			<th>제목</th>

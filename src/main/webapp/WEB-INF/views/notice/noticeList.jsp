@@ -12,9 +12,10 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <style>
- .searchlist{
- 	margin-left: 1000px;
- }
+	  .searchlist{ 
+	  	margin-left: 1000px; 
+	  	margin-bottom:10px;
+	  } 
 </style>
 <script>
 function goNoticeForm(){
@@ -50,12 +51,22 @@ $(() => {
 	<div style="text-align:center; margin-top:30px;">
 		<h1>공지사항</h1>
 	</div>
-	<div class="searchlist" style="margin-bottom:10px;">
-	<select id="clickesearch" required>
-	  <option value="title">제목</option>
-	</select>
-	<input type="text" placeholder="검색.." id="searchNoticeTitle" />
-	<input type="button" value="검색" id="searchNoitcButton" />
+	<div class="searchlist">
+		<table>
+			<tr>
+				<td>
+					<select  style="height:30px;" id="clickesearch" required>
+					  <option value="title">제목</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" placeholder="검색"  style="height:30px;" id="searchNoticeTitle" />
+				</td>
+				<td>
+					<input type="button" class="btn btn-outline-secondary"  style="height:30px;" value="검색" id="searchNoitcButton" />
+				</td>
+			</tr>
+		</table>
 	</div>
 	<table id="tbl-board" class="table table-striped table-hover">
 		<tr>
@@ -75,10 +86,15 @@ $(() => {
 		</c:forEach>
 		
 	</table>
-	${pageBar}
+	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-	<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-success" onclick="goNoticeForm();"/>
+	<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+		<input type="button" style="margin-right:10px;"value="글쓰기" id="btn-add" class="float-right btn btn-outline-success" onclick="goNoticeForm();"/>
+	</div>
 	</sec:authorize>
+	
+	${pageBar}
+	
 </section> 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
