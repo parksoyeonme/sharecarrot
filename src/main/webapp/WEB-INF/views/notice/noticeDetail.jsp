@@ -32,7 +32,7 @@ div#board-container{width:800px; height:300px; text-align:center; margin-top:40p
 		<tr >
 			<td colspan="2" >
 				<input type="text" class="form-control" placeholder="제목" 
-				name="noticeTitle" id="noticeTitle" value="${notice.boardTitle}" required>
+				name="noticeTitle" id="noticeTitle" value="${notice.boardTitle}" readonly　required>
 			</td>
 		</tr>
 		<tr >
@@ -42,7 +42,7 @@ div#board-container{width:800px; height:300px; text-align:center; margin-top:40p
 		</tr>
 		<tr >
 			<td colspan="2">
-			    <textarea class="form-control" name="Content" placeholder="내용" required>${notice.boardContent}</textarea>
+			    <textarea class="form-control" name="Content" placeholder="내용" readonly　required>${notice.boardContent}</textarea>
 			</td>
 		</tr>
 		<sec:authorize access="hasRole('ROLE_ADMIN')">

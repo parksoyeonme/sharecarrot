@@ -13,6 +13,7 @@
 <style>
  .searchlist{
  	margin-left: 1000px;
+ 	margin-bottom:10px;
  }
 </style>
 <script>
@@ -48,21 +49,33 @@ $(() => {
 });
 </script>
 <section id="board-container" class="container">
-	<h1>신고 합니다</h1>
-	<div class="searchlist">
-	<input type="date"  id="searchDate" />
-	<input type="button"  value="검색" id="searchDateButton" />
+	<div style="text-align:center; margin-top:30px;">
+		<h1>신고 합니다</h1>
 	</div>
-	<table id="tbl-board" class="table table-bordered" style="vertical-align:middle">
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>신고자</th>
-			<th>피신고자</th>
-			<th>신고일</th>
-			<th>처리 결과</th> 
-			<th>처리 날짜</th>
-		</tr>
+	<div class="searchlist">                                             
+		<table>
+			<tr>
+				<td>
+					<input type="date" style="height:30px;" id="searchDate" />
+				</td>
+				<td>
+					<input type="button" class="btn btn-outline-secondary"　style="height:30px;" value="검색" id="searchDateButton" />
+				</td>
+			</tr>
+		</table>	
+	</div>
+	<table class="table" style="vertical-align:middle">
+		<thead class="thead-dark">
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>신고자</th>
+				<th>피신고자</th>
+				<th>신고일</th>
+				<th>처리 결과</th> 
+				<th>처리 날짜</th>
+			</tr>
+		</thead>
 		<c:forEach items="${reportList}" var="report">
 		<tr data-no="${report.reportNo}">
 			<td>${report.reportNo}</td>

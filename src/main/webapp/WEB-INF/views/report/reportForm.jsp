@@ -8,15 +8,11 @@
 	<jsp:param value="게시글 작성" name="title"/>
 </jsp:include>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <style>
-div#board-container{width:400px; margin:0 auto; text-align:center;}
-div#board-container input{margin-bottom:15px;}
+div#board-container{width:800px; text-align:center; margin-top:40px; margin-bottom:50px;}
 /* 부트스트랩 : 파일라벨명 정렬*/
-div#board-container{
-	margin-top:30px;
-}
+div#board-container label.custom-file-label{text-align:left;}
 </style>
 <script>
 
@@ -64,7 +60,7 @@ function cancel(shopId){
 }
 
 </script>
-<div id="board-container">
+<div id="board-container"  class="mx-auto text-center">
 <h1>신고하기</h1>
 <hr/>
 	<form 
@@ -106,18 +102,6 @@ function cancel(shopId){
 				<td><input type="button" onclick="cancel('${shop.shopId}');" class="btn btn-outline-success" value="취소" ></td>
 			</tr>
 		</table>
-		
-<!-- 		<input type="button" class="btn btn-primary" id="addImgBtn" value="이미지 등록"/> -->
-<!-- 		<input type="text" class="form-control" placeholder="제목" name="reportTitle" id="reportTitle" required> -->
-<!-- 	    <div class="input-group" id="imgContainer"> -->
-<!-- 	      <input type="file" class="form-control" id="upfile1" name="upfile"> -->
-<!-- 	    </div> -->
-<%-- 		<input type="text" class="form-control" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly required> --%>
-<%-- 		<input type="text" class="form-control" name="shopId" id="shopId" value="${shop.shopId}" readonly required> --%>
-<!-- 	    <textarea class="form-control" name="reportContent" placeholder="내용" required></textarea> -->
-<!-- 		<br /> -->
-<!-- 		<input type="submit" value="신고등록" > -->
-<!-- 		<input type="button" class="btn btn-outline-success" value="취소" > -->
 	</form>
 	
 	
