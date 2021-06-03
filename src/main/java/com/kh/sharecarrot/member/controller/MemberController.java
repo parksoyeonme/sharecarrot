@@ -329,8 +329,6 @@ public class MemberController {
     		model.addAttribute("memberId", memberId);    		
     	}
     	
-    	//이걸 어쩐담... 
-    	
     	return "/member/checkId";
     	
     }
@@ -377,11 +375,11 @@ public class MemberController {
         String recipient = email;
         String subject = "비밀번호 변경을 위한 임시 비밀번호입니다.";
         String body = 
-                "홈페이지를 방문해주셔서 감사합니다." +
+                "ShareCarrot 방문해주셔서 감사합니다." +
                 "\n" + 
-                "임시 비밀번호는 " + tempPassword + "입니다." + 
+                "임시 비밀번호는 " + tempPassword + " 입니다." + 
                 "\n" + 
-                "임시는 임시일뿐. 꼭 수정하세요.";
+                "임시비밀번호는 보안에 취약합니다. 반드시 로그인 하셔서 수정해주세요.";
         
         Properties props = System.getProperties();
         props.put("mail.smtp.host", host);
@@ -418,10 +416,13 @@ public class MemberController {
     
     @PostMapping("/changePassword.do")
     public String changePassword(
-    			@RequestParam String oldPassword,
-    			@RequestParam String newPassword,
-    			@RequestParam String memberId
+    			@RequestParam Map<String, Object> param,
+    			Model model
     		) {
+    	log.info("param = {}", param);
+    	String oldPassword = (String)param.get("oldPassword");
+    	String newPassword = (String)param.get("newPassword");
+    	String memberId = (String)param.get("memberId");
     	//받아온 ID로 회원정보 조회
     	Member member = memberService.selectOneMember(memberId);
     	//기존 비밀번호와 조회한 회원의 비밀번호 비교(T / F)
@@ -429,15 +430,20 @@ public class MemberController {
     	log.info("비밀번호가 같나요? = {}" , bool);
 
     	if(!bool){
-    		String msg = "비밀번호 수정에 실패했습니다.";
-        	return "redirect:/member/memberDetail.do";
+    		model.addAttribute("msg1", "입력하신 비밀번호와 기존 비밀번호가 다릅니다.");
+    		return "/member/updatePassword";
     	}
     	
     	String encodednewPassword = bcryptPasswordEncoder.encode(newPassword);
     	member.setMemberPassword(encodednewPassword);
     	//조회된 회원정보 update
     	int result = memberService.memberPasswordUpdate(member);
-    	String msg = "비밀번호 수정이 완료되었습니다.";
-    	return "redirect:/member/memberDetail.do";
+    	if(result != 1) {
+    		model.addAttribute("msg2", "비밀번호 수정에 실패하였습니다. 다시 시도해주세요.");
+    		return "/member/updatePassword";
+    	}
+    	model.addAttribute("msg3","비밀번호를 성공적으로 변경하였습니다.");
+    	return "/member/updatePassword";
     }
+    
 }
