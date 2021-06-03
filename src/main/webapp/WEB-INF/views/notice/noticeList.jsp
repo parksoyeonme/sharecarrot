@@ -68,14 +68,15 @@ $(() => {
 			</tr>
 		</table>
 	</div>
-	<table id="tbl-board" class="table table-striped table-hover">
-		<tr>
-			<th>번호</th>
-			<th>제목</th>
-			<th>작성자</th>
-			<th>작성일</th>
-			
-		</tr>
+	<table class="table" style="vertical-align:middle">
+		<thead class="thead-dark">
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
 		<c:forEach items="${noticeList}" var="notice">
 		<tr data-no="${notice.boardNo}">
 			<td>${notice.boardNo}</td>

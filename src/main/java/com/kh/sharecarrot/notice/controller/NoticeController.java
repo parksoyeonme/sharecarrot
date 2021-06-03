@@ -123,7 +123,6 @@ public class NoticeController {
 	
 	@PostMapping("/deleteForm.do")
 	public String deleteForm(@RequestParam int no, RedirectAttributes redirectAttr) {
-		log.info("deleteForm.do TEst");
 		//1. 업무로직
 		int result = NoticeService.deleteForm(no);
 		String msg = result > 0 ? "삭제 성공" : "삭제 실패";
