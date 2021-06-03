@@ -4,7 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>	
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <jsp:include page="/WEB-INF/views/common/history.jsp" />
 <!-- 메인 페이지 작업영역 -->
@@ -44,8 +46,11 @@
               <div class="location-nav">
                 <select id="select-location">
                   <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
-                  <option value="" disabled selected>지역명</option>
-                  <option value="">전체</option>
+                  <option value="" disabled selected><spring:message code="index.location" text="기본값"/>
+
+                  </option>
+                  <option value=""> <spring:message code="index.select.all" text="default text" />
+</option>
                   <c:forEach items="${locationList}" var="location">
                     <sec:authorize access="isAnonymous()">
                       <option value="${location.locCode}">${location.locName}</option>
@@ -59,8 +64,8 @@
               <div class="category-nav">
                 <select id="select-category" >
                   <!-- 카테고리명 불러오기 -->
-                  <option value="" disabled selected>카테고리</option>
-                  <option value="">전체</option>
+                  <option value="" disabled selected><spring:message code="index.category" /></option>
+                  <option value=""><spring:message code="index.category.all" /></option>
                   <c:forEach items="${categoryList}" end="4" var="category">
                     <option value="${category.categoryCode}">${category.categoryName}</option>
                   </c:forEach>
@@ -96,7 +101,7 @@
             <c:if test="${listLength eq 0}">
               <div class="no-item-list" id="item-list">
                 <div class="no-item">
-                  <p>등록된 상품이 없습니다.</p>
+                  <p><spring:message code="index.noitem" /></p>
                 </div>
               </div>
             </c:if>
@@ -107,7 +112,7 @@
           <!-- 버튼 클릭 시 상품 목록 불러오기 (10개씩)-->
           <c:if test="${listLength ne 0}">
               <div class="button-more" id="button-more">
-              <button type="button" class="bttn btn-more btn-large">더보기</button>
+              <button type="button" class="bttn btn-more btn-large"><spring:message code="index.more.button" /></button>
             </c:if>
             <c:if test="${listLength eq 0}">
               <div class="button-nomore" id="button-more">

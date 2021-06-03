@@ -12,27 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.sharecarrot.chatting.model.vo.ChattingRoom;
 import com.kh.sharecarrot.main.model.service.MainService;
 import com.kh.sharecarrot.main.model.vo.MainProduct;
-import com.kh.sharecarrot.member.model.vo.Member;
-import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.Category;
-import com.kh.sharecarrot.utils.model.vo.JjimList;
 import com.kh.sharecarrot.utils.model.vo.Location;
 import com.kh.sharecarrot.utils.model.vo.jjimListExt;
 
@@ -55,6 +48,10 @@ public class HomeController {
 	
 	Map<String, Object> param = new HashMap<>();
 	int limit = 10;	// 한 번에 열 개 출력
+	
+	@Autowired
+	SessionLocaleResolver localeResolver;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -65,7 +62,8 @@ public class HomeController {
 			@RequestParam(defaultValue = "") String category,
 			HttpServletRequest request,
 			Principal principal) { 
-		
+		//log.debug("locale from localeResolver = {}", localeResolver.resolveLocale(request));
+		//log.debug("locale = {}", locale);
 		
 		List<jjimListExt> jjimList = null;
 		if(principal != null) {

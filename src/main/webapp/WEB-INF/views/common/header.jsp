@@ -5,6 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>	
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +69,7 @@
         <li class="nav-item flex-sm-fill">
             <div class="input-group">
                 <input type="text" onkeyup="enterkey();" id="headersearch" name="headersearch" class="form-control" placeholder="지역 혹은 물품을 검색해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button class="btn btn-outline-success" onclick="search_button_click();" id="searchbutton" name="searchbutton" type="button" id="button-addon2">검색</button>
+                <button class="btn btn-outline-success" onclick="search_button_click();" id="searchbutton" name="searchbutton" type="button" id="button-addon2"><spring:message code="header.search" /></button>
             </div>
         </li>
         
@@ -77,36 +79,41 @@
             
 		<!-- 비회원 화면 -->
    				<sec:authorize access="isAnonymous()">
-	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do';">로그인</button>
-	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do';">회원가입</button>
+	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do';"><spring:message code="header.login" /></button>
+	                <button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/member/memberEnroll.do';"><spring:message code="header.signup" /></button>
                 </sec:authorize>
 		<!-- 로그인시 화면 -->
                 <sec:authorize access="isAuthenticated()">
                		<form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
-					    <button class="btn btn-light my-2 my-sm-0" type="submit">로그아웃</button>
+					    <button class="btn btn-light my-2 my-sm-0" type="submit"><spring:message code="header.logout" /></button>
 	                </form:form>
-	                <button type="button" class="btn btn-light" onclick=" myshop_head_click();">내상점</button>
-	                <button type="button" class="btn btn-light">판매하기</button>
+	                <button type="button" class="btn btn-light" onclick=" myshop_head_click();"><spring:message code="header.myshop" /></button>
+	                <button type="button" class="btn btn-light"><spring:message code="header.sell" /></button>
                 </sec:authorize>
                 
 		<!-- 카테고리 DROPDOWN -->
                 <div class="btn-group" role="group">
                   <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <li><a class="dropdown-item" href="#">상품카테고리</a></li>
+                    <li><a class="dropdown-item" href="#"><spring:message code="header.nav.Catagory" /></a></li>
                     <%--분기처리 --%>
                     <sec:authorize access="isAnonymous()">
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do">동네생활게시판</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do"><spring:message code="header.nav.board" /></a></li>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do?memberId=<sec:authentication property='principal.username'/>">동네생활게시판</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do?memberId=<sec:authentication property='principal.username'/>"><spring:message code="header.nav.board" /></a></li>
                     </sec:authorize>
+
+                    <sec:authorize access="hasRole('ADMIN')">
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do"><spring:message code="header.nav.report" /></a></li>
+					</sec:authorize>
  					<sec:authorize access="hasRole('ROLE_ADMIN')">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do">신고게시판</a></li>
+
                     </sec:authorize>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do">공지사항</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/chattingManagement.do">채팅관리</a></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">계정설정</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do"><spring:message code="header.nav.notice" /></a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/chattingManagement.do"><spring:message code="header.nav.chat" /></a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do"><spring:message code="header.nav.setting" /></a></li>
                   </ul>
                 </div>
               </div>

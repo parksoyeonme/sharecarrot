@@ -4,6 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>	
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
 	.history-box{
     position: fixed;
@@ -177,7 +179,7 @@ var totalJjim = 0;
     <div class="history-box-container">
       <!-- 찜 상품 목록 시작-->
         <div class="jjim">
-          <div class="jjim-title">찜한상품</div>
+          <div class="jjim-title"><spring:message code="jjim.items" /></div>
           <div class="jjim-count-wrapper">
             <!-- 찜한 상품 생길 시 count ++, 색상 변경(red)-->
             <div class="jjim-count" onclick='jjimListDo();'>
@@ -189,12 +191,12 @@ var totalJjim = 0;
       <!--  찜 상품 목록 끝 -->
       <!-- 최근 본 상품 목록 시작 -->
         <div class="recent">
-          <div class="recent-title">최근 본 상품</div>
+          <div class="recent-title"><spring:message code="jjim.recent.see.product" /></div>
           <div class="recent-dot"></div>
           <!-- 최근 본 상품 == null -->
           <div class="recent-content" id="recent-content">
            <div id="recent-no-content">
-             최근 본<br/> 상품이 <br/>없습니다
+             <spring:message code="jjim.recent.see" /><br/> <spring:message code="jjim.recent.see.product" /> <br/><spring:message code="jjim.recent.see.product.no" />
            </div> 
           </div>
           <!-- 최근 본 상품 != null => 3개까지 출력. 저장은 DB? Session? -->
