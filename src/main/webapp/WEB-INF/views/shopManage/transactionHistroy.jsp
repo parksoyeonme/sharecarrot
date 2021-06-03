@@ -58,11 +58,13 @@ $(document).ready(function(){
 				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 	        }
 			, success : function(result){
-				if(result){
-					$('#reviewViewTitle').val(result.reviewTitle);
-					$('#reviewViewContent').val(result.reviewContent);
+				var review = result.review;
+				var image = result.image;
+				if(review){
+					$('#reviewViewTitle').val(review.reviewTitle);
+					$('#reviewViewContent').val(review.reviewContent);
 					$.each($('.star2').children(), function(index, item){
-						if(result.reviewScore >= item.dataset.score){
+						if(review.reviewScore >= item.dataset.score){
 							item.classList.remove('far');
 							item.classList.add('fas');
 						}else{
@@ -70,6 +72,34 @@ $(document).ready(function(){
 							item.classList.add('far');
 						}
 					});
+					if(image){
+						$('#reviewImagePreview2').empty();
+						var imgHtml = "";
+						$.each(image, function(index,item){
+							//이미지 url
+							var imageUrl = '/sharecarrot/resources/upload/review/' + item.reviewImgRenamed;
+							
+							if((index%3) == 0){
+								imgHtml += '<div class="row my-3">';
+							}
+							if(index == 0){
+								imgHtml += '<div class="col-4" style="position: relative;">';
+								imgHtml += '<img class="img-thumbnail" src="' + imageUrl + '" data-name="' + item.reviewImgOrigin + '" style="width:100%; height:100%; opacity: 0.8;">';
+							}else{
+								imgHtml += '<div class="col-4">';
+								imgHtml += '<img class="img-thumbnail" src="' + imageUrl + '" data-name="' + item.reviewImgOrigin + '" style="width:100%; height:100%;">';
+							}
+							imgHtml += '</div>';
+							if((index%3) == 2){
+								imgHtml += '</div>';
+							}
+						});
+						
+						if(image.length % 3 != 2){
+							imgHtml += '</div>';
+						}
+						$('#reviewImagePreview2').append(imgHtml);
+					}
 					reviewViewModal.show();
 				}else{
 					alert('후기가 작성되지 않았습니다.');
@@ -158,14 +188,28 @@ $(document).ready(function(){
 			alert('내용을 입력하세요.');
 			return;
 		}
+		var formData = new FormData();
+		formData.append("reviewTitle", reviewTitle);
+		formData.append("reviewContent", reviewContent);
+		formData.append("reviewScore", reviewScore);
+		formData.append("productId", $('#reviewProductId').val());
+		
+		var imgList = $('#reviewImageUpload').prop('files');
+		
+		console.log(imgList);
+		for(var i=0; i< imgList.length; i++){
+			console.log(imgList[i]);
+			formData.append("imageList", imgList[i]);
+		}
+		
+		console.log(formData);
 		
 		$.ajax({
 			url : 'insertStoreReview.do'
 			, type : "POST"
-			, data : {"reviewTitle" : reviewTitle
-					, "reviewContent" : reviewContent
-					, "reviewScore" : reviewScore
-					, "productId" : $('#reviewProductId').val()}
+			, data : formData
+			, processData : false
+			, contentType : false
 			, beforeSend : function(xhr){
 				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
 	        }
@@ -186,6 +230,8 @@ $(document).ready(function(){
 		$('#reviewContentLength').text('0');
 		$('#reviewContent').val('');
 		$('#reviewScoreLength').text('0');
+		$('#reviewImageUpload').val('');
+		$('#reviewImagePreview').empty();
 		reviewScore = 0;
 		
 	});
@@ -212,22 +258,22 @@ $(document).ready(function(){
 					$.each(transactionList, function(index, item){
 						html += '<tr>';
 						if(item.productImageList[0]){
-							html += '<td class="align-middle" style="width:20%;">';
+							html += '<td class="align-middle" style="width:25%;">';
 							html += '<img class="img-thumbnail" style="object-fit:cover;" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
 							html += '</td>';
 						}else{
-							html += '<td class="align-middle" style="width:10%;"></td>';
+							html += '<td class="align-middle" style="width:25%;"></td>';
 						}
-						html += '<td class="align-middle" style="width:60%;">' + item.productName + '</td>';
-						html += '<td class="align-middle" style="width:10%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
+						html += '<td class="align-middle" style="width:50%;">' + item.productName + '</td>';
+						html += '<td class="align-middle" style="width:15%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
 						if(tab == 'buy'){
 							if(item.reviewYn == 'Y'){
-								html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-reviewView">후기조회</button></td>';
+								html += '<td class="align-middle" style="width:10%;"><button class="btn btn-success btn-reviewView">후기조회</button></td>';
 							}else{
-								html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-review">후기작성</button></td>';
+								html += '<td class="align-middle" style="width:10%;"><button class="btn btn-warning btn-review">후기작성</button></td>';
 							}
 						}else if(tab == 'sell'){
-							html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-reviewView">후기조회</button></td>';
+							html += '<td class="align-middle" style="width:10%;"><button class="btn btn-success btn-reviewView">후기조회</button></td>';
 						}
 						
 						html += '<input type="hidden" class="product-id" value="' + item.productId + '"/>';
@@ -273,9 +319,25 @@ $(document).ready(function(){
 				return;
 			}
 		});
-	
-	
 	}
+	
+	//후기 이미지
+	$('#reviewImageUpload').on('change',function(){
+		//확장자
+		var ext = $(this).val().split('.').pop().toLowerCase();
+		//업로드 가능 이미지 확장자
+		var imageExt = ['jpg', 'jpeg', 'png'];
+
+		if(ext){
+			if($.inArray(ext,imageExt) == -1){
+				$(this).val('');
+				alert('이미지 파일이 아닙니다.');
+			}else{
+				var list = $('#reviewImageUpload').prop('files');
+				drawPreview(list);
+			}
+		}
+	});
 	
 	function statusInit(){
 		$('.btn-status').removeClass('btn-danger').removeClass('btn-active');
@@ -306,6 +368,37 @@ $(document).ready(function(){
 		var day = date.getDate();
 		day = day >= 10 ? day : '0' + day;
 		return year + '-' + month + '-' + day;
+	}
+	
+	function drawPreview(list){
+		//초기화
+		$('#reviewImagePreview').empty();
+		var imgHtml = "";
+		$.each(list, function(index,file){
+			//이미지 url
+			var imageUrl = URL.createObjectURL(file);
+			
+			if((index%3) == 0){
+				imgHtml += '<div class="row my-3">';
+			}
+			if(index == 0){
+				imgHtml += '<div class="col-4" style="position: relative;">';
+				imgHtml += '<p class="h4 fw-bold" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index=1;l">대표이미지</p>';
+				imgHtml += '<img class="img-thumbnail img-preview" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%; opacity: 0.8;">';
+			}else{
+				imgHtml += '<div class="col-4">';
+				imgHtml += '<img class="img-thumbnail img-preview" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%;">';
+			}
+			imgHtml += '</div>';
+			if((index%3) == 2){
+				imgHtml += '</div>';
+			}
+		});
+		
+		if(list.length % 3 != 2){
+			imgHtml += '</div>';
+		}
+		$('#reviewImagePreview').append(imgHtml);
 	}
 });
 </script>
@@ -342,7 +435,7 @@ $(document).ready(function(){
 		 -->
 		<!-- 거래내역 목록 -->
 		<div class="col-12">
-			<table>
+			<table style="table-layout:fixed;">
 				<tbody id="transactionList"></tbody>
 			</table>
 		</div>
@@ -357,7 +450,7 @@ $(document).ready(function(){
 </div>
 
 <div class="modal fade" id="reviewModal">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">후기 작성</h5>
@@ -387,6 +480,19 @@ $(document).ready(function(){
 						<span class=""><span id="reviewContentLength">0</span>/200</span>
 					</div>
 				</div>
+				
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">이미지</span>
+					</div>
+					<div class="col-8">
+						<input type="file" class="form-control" id="reviewImageUpload" multiple>
+						<div id="reviewImagePreview"></div>
+					</div>
+					<div class="col-1">
+						<button type="button" class="btn-close" aria-label="Close" id="imgRemoveBtn"></button>
+					</div>
+				</div>
 			
 				<div class="col-12 row my-3">
 					<div class="col-3">
@@ -411,7 +517,7 @@ $(document).ready(function(){
 </div>
 
 <div class="modal fade" id="reviewViewModal">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">후기 조회</h5>
@@ -433,6 +539,15 @@ $(document).ready(function(){
 					</div>
 					<div class="col-8">
 						<textarea class="form-control" rows="3" id="reviewViewContent" readonly></textarea>
+					</div>
+				</div>
+				
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">이미지</span>
+					</div>
+					<div class="col-9">
+						<div id="reviewImagePreview2"></div>
 					</div>
 				</div>
 			

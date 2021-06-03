@@ -242,6 +242,9 @@
 			, 'N'
 			, #{productId}
 		)
+		<selectKey keyProperty="reviewNo" order="AFTER" resultType="int" >
+			select review_no from store_reviews where product_id = #{productId}
+		</selectKey>
 	</insert>
 
 	<update id="updateTransactionHisoryReviewYn" parameterType="String">
@@ -259,6 +262,25 @@
 		from 	store_reviews
 		where 	product_id = #{productId}
 	
+	</select>
+	
+	<insert id="insertReviewImage" parameterType="com.kh.sharecarrot.storereviews.model.vo.ReviewImage">
+		insert into review_image
+		values(
+			seq_review_image_no.nextval
+			, #{reviewImgOrigin}
+			, #{reviewImgRenamed}
+			, #{reviewNo}
+		)
+	</insert>
+	
+	<select id="selectStoreReviewImage" parameterType="com.kh.sharecarrot.storereviews.model.vo.StoreReviews" resultType="com.kh.sharecarrot.storereviews.model.vo.ReviewImage">
+		select 	review_img_no
+			 	, reivew_img_origin as review_img_origin
+			 	, reivew_img_renamed as review_img_renamed
+			 	, review_no
+		from 	review_image
+		where 	review_no = #{reviewNo}
 	</select>
 
 </mapper>
