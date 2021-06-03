@@ -8,12 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.shopmanage.model.service.ShopManageService;
+import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
 import com.kh.sharecarrot.utils.model.service.UtilsService;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
@@ -148,6 +146,18 @@ public class ShopManageController {
 	@RequestMapping(value="/insertTransactionHistory.do")
 	public int insertTransactionHistory(TransactionHistory history){
 		return shopManageService.insertTransactionHistory(history);
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/selectStoreReview.do")
+	public StoreReviews selectStoreReview(StoreReviews review){
+		return shopManageService.selectStoreReview(review);
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/insertStoreReview.do")
+	public int insertStoreReview(StoreReviews review){
+		return shopManageService.insertStoreReview(review);
 	}
 
 }

@@ -1,10 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<style>
+.star, .star2{
+	color: #FFEB34;
+}
+</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	
 	var tab = 'buy';
+	
+	//후기모달
+	var reviewModal = new bootstrap.Modal($('#reviewModal'), {keyboard: false, backdrop: 'static'});
+	var reviewViewModal = new bootstrap.Modal($('#reviewViewModal'), {keyboard: false});
+	//별점점수
+	var reviewScore = 1;
+	
 	//최초실행
 	buyTabActive();
 	
@@ -22,16 +34,53 @@ $(document).ready(function(){
 		sellTabActive();
 	});
 	
+	//후기작성버튼
 	$(document).on('click', '.btn-review', function(){
 		if(!confirm('후기를 작성하시겠습니까?')){
 			return;
 		}
 		
 		var productId = $(this).parent().nextAll('.product-id').val();
+		$('#reviewProductId').val(productId);
 		
-		alert('상품번호 : ' + productId);
-	})
+		reviewModal.show();
+	});
 	
+	//후기조회버튼
+	$(document).on('click', '.btn-reviewView', function(){
+		var productId = $(this).parent().nextAll('.product-id').val();
+		
+		$.ajax({
+			url : 'selectStoreReview.do'
+			, type : 'POST'
+			, data : {"productId" : productId}
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        }
+			, success : function(result){
+				if(result){
+					$('#reviewViewTitle').val(result.reviewTitle);
+					$('#reviewViewContent').val(result.reviewContent);
+					$.each($('.star2').children(), function(index, item){
+						if(result.reviewScore >= item.dataset.score){
+							item.classList.remove('far');
+							item.classList.add('fas');
+						}else{
+							item.classList.remove('fas');
+							item.classList.add('far');
+						}
+					});
+					reviewViewModal.show();
+				}else{
+					alert('후기가 작성되지 않았습니다.');
+					return;
+				}
+			}
+		});
+		
+		
+	});
+	//상태변경
 	$('.btn-status').on('click', function(){
 		$('.btn-status').removeClass('btn-danger').removeClass('btn-active');
 		$('.btn-status').addClass('btn-outline-secondary');
@@ -39,10 +88,108 @@ $(document).ready(function(){
 		$(this).addClass('btn-danger').addClass('btn-active');
 		dataInit();
 	});
-	
+	//페이징
 	$(document).on('click','.page-transaction',function(){
 		dataInit($(this).data('page'));
-	})
+	});
+	
+	//별점
+	$('.star').on('click', function(){
+		var score = $(this).children().data('score')
+		reviewScore = score;
+		$('#reviewScoreLength').text(score);
+	});
+	
+	//별점 마우스오버
+	$('.star').on('mouseover', function(){
+		var i = $(this).children().data('index');
+		$.each($('.fa-star'),function(index,item){
+			if(i >= index){
+				item.classList.remove('far');
+				item.classList.add('fas');
+			}else if(i < index){
+				item.classList.remove('fas');
+				item.classList.add('far');
+			}
+		});
+	}).on('mouseleave', function(){
+		$.each($('.fa-star'), function(index,item){
+			if(reviewScore >= item.dataset.score){
+				item.classList.remove('far');
+				item.classList.add('fas');
+			}else if(reviewScore < item.dataset.score){
+				item.classList.remove('fas');
+				item.classList.add('far');
+			}
+		});
+	});
+
+	$('#reviewTitle').on('keyup',function(){
+		var length = $(this).val().length;
+		$('#reviewTitleLength').text(length);
+		if(length > 40){
+			$(this).val($(this).val().substring(0,40));
+			$('#reviewTitleLength').text('40');
+		}
+	});
+	
+	$('#reviewContent').on('keyup',function(){
+		var length = $(this).val().length;
+		$('#reviewContentLength').text(length);
+		if(length > 200){
+			$(this).val($(this).val().substring(0,200));
+			$('#reviewContentLength').text('200');
+		}
+	});
+	
+	$('#insertReviewBtn').on('click', function(){
+		var reviewTitle = $('#reviewTitle').val();
+		var reviewContent = $('#reviewContent').val();
+		
+		if(!confirm('작성하시겠습니까?')){
+			return false;
+		}
+		
+		
+		if(reviewTitle == '' || reviewTitle == null){
+			alert('제목을 입력하세요.');
+			return;
+		}else if(reviewContent == '' || reviewContent == null){
+			alert('내용을 입력하세요.');
+			return;
+		}
+		
+		$.ajax({
+			url : 'insertStoreReview.do'
+			, type : "POST"
+			, data : {"reviewTitle" : reviewTitle
+					, "reviewContent" : reviewContent
+					, "reviewScore" : reviewScore
+					, "productId" : $('#reviewProductId').val()}
+			, beforeSend : function(xhr){
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	        }
+			, success : function(result){
+				if(result > 0){
+					alert('작성 완료.');
+					dataInit();
+					reviewModal.hide();
+					return;
+				}
+			}
+		});
+	});
+	
+	$('#reviewModal').on('hidden.bs.modal', function(){
+		$('#reviewTitleLength').text('0');
+		$('#reviewTitle').val('');
+		$('#reviewContentLength').text('0');
+		$('#reviewContent').val('');
+		$('#reviewScoreLength').text('0');
+		reviewScore = 0;
+		
+	});
+	
 	
 	function dataInit(pageNum){
 		if(!pageNum){
@@ -73,7 +220,16 @@ $(document).ready(function(){
 						}
 						html += '<td class="align-middle" style="width:60%;">' + item.productName + '</td>';
 						html += '<td class="align-middle" style="width:10%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
-						html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-review">후기작성</button></td>';
+						if(tab == 'buy'){
+							if(item.reviewYn == 'Y'){
+								html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-reviewView">후기조회</button></td>';
+							}else{
+								html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-review">후기작성</button></td>';
+							}
+						}else if(tab == 'sell'){
+							html += '<td class="align-middle" style="width:20%;"><button class="btn btn-success btn-reviewView">후기조회</button></td>';
+						}
+						
 						html += '<input type="hidden" class="product-id" value="' + item.productId + '"/>';
 						html += '</tr>';
 					});
@@ -171,6 +327,7 @@ $(document).ready(function(){
 		</ul>
 		
 		<!-- 상태메뉴 -->
+		<!-- 
 		<div class="row my-2 d-flex justify-content-between">
 			<div class="col-6">
 				<button type="button" class="btn btn-sm btn-status" data-status="" id="allTab">전체</button>
@@ -182,6 +339,7 @@ $(document).ready(function(){
 				<i class="fas fa-list"></i>
 			</div>
 		</div>
+		 -->
 		<!-- 거래내역 목록 -->
 		<div class="col-12">
 			<table>
@@ -195,5 +353,101 @@ $(document).ready(function(){
 	<div class="col-md-12">
 		<ul class="pagination justify-content-center" id="transactionPaging">
 		</ul>
+	</div>
+</div>
+
+<div class="modal fade" id="reviewModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">후기 작성</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">제목</span>
+					</div>
+					<div class="col-8">
+						<input type="text" class="form-control" id="reviewTitle"/>
+					</div>
+					<div class="col-1">
+						<span class=""><span id="reviewTitleLength">0</span>/40</span>
+					</div>
+				</div>
+				
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">내용</span>
+					</div>
+					<div class="col-8">
+						<textarea class="form-control" rows="3" id="reviewContent"></textarea>
+					</div>
+					<div class="col-1">
+						<span class=""><span id="reviewContentLength">0</span>/200</span>
+					</div>
+				</div>
+			
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">점수</span>
+					</div>
+				    <div class="col-1 star" role="button"><i class="fas fa-star" data-index="0" data-score="1"></i></div>
+				    <div class="col-1 star" role="button"><i class="far fa-star" data-index="1" data-score="2"></i></div>
+				    <div class="col-1 star" role="button"><i class="far fa-star" data-index="2" data-score="3"></i></div>
+				    <div class="col-1 star" role="button"><i class="far fa-star" data-index="3" data-score="4"></i></div>
+				    <div class="col-1 star" role="button"><i class="far fa-star" data-index="4" data-score="5"></i></div>
+					<div class="col-1 offset-3">
+						<span class=""><span id="reviewScoreLength">1</span>/5</span>
+					</div>
+				</div>
+				<input type="hidden" id="reviewProductId">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success" id="insertReviewBtn">작성완료</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="reviewViewModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">후기 조회</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">제목</span>
+					</div>
+					<div class="col-8">
+						<input type="text" class="form-control" id="reviewViewTitle" readonly/>
+					</div>
+				</div>
+				
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">내용</span>
+					</div>
+					<div class="col-8">
+						<textarea class="form-control" rows="3" id="reviewViewContent" readonly></textarea>
+					</div>
+				</div>
+			
+				<div class="col-12 row my-3">
+					<div class="col-3">
+						<span class="align-middle">점수</span>
+					</div>
+				    <div class="col-1 star2"><i class="fas fa-star" data-index="0" data-score="1"></i></div>
+				    <div class="col-1 star2"><i class="far fa-star" data-index="1" data-score="2"></i></div>
+				    <div class="col-1 star2"><i class="far fa-star" data-index="2" data-score="3"></i></div>
+				    <div class="col-1 star2"><i class="far fa-star" data-index="3" data-score="4"></i></div>
+				    <div class="col-1 star2"><i class="far fa-star" data-index="4" data-score="5"></i></div>
+				</div>
+				<input type="hidden" id="reviewProductId">
+			</div>
+		</div>
 	</div>
 </div>

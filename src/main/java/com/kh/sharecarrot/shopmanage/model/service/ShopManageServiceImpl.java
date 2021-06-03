@@ -21,6 +21,7 @@ import com.kh.sharecarrot.product.model.vo.Product;
 import com.kh.sharecarrot.product.model.vo.ProductImage;
 import com.kh.sharecarrot.shop.model.vo.Shop;
 import com.kh.sharecarrot.shopmanage.model.dao.ShopManageDao;
+import com.kh.sharecarrot.storereviews.model.vo.StoreReviews;
 import com.kh.sharecarrot.transactionhistory.model.vo.TransactionHistory;
 import com.kh.sharecarrot.utils.model.vo.JjimList;
 
@@ -277,6 +278,20 @@ public class ShopManageServiceImpl implements ShopManageService{
 	public int insertTransactionHistory(TransactionHistory history) {
 		history.setShopId(getShopInfo().getShopId());
 		return shopManageDao.insertTransactionHistory(history);
+	}
+
+	@Override
+	public int insertStoreReview(StoreReviews review) {
+		int rtn = shopManageDao.insertStoreReview(review);
+		
+		shopManageDao.updateTransactionHisoryReviewYn(review.getProductId());
+		
+		return rtn;
+	}
+
+	@Override
+	public StoreReviews selectStoreReview(StoreReviews review) {
+		return shopManageDao.selectStoreReview(review);
 	}
 
 }
