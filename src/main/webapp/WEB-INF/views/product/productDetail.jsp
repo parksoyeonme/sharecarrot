@@ -17,6 +17,8 @@
    }
    #memberProfile{
       border-radius: 10% 30% 50% 70%;
+      width:50px;
+      height: 50px;
    }
 	#productList img{
 		width: 100px !important;
@@ -24,28 +26,11 @@
 	}
 </style>
 
-<script>
-function chatting_popup(){
-// 	var shopId = ${product.shopId};
-	<sec:authorize access='isAuthenticated()'>
-	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&shopId=${product.shopId}";
-	</sec:authorize>
-	var popupWidth = 600;
-	var popupHeight = 420;
-	var popupX = (window.screen.width / 2) - (popupWidth / 2);
-	// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
-	var popupY= (window.screen.height / 2) - (popupHeight / 2) - 50;
-	// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
-	window.open(url, "chat", "width=" + popupWidth + ", height=" + popupHeight + ", left="+popupX+", top=" + popupY).focus();
-}
-
-
-</script>
 <!-- Img Slider 영역 -->
 <div id="imgSlider" class="carousel slide col" data-bs-ride="carousel">
   <div class="carousel-inner">
     <c:if test="${product.productImageList ne null}">
-	    <div class="carousel-item">
+	    <div class="carousel-item active">
 	      <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
 	    </div>
 	    <c:forEach items="${product.productImageList}" var="image">
@@ -53,14 +38,6 @@ function chatting_popup(){
 		      <img src="${pageContext.request.contextPath}/resources/upload/product/${image.productImgRenamed}" class="d-block w-100" alt="...">
 		    </div>
 	    </c:forEach>
-       <div class="carousel-item active">
-         <img src="${pageContext.request.contextPath}/resources/upload/product/${product.productImageList[0].productImgRenamed}" class="d-block w-100" alt="...">
-       </div>
-       <c:forEach items="${product.productImageList}" var="image">
-          <div class="carousel-item">
-            <img src="${pageContext.request.contextPath}/resources/upload/product/${image.productImgRenamed}" class="d-block w-100" alt="...">
-          </div>
-       </c:forEach>
     </c:if>
       
   </div>
@@ -105,7 +82,6 @@ function chatting_popup(){
    </div>
 <hr/>
 </div>
-
 <!-- userProfile 영역 -->
 <div class="container">
    <div class="row justify-content-between">
@@ -146,7 +122,6 @@ function chatting_popup(){
          </div>
       </div> <!-- col -->
    
-      
       <div class="col">
       <h5 class="d-inline">연관상품</h5><sub>-${category}-</sub>
       <hr/>
@@ -171,6 +146,38 @@ function chatting_popup(){
 <hr/>
 
 <script>
+<sec:authorize access='isAuthenticated()'>
+const loginMember = "<sec:authentication property='principal.username'/>";
+const enrollMember = '${product.memberId}';
+</sec:authorize>
+
+function chatting_popup(){
+	
+	//로그인 한경우에만 폼제출
+    <sec:authorize access="isAnonymous()">
+       alert('로그인후 이용해주세요.');
+       return;
+    </sec:authorize>
+    
+    //본인에게 채팅을 시도한경우
+    if(loginMember == enrollMember){
+    	alert('본인상품 입니다.');
+    	return;
+    }
+    
+// 	var shopId = ${product.shopId};
+	<sec:authorize access='isAuthenticated()'>
+	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=<sec:authentication property='principal.memberId'/>&roomSellerId=${product.memberId}";
+	</sec:authorize>
+	var popupWidth = 600;
+	var popupHeight = 420;
+	var popupX = (window.screen.width / 2) - (popupWidth / 2);
+	// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
+	var popupY= (window.screen.height / 2) - (popupHeight / 2) - 50;
+	// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
+	window.open(url, "chat", "width=" + popupWidth + ", height=" + popupHeight + ", left="+popupX+", top=" + popupY).focus();
+}
+
    function insertJjim(){
       //로그인 한경우에만 폼제출
       <sec:authorize access="isAnonymous()">
@@ -180,8 +187,6 @@ function chatting_popup(){
       
       <sec:authorize access="isAuthenticated()">
       //본인 상품에 찜하려 한경우
-      const loginMember = "<sec:authentication property='principal.username'/>";
-      const enrollMember = '${product.memberId}';
       if(loginMember == enrollMember){
          alert('본인 상품은 찜을 할수 없습니다!');
          return

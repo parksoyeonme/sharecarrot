@@ -103,8 +103,13 @@
                     <sec:authorize access="isAuthenticated()">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do?memberId=<sec:authentication property='principal.username'/>"><spring:message code="header.nav.board" /></a></li>
                     </sec:authorize>
+
                     <sec:authorize access="hasRole('ADMIN')">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do"><spring:message code="header.nav.report" /></a></li>
+					</sec:authorize>
+ 					<sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportList.do">신고게시판</a></li>
+
                     </sec:authorize>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/notice/noticeList.do"><spring:message code="header.nav.notice" /></a></li>
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/chat/chattingManagement.do"><spring:message code="header.nav.chat" /></a></li>
@@ -124,7 +129,6 @@
 toastr.options = {
 	"positionClass": "toast-bottom-right",
 }
-
 
 <sec:authorize access="isAuthenticated()">
 //웹소켓 연결 로그인을 한경우에만
@@ -169,9 +173,14 @@ function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러�
 					stompClient.subscribe(`/chattingRoom/\${item}`, (frame) => {
 						const msgObj = JSON.parse(frame.body);
 						console.log(msgObj);
+						
 						//메시지 작업처리
 						if(loginMemberId != msgObj.roomBuyerId)
-							toastr.info(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
+							toastr.danger(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
+						
+						toastr.options.onclick = function() {
+							chatting_popup(msgObj.roomBuyerId, loginMemberId);
+						}
 					})					
 				}
 			});
@@ -181,6 +190,18 @@ function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러�
 		}
 	});
 }
+
+function chatting_popup(roomBuyerId, roomSellerId){
+	var url = "${pageContext.request.contextPath}/chat/chattingRoom.do?roomBuyerId=" + roomBuyerId + "&roomSellerId="+roomSellerId;
+	var popupWidth = 600;
+	var popupHeight = 420;
+	var popupX = (window.screen.width / 2) - (popupWidth / 2);
+	// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
+	var popupY= (window.screen.height / 2) - (popupHeight / 2) - 50;
+	// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
+	window.open(url, "chat", "width=" + popupWidth + ", height=" + popupHeight + ", left="+popupX+", top=" + popupY).focus();
+}
+
 
 setAlarm(); // 알람기능은 켜져있는걸로 설정
 //알람 기능 FINISH

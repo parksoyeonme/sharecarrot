@@ -55,13 +55,10 @@ public class ProductController {
 	public String productDetail(@RequestParam String productId, Principal principal,Model model, 
 			HttpServletRequest request, HttpServletResponse response) {
 
-		Product pd = productService.selectProduct(productId);
-		ProductDetail product = productService.selectProductDetail(productId);
-
 		//ProductDetail 세팅
 		ProductDetail productDetail = productService.selectProductDetail(productId);
 		String locCode = productService.selectLocCode(productId);
-		product.setLocName(locCode);
+		productDetail.setLocName(locCode);
 		
 		//Shop_Product_Count 세팅
 		int shopProductCount = productService.getTotalContents(productDetail.getShopId());
@@ -72,7 +69,7 @@ public class ProductController {
 		
 		String category = "";
 		for(Category c : categoryList) {
-			if(c.getCategoryCode().equals(product.getCategoryCode())) {
+			if(c.getCategoryCode().equals(productDetail.getCategoryCode())) {
 				category = c.getCategoryName();
 			}
 		}
@@ -88,7 +85,7 @@ public class ProductController {
 			jjimList = utilsService.selectJjimList(memberId);
 		}
         
-		model.addAttribute("product", product);
+		model.addAttribute("product", productDetail);
 		model.addAttribute("category", category);
 		model.addAttribute("jjimList", jjimList);
 		model.addAttribute("productList", productList);

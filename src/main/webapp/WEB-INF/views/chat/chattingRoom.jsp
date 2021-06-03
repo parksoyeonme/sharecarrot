@@ -24,6 +24,7 @@ div#previous_message{
 	background-color: rgb(178, 199, 217);
 }
 div#title{
+	width:580px;
 	background-color: rgb(169, 189, 206);
 }
 td.rightmsg{
@@ -49,6 +50,16 @@ td.leftmsg{
 
 <script>
 
+// 자동 이동
+$(document).ready(function(){
+	var scrollPosition = $("#last").offset().top;
+
+	$("#previous_message").animate({
+		scrollTop: scrollPosition
+	}, 1000);
+});
+
+	
 //1.웹소켓객체 -> stomp 객체 전달
 const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
@@ -250,9 +261,10 @@ $(document).ready(function(){
 	 		<!-- 구매자의 경우 -->
 	 		<c:if test="${flag eq 0}">
 	 			<h2>${seller_id}와의 채팅</h2>
-			 	<table style="width:471px;">
+			 	<table style="width:580px;">
 			 		<tr>
 			 			<td style="text-align:left; padding-left : 10px;"> 상대 : ${seller_id} </td>
+			 			<td style="width:250px;"></td>
 			 			<td style="text-align:right; padding-right: 30px;"> 나 : ${buyer_id}  </td>
 			 		</tr>
 			 	</table>
@@ -356,7 +368,9 @@ $(document).ready(function(){
 				</c:when>
 			</c:choose>			
 		</c:forEach>
+	    <p id="last"></p>
 	</div>
+    <!-- 이동용 -->
 </div>
 <div id="send_message" style="width:580px; height:40px; margin-top:10px;">
 	<table>

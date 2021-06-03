@@ -76,6 +76,7 @@ div#update-container input, div#update-container select {margin-bottom:10px;}
       	</tr>
       </table>
       
+      <input type="button" class="btn btn-outline-success" id="changePwd" value="비밀번호변경" style="margin-top:10px;">&nbsp;
       <input type="submit" class="btn btn-outline-success" value="수정" style="margin-top:10px;">&nbsp;
       <input type="reset" class="btn btn-outline-success" value="취소" style="margin-top:10px;">
    </form:form>
@@ -99,6 +100,10 @@ function setProfile(input, profileImg){
         reader.readAsDataURL(input.files[0]);
     }
 };
+
+$('#changePwd').click(() =>{
+	location.href="${pageContext.request.contextPath}/member/changePassword.do";
+})
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -35,10 +35,7 @@ public class ChattingController {
 	private ShopService shopService;
 	
 	@GetMapping("/chattingRoom.do")
-	private void chattingRoom(@RequestParam String roomBuyerId, @RequestParam String shopId, Model model) {
-//		log.info("@@chatting buyer : {}, shop : {}", roomBuyerId, shopId);
-		//shopId로 memberId 구해오기
-		String roomSellerId = shopService.selectMemberId(shopId);
+	private void chattingRoom(@RequestParam String roomBuyerId, @RequestParam String roomSellerId, Model model) {
 		//0인 경우 구매자, 1인 경우 판매자
 		int flag = 0;
 		
@@ -78,8 +75,6 @@ public class ChattingController {
 	    
 	    //채팅방 번호
 	    model.addAttribute("roomNo", chattingRoom.getRoomNo());
-	    //상점 아이디
-	    model.addAttribute("shop_id", shopId);
 	    //판매자아이디
 	    model.addAttribute("seller_id", chattingRoom.getRoomSellerId());
 	    //구매자아이디

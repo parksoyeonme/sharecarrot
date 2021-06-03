@@ -125,12 +125,21 @@
 }
 .item {
   position: relative;
-  width: 17.43%;
+  width: calc(20% - 20px);
   height: 276px;
   color: rgb(33, 33, 33);
   /* border: 1px solid yellow; */
   margin: 10px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 780px) {
+  .item {
+    width: calc(50% - 20px);
+  }
+  .history-box {
+    display:none;
+  }
 }
 
 .item-photo {
@@ -146,11 +155,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* transform: scale(0.9); */
 }
 
 .item-photo:hover img {
   transition-duration: 0.7s; 
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 
