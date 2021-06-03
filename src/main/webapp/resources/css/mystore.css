@@ -76,16 +76,16 @@
     cursor: pointer;
 }
 .product-box {
-    height: 70%;
+    height: 244px;
     display: block;
     overflow: hidden;
     border-radius: 8px;
-    width: 183px;
+    width: 188px;
 }
 #productImg {
     display: block;
-    width: 85%;
-    height: 93%;
+    width: 168px;
+    height: 215px;
     object-fit: cover;
     margin-left: 14px;
     margin-top: 5px;
@@ -114,4 +114,4 @@
     float: right;
     box-sizing: border-box;
     font-size: 18px;
-}
+} 

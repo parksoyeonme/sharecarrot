@@ -10,8 +10,8 @@
 <!--Custom CSS-->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mystore.css" type="text/css" />
 <!--jquery-->
-<script src="http://code.jquery.com/jquery-latest.min.js"></script> 
-<!--icon-->
+<!-- <script src="http://code.jquery.com/jquery-latest.min.js"></script>  -->
+<!--icon -->
  <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -64,14 +64,12 @@
                     </div>
                     <!-- 내상점관리/신고하기버튼 -->
                      <div class="mystore-btn" style="margin-top: 10px;  margin-left: 9px; " >
-	                    <c:if test="${loginMemberId == memberId}">
-	                    	<a href="${pageContext.request.contextPath }/shopmanage/shopManageBase.do" class='btn btn-warning'>내상점관리</a>
-	                 	</c:if>
-	                 	<sec:authorize access="isAuthenticated()">
-	                 		<c:if test="${loginMemberId != memberId}">
-	                    		<a href="${pageContext.request.contextPath }/report/reportForm.do?shopId=${shop.shopId}" class='btn btn-warning'>신고하기</a>
-	                    	</c:if>
-	                    </sec:authorize>
+	                    
+	                    
+	                    	<a onclick="goMyManagement();"  class='btn btn-warning'>내상점관리</a>
+	                 	
+	                    		<a onclick="goReportForm();" class='btn btn-warning'>신고하기</a>
+	                    	
                       </div>
 
                 </div>
@@ -104,10 +102,42 @@
  
 </section>
 <script>
+<sec:authorize access='isAuthenticated()'>
+const loginMember = "<sec:authentication property='principal.username'/>";
+const enrollMember = '${memberId}';
+</sec:authorize>
 	const tempParam = {
 	      shopId: "${shop.shopId}",
 	}
 	
+	function goReportForm(){
+		<sec:authorize access="isAnonymous()">
+          alert('로그인후 이용해주세요.');
+          return;
+    	</sec:authorize>
+    	
+    	if(loginMember == enrollMember){
+	    	alert('상점 주인은 이용할 수 없습니다.');
+	    	return;
+	    }
+    	
+    	location.href = "${pageContext.request.contextPath }/report/reportForm.do?shopId=${shop.shopId}"
+	}
+	
+	function goMyManagement(){
+		<sec:authorize access="isAnonymous()">
+	       alert('로그인후 이용해주세요.');
+	       return;
+	    </sec:authorize>
+
+	    if(loginMember != enrollMember){
+	    	alert('상점 주인만 이용할 수 있습니다.');
+	    	return;
+	    }
+
+		location.href = "${pageContext.request.contextPath }/shopmanage/shopManageBase.do"
+
+	}
 	
 </script>
 

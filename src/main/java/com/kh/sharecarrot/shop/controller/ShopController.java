@@ -80,10 +80,10 @@ public class ShopController {
 	public void mystore(Member member, Model model,Map<String, Object> param,
 			@RequestParam String shopId) {
 		
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
-		//로그인한 memberId
-	    String loginMemberId = ((UserDetails) principal).getUsername();		
-	
+//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+//		//로그인한 memberId
+//	    String loginMemberId = ((UserDetails) principal).getUsername();		
+//	
 		Shop shop = shopService.selectShop(shopId);
 		log.debug("shop = {}", shop);
 		
@@ -101,7 +101,7 @@ public class ShopController {
 		int sellCount = shopService.selectsellCount(shopId);
 
 		model.addAttribute("memberId", memberId);
-		model.addAttribute("loginMemberId", loginMemberId);
+//		model.addAttribute("loginMemberId", loginMemberId);
 		model.addAttribute("openday", openday);
 		model.addAttribute("shop", shop);
 		model.addAttribute("profile", profile);
