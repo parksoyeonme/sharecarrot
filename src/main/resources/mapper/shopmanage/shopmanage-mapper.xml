@@ -276,8 +276,8 @@
 	
 	<select id="selectStoreReviewImage" parameterType="com.kh.sharecarrot.storereviews.model.vo.StoreReviews" resultType="com.kh.sharecarrot.storereviews.model.vo.ReviewImage">
 		select 	review_img_no
-			 	, reivew_img_origin as review_img_origin
-			 	, reivew_img_renamed as review_img_renamed
+			 	, review_img_origin
+			 	, review_img_renamed
 			 	, review_no
 		from 	review_image
 		where 	review_no = #{reviewNo}

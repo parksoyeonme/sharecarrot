@@ -494,8 +494,8 @@ $(document).ready(function(){
 					tbodyHtml += '<td class="align-middle" style="width:20%;">' + item.productName + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:10%;">' + item.productPrice + '</td>';
 					tbodyHtml += '<td class="align-middle" style="width:5%;">' + item.jjimCnt + '</td>';
-					tbodyHtml += '<td class="align-middle" style="width:10%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
-					tbodyHtml += '<td class="align-middle" style="width:15%;">';
+					tbodyHtml += '<td class="align-middle" style="width:15%;">' + getDateFormat(new Date(item.productRegDate)) + '</td>';
+					tbodyHtml += '<td class="align-middle" style="width:10%;">';
 					if(item.productYnh != 'Y'){
 					tbodyHtml += '<button class="btn btn-primary updateBtn">수정</button>';
 					}

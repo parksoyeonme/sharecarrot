@@ -77,7 +77,7 @@ $(document).ready(function(){
 						var imgHtml = "";
 						$.each(image, function(index,item){
 							//이미지 url
-							var imageUrl = '/sharecarrot/resources/upload/review/' + item.reviewImgRenamed;
+							var imageUrl = '/sharecarrot/resources/upload/product/' + item.reviewImgRenamed;
 							
 							if((index%3) == 0){
 								imgHtml += '<div class="row my-3">';
@@ -236,6 +236,10 @@ $(document).ready(function(){
 		
 	});
 	
+	$(document).on('click', '.img-transaction', function(){
+		var productId = $(this).parent().nextAll('.product-id').val();
+		location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productId;
+	});
 	
 	function dataInit(pageNum){
 		if(!pageNum){
@@ -259,7 +263,7 @@ $(document).ready(function(){
 						html += '<tr>';
 						if(item.productImageList[0]){
 							html += '<td class="align-middle" style="width:25%;">';
-							html += '<img class="img-thumbnail" style="object-fit:cover;" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
+							html += '<img class="img-thumbnail img-transaction" style="object-fit:cover;" height="250" src="/sharecarrot/resources/upload/product/' + item.productImageList[0].productImgRenamed + '"">';
 							html += '</td>';
 						}else{
 							html += '<td class="align-middle" style="width:25%;"></td>';
@@ -383,11 +387,10 @@ $(document).ready(function(){
 			}
 			if(index == 0){
 				imgHtml += '<div class="col-4" style="position: relative;">';
-				imgHtml += '<p class="h4 fw-bold" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); z-index=1;l">대표이미지</p>';
-				imgHtml += '<img class="img-thumbnail img-preview" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%; opacity: 0.8;">';
+				imgHtml += '<img class="img-thumbnail" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%; opacity: 0.8;">';
 			}else{
 				imgHtml += '<div class="col-4">';
-				imgHtml += '<img class="img-thumbnail img-preview" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%;">';
+				imgHtml += '<img class="img-thumbnail" src="' + imageUrl + '" data-name="' + file.name + '" style="width:100%; height:100%;">';
 			}
 			imgHtml += '</div>';
 			if((index%3) == 2){

@@ -18,7 +18,7 @@ import com.kh.sharecarrot.utils.model.vo.JjimList;
 public interface ShopManageService {
 
 	//상품등록
-	int productEnroll(HttpServletRequest request, HttpServletResponse response, Product product, List<MultipartFile> list);
+	String productEnroll(HttpServletRequest request, HttpServletResponse response, Product product, List<MultipartFile> list);
 
 	//상품 불러오기
 	Product selectProduct(Product product);
