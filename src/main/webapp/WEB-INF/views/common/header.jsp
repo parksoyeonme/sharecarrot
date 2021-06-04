@@ -72,8 +72,10 @@
 				    <spring:message code="header.nav.Catagory" />
 				  </button>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-				  <c:forEach var="category" items="${categoryList}">
+				  <c:forEach var="category" items="${categoryList}" varStatus='vs'>
+				  	<c:if test='${!vs.last}'>
 				    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/product/headerSearch.do?category=${category.categoryCode}">${category.categoryName }</a></li>
+				   	</c:if>
 				   </c:forEach>
 				  </ul>
 				</div>
