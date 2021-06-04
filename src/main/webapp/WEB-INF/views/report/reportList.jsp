@@ -12,7 +12,7 @@
 
 <style>
  .searchlist{
- 	margin-left: 1000px;
+ 	margin-left: 75%;
  	margin-bottom:10px;
  }
 </style>
@@ -50,30 +50,22 @@ $(() => {
 </script>
 <section id="board-container" class="container">
 	<div style="text-align:center; margin-top:30px;">
-		<h1>신고 합니다</h1>
+		<p class="fs-2 fw-bold text-center">거래 내역</p>
 	</div>
 	<div class="searchlist">                                             
-		<table>
-			<tr>
-				<td>
-					<input type="date" style="height:30px;" id="searchDate" />
-				</td>
-				<td>
-					<input type="button" class="btn btn-outline-secondary"　style="height:30px;" value="검색" id="searchDateButton" />
-				</td>
-			</tr>
-		</table>	
+		<input type="date" style="height:30px;" id="searchDate" />
+		<input type="button" class="btn btn-warning"　style="height:30px;" value="검색" id="searchDateButton" />
 	</div>
 	<table class="table" style="vertical-align:middle">
-		<thead class="thead-dark">
+		<thead class="table-light">
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
 				<th>신고자</th>
-				<th>피신고자</th>
+				<th style="text-align: center;">피신고자</th>
 				<th>신고일</th>
-				<th>처리 결과</th> 
-				<th>처리 날짜</th>
+				<th style="text-align: center;">처리결과</th> 
+				<th>처리날짜</th>
 			</tr>
 		</thead>
 		<c:forEach items="${reportList}" var="report">
@@ -81,9 +73,9 @@ $(() => {
 			<td>${report.reportNo}</td>
 			<td>${report.reportTitle}</td>
 			<td>${report.memberId}</td>
-			<td>${report.shopId}</td>
+			<td style="text-align: center;">${report.shopId}</td>
 			<td><fmt:formatDate value="${report.reportDate}" pattern="yy/MM/dd"/></td>
-			<td>${report.reportProcessYn}</td>
+			<td style="text-align: center;">${report.reportProcessYn}</td>
 			<td><fmt:formatDate value="${report.reportProcessingDate}" pattern="yy/MM/dd"/></td>
 			
 		</tr>
