@@ -91,7 +91,9 @@ public class BoardController {
 								@RequestParam(value="upfile", required= false) MultipartFile[] upFiles,
 								HttpServletRequest request, RedirectAttributes redirectAttr) throws Exception {
 		request.setCharacterEncoding("UTF-8");
-		log.info("board = {}", board);
+		
+		//줄바꿈, 개행처리
+		board.setBoardContent(board.getBoardContent().replaceAll("\r\n", "<br>"));
 		try {
 			//파일저장
 			//saveDir

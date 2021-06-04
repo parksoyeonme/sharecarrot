@@ -189,7 +189,7 @@
 						html += "</td></tr>";
 						    
 						<%--게시글 내용--%>
-						html += "<tr  class='table-light'><td colspan='5' height='200'><b>"+elem.memberId+"</b>&nbsp;"+elem.boardContent+"</td></tr>";
+						html += "<tr  class='table-light'><td colspan='5' height='0'><b>"+elem.memberId+"</b>&nbsp;"+elem.boardContent+"</td></tr>";
 						
 						<%--좋아요 버튼--%>
 						<%-- 좋아요테이블에 해당게시물의 번호가 포함되어있는지 확인 --%>
