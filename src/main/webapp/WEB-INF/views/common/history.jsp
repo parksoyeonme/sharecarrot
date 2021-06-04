@@ -27,6 +27,8 @@
     }
     .jjim{
       border-color: rgb(102, 102, 102);
+      height: 50px;
+      padding: 3px 3px;
     }
     .top{
       margin-bottom: 0px;
@@ -74,7 +76,7 @@
     }
 
     .recent-content{
-      /* height: 120px; */
+      height: 150px;
       display: flex;
       flex-direction: column;
       -webkit-box-align: center;
@@ -118,9 +120,9 @@
       text-align: left;
     }
     .recent-detail-name {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
         font-weight: bold;
-        padding: 10px 10px 0px 10px;
+        padding: 5px 10px 0px 10px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

@@ -1,6 +1,6 @@
 /*-------------------------------이미지 슬라이더 js--------------------------------------------- */
 
-const slideContainer = document.querySelector('.container');
+const slideContainer = document.querySelector('.main-container');
 const slide = document.querySelector('.slides');
 const nextBtn = document.getElementById('next-btn');
 const prevBtn = document.getElementById('prev-btn');
