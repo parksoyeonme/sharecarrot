@@ -5,7 +5,7 @@
   /* font-family: 'Noto Sans KR', sans-serif; */
 }
 /*공통 부분*/
-.container {
+.main-container {
   width: 100%;
   display: flex;
   justify-content: center;
