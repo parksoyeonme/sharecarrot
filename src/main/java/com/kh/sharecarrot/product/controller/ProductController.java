@@ -193,7 +193,6 @@ public class ProductController {
 			@RequestParam(value = "searchkeyword", defaultValue="") String searchKeyword, @RequestParam(defaultValue ="1" ) int cPage
 			, @RequestParam Map<String,Object> param, Model model, HttpServletRequest request) {
 		
-		log.info("*****************************************category = {}", category);
 		//페이징 처리
 		int numPerPage = 20;
 		log.debug("cPage = {}", cPage);
@@ -205,7 +204,6 @@ public class ProductController {
 
 		boolean locFlag = false;
 		List<Product> productList = null;
-		int productListSize = 0;
 	
 		
 		for(Location loc : locationList) {
@@ -219,14 +217,15 @@ public class ProductController {
 		if(locFlag) {
 			param.put("locName", searchKeyword);
 			productList = productService.searchLocation(param);
-			productListSize = productService.searchLocationSize(searchKeyword);
+			
 			log.debug("locSearch : {}", productList);
 		}else {
 			param.put("productName", searchKeyword);
 			productList = productService.searchTitle(param);
-			productListSize = productService.searchTitleSize(searchKeyword);
+			
 			log.debug("titleSearch : {}", productList);
 		}
+		int productListSize = productList.size();
 		
 		List<ProductImage> productImageList = new ArrayList<>();
 		Iterator<Product> iter2 = productList.iterator();
