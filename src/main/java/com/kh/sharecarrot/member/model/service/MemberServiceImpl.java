@@ -72,6 +72,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.searchPassword(param);
 	}
 
+	@Override
+	public String selectProfile(String roomBuyerId) {
+		return memberDao.selectProfile(roomBuyerId);
+	}
+
 	
 
 	

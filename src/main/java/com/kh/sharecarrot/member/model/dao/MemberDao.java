@@ -23,6 +23,8 @@ public interface MemberDao {
 
 	Member searchPassword(Map<String, Object> param);
 
+	String selectProfile(String roomBuyerId);
+
 	
 	
 

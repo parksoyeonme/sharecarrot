@@ -47,4 +47,10 @@ public class ChattingServiceImpl implements ChattingService{
 		return chattingDao.insertChattingMessage(chattingMessage);
 	}
 
+
+	@Override
+	public String selectLastChat(int roomNo) {
+		return chattingDao.selectLastChat(roomNo);
+	}
+
 }

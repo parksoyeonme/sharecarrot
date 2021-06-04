@@ -20,4 +20,6 @@ public interface ChattingDao {
 
 	int insertChattingMessage(ChattingMessage chattingMessage);
 
+	String selectLastChat(int roomNo);
+
 }
