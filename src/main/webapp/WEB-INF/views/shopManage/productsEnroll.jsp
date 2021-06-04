@@ -123,9 +123,12 @@ $(document).ready(function(){
 				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
             }
 			, success : function(result){
-				if(result > 0){
+				if(result != "" || result != null){
 					alert('상품 등록에 성공하였습니다.');
-					location.href="manage.do";
+					location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + result;
+					return;
+				}else{
+					alert('상품 등록에 실패하였습니다.');
 					return;
 				}
 			}
@@ -205,18 +208,6 @@ $(document).ready(function(){
 				</div>
 			</div>
 			<hr/>
-			<!-- <div class="mb-3 row">
-				<label class="col-1 col-form-label fw-bold">상품 상태</label>
-				<div class="col-2 form-check">
-					<input class="form-check-input" type="radio" name="product_status" checked="checked">
-					<label class="form-check-label">증고 상품</label>
-				</div>
-				<div class="col-2 form-check">
-					<input class="form-check-input" type="radio" name="product_status">
-					<label class="form-check-label">새 상품</label>
-				</div>
-			</div>
-			<hr/> -->
 			<div class="mb-3 row">
 				<label class="col-2 col-form-label fw-bold">상품 가격</label>
 				<div class="col-3">
@@ -234,14 +225,6 @@ $(document).ready(function(){
 				</div>
 				<div class="col-1">
 					<span class=""><span id="productContentLength">0</span>/200</span>
-				</div>
-			</div>
-			<hr/>
-			<div class="mb-3 row">
-				<label class="col-2 col-form-label fw-bold">거래 지역</label>
-				<div class="col-3">
-					<select class="form-select" id="locationCode">
-				    </select>
 				</div>
 			</div>
 			<hr/>

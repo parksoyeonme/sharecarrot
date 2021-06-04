@@ -36,7 +36,7 @@ public class ShopManageServiceImpl implements ShopManageService{
 	private ShopManageDao shopManageDao; 
 
 	@Override
-	public int productEnroll(HttpServletRequest request, HttpServletResponse response, Product product,
+	public String productEnroll(HttpServletRequest request, HttpServletResponse response, Product product,
 			List<MultipartFile> list) {
 		String productId = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 		product.setProductId(productId);
@@ -47,7 +47,7 @@ public class ShopManageServiceImpl implements ShopManageService{
 		int rtn = shopManageDao.productEnroll(product);
 		if(rtn <= 0) {
 			log.error("상품등록오류");
-			return 0;
+			return "";
 		}
 		
 		//이미지 업로드 패스 지정
@@ -62,7 +62,7 @@ public class ShopManageServiceImpl implements ShopManageService{
 			String fileName = file.getOriginalFilename();
 			String newName = product.getProductId() + "_" + UUID.randomUUID().toString();
 			String ext = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
-			File imgfile = new File(path + newName + ext);
+			File imgfile = new File(path + newName + "." + ext);
 			
 			try {
 				file.transferTo(imgfile);
@@ -70,21 +70,21 @@ public class ShopManageServiceImpl implements ShopManageService{
 				ProductImage imgInfo = new ProductImage();
 				imgInfo.setProductId(product.getProductId());
 				imgInfo.setProductImgOrigin(fileName);
-				imgInfo.setProductImgRenamed(newName + ext);
+				imgInfo.setProductImgRenamed(newName + "." + ext);
 
 				int imgRtn = shopManageDao.productImageEnroll(imgInfo);
 				if(imgRtn <= 0 ) {
 					log.error("이미지 업로드 오류");
-					return 0;
+					return "";
 				}
 			} catch (Exception e) {
 				log.error("이미지 저장오류", e);
 				e.printStackTrace();
-				return 0;
+				return "";
 			}
 		}
 		
-		return rtn;
+		return productId;
 	}
 	
 	@Override
@@ -180,7 +180,7 @@ public class ShopManageServiceImpl implements ShopManageService{
 			String fileName = file.getOriginalFilename();
 			String newName = product.getProductId() + "_" + UUID.randomUUID().toString();
 			String ext = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
-			File imgfile = new File(path + newName + ext);
+			File imgfile = new File(path + newName + "."+ ext);
 			
 			try {
 				file.transferTo(imgfile);
@@ -188,7 +188,7 @@ public class ShopManageServiceImpl implements ShopManageService{
 				ProductImage imgInfo = new ProductImage();
 				imgInfo.setProductId(product.getProductId());
 				imgInfo.setProductImgOrigin(fileName);
-				imgInfo.setProductImgRenamed(newName + ext);
+				imgInfo.setProductImgRenamed(newName + "." + ext);
 
 				int imgRtn = shopManageDao.productImageEnroll(imgInfo);
 				if(imgRtn <= 0 ) {
@@ -287,7 +287,7 @@ public class ShopManageServiceImpl implements ShopManageService{
 		shopManageDao.updateTransactionHisoryReviewYn(review.getProductId());
 		
 		//이미지 업로드 패스 지정
-		String path = request.getServletContext().getRealPath("/resources/upload/review/");
+		String path = request.getServletContext().getRealPath("/resources/upload/product/");
 		File dir = new File(path);
 		if(!dir.exists()) {
 			dir.mkdirs();
@@ -296,16 +296,16 @@ public class ShopManageServiceImpl implements ShopManageService{
 		//이미지 업로드
 		for(MultipartFile file:list) {
 			String fileName = file.getOriginalFilename();
-			String newName = review.getProductId() + "_" + UUID.randomUUID().toString();
+			String newName = review.getProductId() + "_r_" + UUID.randomUUID().toString();
 			String ext = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
-			File imgfile = new File(path + newName + ext);
+			File imgfile = new File(path + newName + "." + ext);
 			
 			try {
 				file.transferTo(imgfile);
 				
 				ReviewImage imgInfo = new ReviewImage();
 				imgInfo.setReviewImgOrigin(fileName);
-				imgInfo.setReviewImgRenamed(newName + ext);
+				imgInfo.setReviewImgRenamed(newName + "." + ext);
 				imgInfo.setReviewNo(review.getReviewNo());
 
 				int imgRtn = shopManageDao.insertReviewImage(imgInfo);
