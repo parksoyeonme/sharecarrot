@@ -41,6 +41,11 @@ public class ChattingDaoImpl implements ChattingDao {
 	public int insertChattingMessage(ChattingMessage chattingMessage) {
 		return session.insert("chat.insertChattingMessage", chattingMessage);
 	}
+
+	@Override
+	public String selectLastChat(int roomNo) {
+		return session.selectOne("chat.selectLastChat", roomNo);
+	}
 	
 	
 	

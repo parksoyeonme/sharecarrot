@@ -62,7 +62,7 @@ public class ShopManageController {
 	
 	@ResponseBody
 	@RequestMapping(value="/productEnroll.do", method = RequestMethod.POST)
-	public int productEnroll(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multi, Product product) {
+	public String productEnroll(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multi, Product product) {
 		return shopManageService.productEnroll(request, response, product, multi.getFiles("productImage"));
 	}
 	

@@ -20,4 +20,6 @@ public interface ChattingService {
 
 	int insertChattingMessage(ChattingMessage chattingMessage);
 
+	String selectLastChat(int roomNo);
+
 }

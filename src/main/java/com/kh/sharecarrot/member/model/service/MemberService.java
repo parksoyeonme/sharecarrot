@@ -20,6 +20,7 @@ public interface MemberService extends UserDetailsService {
 	String selectShopMember(String memberId);
 	String findId(Map<String, Object> param);
 	Member searchPassword(Map<String, Object> param);
+	String selectProfile(String roomBuyerId);
 	
 
 }

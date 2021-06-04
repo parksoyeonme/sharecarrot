@@ -8,77 +8,76 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>	
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
-<jsp:include page="/WEB-INF/views/common/history.jsp" />
 <!-- 메인 페이지 작업영역 -->
 <link rel="stylesheet" href="./resources/css/index.css" />
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
-<div class="container">
-  <div class="wrapper">
+<div class="main-container">
+  <div class="main-wrapper">
     <!-- 배너 시작 -->
     <!-- 이미지 슬라이더(carousel) 구현하기 -->
     <div class="banner">
       <div class="slides">
         <div class="slide">
-              <img src="./resources/images/sample_banner1.jpg" alt="배너1">
-            </div>
-            <div class="slide">
-              <img src="./resources/images/sample_banner2.jpg" alt="배너2">
-            </div>
-            <div class="slide">
-              <img src="./resources/images/sample_banner3.jpg" alt="배너3">
-            </div>
-          </div>
-          <div class="slide-controls">
-            <button id="prev-btn">
-              <
-            </button>
-            <button id="next-btn">
-              >
-            </button>
-         </div>
+          <img src="./resources/images/sample_banner1.jpg" alt="배너1">
         </div>
-        <!-- 배너 끝 -->
-        <!-- 검색 시작 -->
-        <!-- <form:form> -->
-          <div class="search">
-            <div style="display: flex">
-              <div class="location-nav">
-                <select id="select-location">
-                  <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
-                  <option value="" disabled selected><spring:message code="index.location" text="기본값"/>
-
-                  </option>
-                  <option value=""> <spring:message code="index.select.all" text="default text" />
-</option>
-                  <c:forEach items="${locationList}" var="location">
-                    <sec:authorize access="isAnonymous()">
-                      <option value="${location.locCode}">${location.locName}</option>
-                    </sec:authorize>
-                    <sec:authorize access="isAuthenticated()">
-                        <option value="${location.locCode}" ${locCode eq location.locCode ? 'selected' : '' }>${location.locName}</option>
-                    </sec:authorize>
-                  </c:forEach>
-                </select>
-              </div>
-              <div class="category-nav">
-                <select id="select-category" >
-                  <!-- 카테고리명 불러오기 -->
-                  <option value="" disabled selected><spring:message code="index.category" /></option>
-                  <option value=""><spring:message code="index.category.all" /></option>
-                  <c:forEach items="${categoryList}" end="4" var="category">
-                    <option value="${category.categoryCode}">${category.categoryName}</option>
-                  </c:forEach>
-                </select>
-              </div>
+        <div class="slide">
+          <img src="./resources/images/sample_banner2.jpg" alt="배너2">
+        </div>
+        <div class="slide">
+          <img src="./resources/images/sample_banner3.jpg" alt="배너3">
+        </div>
+      </div>
+      <div class="slide-controls">
+        <button id="prev-btn">
+          <
+          </button>
+          <button id="next-btn">
+            >
+          </button>
+        </div>
+      </div>
+      <!-- 배너 끝 -->
+      <!-- 검색 시작 -->
+      <!-- <form:form> -->
+        <div class="search">
+          <div style="display: flex">
+            <div class="location-nav">
+              <select id="select-location">
+                <!-- 지역명 불러오기 , 로그인 시 회원 지역정보 우선 -->
+                <option value="" disabled selected><spring:message code="index.location" text="기본값"/>
+                  
+                </option>
+                <option value=""> <spring:message code="index.select.all" text="default text" />
+                </option>
+                <c:forEach items="${locationList}" var="location">
+                  <sec:authorize access="isAnonymous()">
+                    <option value="${location.locCode}">${location.locName}</option>
+                  </sec:authorize>
+                  <sec:authorize access="isAuthenticated()">
+                    <option value="${location.locCode}" ${locCode eq location.locCode ? 'selected' : '' }>${location.locName}</option>
+                  </sec:authorize>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="category-nav">
+              <select id="select-category" >
+                <!-- 카테고리명 불러오기 -->
+                <option value="" disabled selected><spring:message code="index.category" /></option>
+                <option value=""><spring:message code="index.category.all" /></option>
+                <c:forEach items="${categoryList}" end="4" var="category">
+                  <option value="${category.categoryCode}">${category.categoryName}</option>
+                </c:forEach>
+              </select>
             </div>
           </div>
+        </div>
         <!-- </form:form> -->
         <!-- 검색 끝 -->
         <!-- 상품 리스트 시작 -->
         <!-- 조건에 맞는 상품 정보 불러오기 -->
         
-			
+        
         <div class="item-wrapper">
           <c:if test="${listLength ne 0}">
             <div class="items" id="item-list">
@@ -106,73 +105,74 @@
               </div>
             </c:if>
             
-		</div>
+          </div>
           <!-- 상품 끝 -->
           <!-- 버튼 시작-->
           <!-- 버튼 클릭 시 상품 목록 불러오기 (10개씩)-->
           <c:if test="${listLength ne 0}">
-              <div class="button-more" id="button-more">
+            <div class="button-more" id="button-more">
               <button type="button" class="bttn btn-more btn-large"><spring:message code="index.more.button" /></button>
             </c:if>
             <c:if test="${listLength eq 0}">
               <div class="button-nomore" id="button-more">
-              <button type="button" class="bttn btn-nomore"></button>
-            </c:if>
+                <button type="button" class="bttn btn-nomore"></button>
+              </c:if>
               <input type="hidden" id="btn-plus" value="2">
-          </div>
+            </div>
             
-          <!-- 버튼 끝 -->
+            <!-- 버튼 끝 -->
+          </div>
+          <jsp:include page="/WEB-INF/views/common/history.jsp" />
         </div>
       </div>
-    </div>
-    <script src="./resources/js/index.js"></script>
-<!-- jQuery ajax script-->
-  <script>
-    const list_div = document.getElementById("item-list");
-    const btnMore = document.getElementById("button-more");
-    
-    /* 상품 목록 없을 때 함수*/
-    const noItemList = () => {
-      // const wrapper = document.querySelector(".item-wrapper");
-      btnMore.className = "btn-nomore";
-      
-      
-      const item = document.createElement("div");
-      list_div.append(item);
-      item.className="no-item";
-      const noItemText = document.createElement("p");
-      item.appendChild(noItemText);
-      noItemText.innerText="등록된 상품이 없습니다.";
-
-      // wrapper.removeChild(btnMore);
-
-      return item;
-    };
-    /* 상품 목록 없을 때 함수 끝 */
-
-    /* 상품 리스트 생성 함수 */
-    function makeItem({productId,productName,productPrice,productImgRenamed}) {          
-        const item = document.createElement("div");
-        item.className = "item";
-        item.addEventListener("click", function(e) {
-          location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productId;
-        })
+      <script src="./resources/js/index.js"></script>
+      <!-- jQuery ajax script-->
+      <script>
+        const list_div = document.getElementById("item-list");
+        const btnMore = document.getElementById("button-more");
         
-        const item_photo = document.createElement("div");
-        item.appendChild(item_photo);
-        item_photo.className ="item-photo"
+        /* 상품 목록 없을 때 함수*/
+        const noItemList = () => {
+          // const wrapper = document.querySelector(".item-wrapper");
+          btnMore.className = "btn-nomore";
+          
+          
+          const item = document.createElement("div");
+          list_div.append(item);
+          item.className="no-item";
+          const noItemText = document.createElement("p");
+          item.appendChild(noItemText);
+          noItemText.innerText="등록된 상품이 없습니다.";
+          
+          // wrapper.removeChild(btnMore);
+          
+          return item;
+        };
+        /* 상품 목록 없을 때 함수 끝 */
         
-        const item_photo_img = document.createElement("img");
-        item_photo_img.src = "./resources/upload/product/" + productImgRenamed;
-        item_photo_img.alt ="상품이미지";
-        item_photo.appendChild(item_photo_img);
-        
-        const item_detail = document.createElement("div");
-        item.appendChild(item_detail);
-        item_detail.className ="item-detail";
-        const item_name = document.createElement("div");
-        item_detail.appendChild(item_name);
-        item_name.className ="item-name";
+        /* 상품 리스트 생성 함수 */
+        function makeItem({productId,productName,productPrice,productImgRenamed}) {          
+          const item = document.createElement("div");
+          item.className = "item";
+          item.addEventListener("click", function(e) {
+            location.href='${pageContext.request.contextPath}/product/productDetail.do?productId=' + productId;
+          })
+          
+          const item_photo = document.createElement("div");
+          item.appendChild(item_photo);
+          item_photo.className ="item-photo"
+          
+          const item_photo_img = document.createElement("img");
+          item_photo_img.src = "./resources/upload/product/" + productImgRenamed;
+          item_photo_img.alt ="상품이미지";
+          item_photo.appendChild(item_photo_img);
+          
+          const item_detail = document.createElement("div");
+          item.appendChild(item_detail);
+          item_detail.className ="item-detail";
+          const item_name = document.createElement("div");
+          item_detail.appendChild(item_name);
+          item_name.className ="item-name";
         item_name.innerText = productName;
         const item_price = document.createElement("div");
         item_detail.appendChild(item_price);

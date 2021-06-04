@@ -3,19 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="notice">
-	<select id="selectNoticetList" resultMap="noticeListMap">
-		  SELECT BOARD_NO
-		       , BOARD_TITLE
-		       , BOARD_ENROLL_DATE
-		       , BOARD_DELETE_YN
-		       , BOARD_CONTENT
-		       , MEMBER_ID
-		    FROM BOARD
-		   <if test="searchKeyword != null and searchKeyword != '' ">
-			WHERE  BOARD_CATEGORY = 'C6' 
-			AND BOARD_TITLE like '%' || #{searchKeyword} || '%'
-			</if>
-		ORDER BY BOARD_NO DESC
+	<select resultMap="noticeListMap" id="selectNoticetList">
+		SELECT BOARD_NO, 
+			   BOARD_TITLE,
+			    BOARD_ENROLL_DATE, 
+			    BOARD_DELETE_YN, 
+			    BOARD_CONTENT, 
+			    MEMBER_ID FROM BOARD
+		<where>
+		and BOARD_CATEGORY = 'C6'
+		<if test="searchKeyword != null and searchKeyword != '' ">AND BOARD_TITLE like '%' || #{searchKeyword} || '%' </if>
+		</where>
+		ORDER BY BOARD_NO DESC 
 	</select>
 	<resultMap type="notice" id="noticeListMap">
 		<id column="BOARD_NO" property="boardNo" />
