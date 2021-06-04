@@ -9,6 +9,13 @@
 		where room_buyer_id = #{roomBuyerId} and room_seller_id = #{roomSellerId}
 	</select>
 	
+	<select id="selectLastChat" resultType="String">
+		select message_text
+		from chatting_message
+		where room_no = #{roomNo}
+		order by message_date
+	</select>
+	
 	<select id="selectMessageList" resultMap="chattingmessageMap">
 		select *
 		from chatting_message

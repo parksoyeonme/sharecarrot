@@ -56,6 +56,11 @@ public class MemberDaoImpl implements MemberDao{
 		return session.selectOne("member.searchPassword", param);
 	}
 
+	@Override
+	public String selectProfile(String roomBuyerId) {
+		return session.selectOne("member.selectProfile", roomBuyerId);
+	}
+
 
 	
 	

@@ -46,6 +46,7 @@ div#update-container input, div#update-container select {margin-bottom:10px;}
 			</tr>
 			<c:forEach items="${chattingRoomList}" var="message" varStatus="status">
 				<tr style="height:40px;">
+					<td></td>
 					<td>${message.roomBuyerId}</td>
 					<td>
 						<a onclick="chatting_popup('${message.roomBuyerId}', '${message.roomSellerId}');"><sub>

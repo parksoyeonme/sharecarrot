@@ -17,6 +17,12 @@
 		where member_id = #{memberId}
 	</select>
    
+    <select id="selectProfile" resultType="String"> 
+     	select profile_renamed
+     	from member
+     	where member_id = #{roomBuyerId}
+    </select>
+   
    	<insert id="setAuthority">
    		insert into
    			authorities

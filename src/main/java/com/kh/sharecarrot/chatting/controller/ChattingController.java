@@ -2,7 +2,9 @@ package com.kh.sharecarrot.chatting.controller;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.sharecarrot.chatting.model.service.ChattingService;
 import com.kh.sharecarrot.chatting.model.vo.ChattingMessage;
 import com.kh.sharecarrot.chatting.model.vo.ChattingRoom;
+import com.kh.sharecarrot.member.model.service.MemberService;
 import com.kh.sharecarrot.shop.model.service.ShopService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +36,9 @@ public class ChattingController {
 	
 	@Autowired
 	private ShopService shopService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@GetMapping("/chattingRoom.do")
 	private void chattingRoom(@RequestParam String roomBuyerId, @RequestParam String roomSellerId, Model model) {
@@ -94,8 +100,19 @@ public class ChattingController {
 	    String loginMemberId = ((UserDetails) principal).getUsername();
 	    String shopId = shopService.selectShopId(loginMemberId);
 		List<ChattingRoom> chattingRoomList = chattingService.selectRoomList(loginMemberId);
+		List<String> profileList = new ArrayList<String>();
+		List<String> lastChatList = new ArrayList<String>();
+		
+		Iterator<ChattingRoom> iter = chattingRoomList.iterator();
+		while(iter.hasNext()) {
+			ChattingRoom chattingRoom = iter.next();
+			profileList.add(memberService.selectProfile(chattingRoom.getRoomBuyerId()));  		
+			lastChatList.add(chattingService.selectLastChat(chattingRoom.getRoomNo()));
+		}
 		
 		model.addAttribute("chattingRoomList", chattingRoomList);
+		model.addAttribute("lastChatList", lastChatList);
+		model.addAttribute("profileList", profileList);
 		model.addAttribute("shopId", shopId);
 	}
 	
