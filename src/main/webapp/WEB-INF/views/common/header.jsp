@@ -178,9 +178,9 @@ function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러�
 						console.log(msgObj);
 						
 						//메시지 작업처리
-						if(loginMemberId != msgObj.roomBuyerId)
-							toastr.danger(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
-						
+						if(loginMemberId != msgObj.roomBuyerId){
+							toastr.info(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
+						}
 						toastr.options.onclick = function() {
 							chatting_popup(msgObj.roomBuyerId, loginMemberId);
 						}

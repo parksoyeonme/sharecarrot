@@ -58,7 +58,7 @@
    <p style="text-align:right;">&nbsp;&nbsp;&nbsp;
       ${category}  |  ${product.productPrice}원
    </p>
-   <div style="text-align:center; height:500px;">
+   <div style="text-align:center; height:200px;">
       ${product.productContent}
    </div>
    </div>
