@@ -73,7 +73,12 @@
 	
 	<select id="searchTitle" resultType="product">
 		select product_id, product_name, product_price from product
-		where product_name like '%' ||  #{productName} || '%'
+		<where>
+			and product_name like '%' ||  #{productName} || '%'
+			<if test="category != null and category != ''">
+			and category_code = #{category}
+			</if>
+		</where>
 	</select>
 	
 	<select id="searchTitleSize" resultType="_int">

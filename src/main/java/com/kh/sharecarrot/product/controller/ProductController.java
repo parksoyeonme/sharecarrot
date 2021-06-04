@@ -189,30 +189,32 @@ public class ProductController {
 	
 	@GetMapping("/headerSearch.do")
 	public void headerSearch(
-			@RequestParam(value = "searchkeyword") String searchKeyword, @RequestParam(defaultValue ="1" ) int cPage
+			@RequestParam(defaultValue = "") String category,
+			@RequestParam(value = "searchkeyword", defaultValue="") String searchKeyword, @RequestParam(defaultValue ="1" ) int cPage
 			, @RequestParam Map<String,Object> param, Model model, HttpServletRequest request) {
 		
+		log.info("*****************************************category = {}", category);
 		//페이징 처리
 		int numPerPage = 20;
 		log.debug("cPage = {}", cPage);
 		param.put("numPerPage", numPerPage);
 		param.put("cPage", cPage);
+		param.put("category", category);
 				
 		List<Location> locationList = utilsService.selectLocationList();
-//		log.info("list = {}", locationList);
-//		log.info("searchkeyword = {}", searchkeyword);
+
 		boolean locFlag = false;
 		List<Product> productList = null;
 		int productListSize = 0;
+	
 		
-		Iterator<Location> iter = locationList.iterator();
-		while(iter.hasNext()) {
-			Location loc = (Location)iter.next();
-			if(loc.getLocName().contains(searchKeyword)) {
+		for(Location loc : locationList) {
+			if(loc.getLocName().equals(searchKeyword)) {
 				locFlag = true;
 				break;
 			}
 		}
+		
 
 		if(locFlag) {
 			param.put("locName", searchKeyword);
@@ -248,6 +250,8 @@ public class ProductController {
 		//if(!"".equals(searchKeyword)) {
 			url = url + "?searchkeyword=" + searchKeyword;
 		//}
+			
+		List<Category> categoryList = utilsService.selectCategoryList();
 		
 		String pageBar = ShareCarrotUtils.getPageBar(productListSize, cPage, numPerPage, url);
 		
@@ -256,5 +260,6 @@ public class ProductController {
 		model.addAttribute("productImageList", productImageList);
 		model.addAttribute("productListSize", productListSize);
 		model.addAttribute("pageBar", pageBar);
+		model.addAttribute("categoryList", categoryList);
 	}
 }

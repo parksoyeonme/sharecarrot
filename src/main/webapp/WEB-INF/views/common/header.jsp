@@ -52,7 +52,6 @@
     </style>
 </head>
 <body>
-
     <header>
     <ul class="nav nav-pills flex-column flex-sm-row mb-3" id="header-nav">
     
@@ -68,6 +67,16 @@
 	<!-- 검색바 -->
         <li class="nav-item flex-sm-fill">
             <div class="input-group">
+                <div class="dropdown">
+				  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				    <spring:message code="header.nav.Catagory" />
+				  </button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				  <c:forEach var="category" items="${categoryList}">
+				    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/product/headerSearch.do?category=${category.categoryCode}">${category.categoryName }</a></li>
+				   </c:forEach>
+				  </ul>
+				</div>
                 <input type="text" onkeyup="enterkey();" id="headersearch" name="headersearch" class="form-control" placeholder="지역 혹은 물품을 검색해주세요" aria-label="Recipient's username" aria-describedby="button-addon2">
                 <button class="btn btn-outline-success" onclick="search_button_click();" id="searchbutton" name="searchbutton" type="button" id="button-addon2"><spring:message code="header.search" /></button>
             </div>
@@ -95,7 +104,9 @@
                 <div class="btn-group" role="group">
                   <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <li><a class="dropdown-item" href="#"><spring:message code="header.nav.Catagory" /></a></li>
+                    <li>
+                    	<a class="dropdown-item" href="#"><spring:message code="header.nav.Catagory" /></a>
+                    </li>
                     <%--분기처리 --%>
                     <sec:authorize access="isAnonymous()">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do"><spring:message code="header.nav.board" /></a></li>
@@ -145,16 +156,11 @@ stompClient.connect({}, (frame) => { //sock.connect
 //알람 기능
 var alarmId = null;
 
+setAlarm();
 function setAlarm(){
+	console.log("set Alarm");
 	alarmId = setInterval(getRoomNo, 5000);
 }
-
-function stopAlarm(){
-	if(alarmId != null){
-		clearInterval(alarmId);
-	}
-}
-
 function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러옴
 	$.ajax({
 		url : "${pageContext.request.contextPath}/chat/selectRoomNo.do?${_csrf.parameterName}=${_csrf.token}",
@@ -202,8 +208,6 @@ function chatting_popup(roomBuyerId, roomSellerId){
 	window.open(url, "chat", "width=" + popupWidth + ", height=" + popupHeight + ", left="+popupX+", top=" + popupY).focus();
 }
 
-
-setAlarm(); // 알람기능은 켜져있는걸로 설정
 //알람 기능 FINISH
 </sec:authorize>
 
