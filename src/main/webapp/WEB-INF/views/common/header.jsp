@@ -72,8 +72,10 @@
 				    <spring:message code="header.nav.Catagory" />
 				  </button>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-				  <c:forEach var="category" items="${categoryList}">
+				  <c:forEach var="category" items="${categoryList}" varStatus='vs'>
+				  	<c:if test='${!vs.last}'>
 				    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/product/headerSearch.do?category=${category.categoryCode}">${category.categoryName }</a></li>
+				   	</c:if>
 				   </c:forEach>
 				  </ul>
 				</div>
@@ -176,9 +178,9 @@ function getRoomNo(){ //주기적으로 참여한 채팅방의 번호를 불러�
 						console.log(msgObj);
 						
 						//메시지 작업처리
-						if(loginMemberId != msgObj.roomBuyerId)
-							toastr.danger(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
-						
+						if(loginMemberId != msgObj.roomBuyerId){
+							toastr.info(msgObj.roomBuyerId, msgObj.messageText, {timeOut: 50000});
+						}
 						toastr.options.onclick = function() {
 							chatting_popup(msgObj.roomBuyerId, loginMemberId);
 						}
