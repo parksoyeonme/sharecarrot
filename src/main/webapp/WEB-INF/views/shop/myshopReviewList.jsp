@@ -21,7 +21,7 @@ $(document).ready(function () {
             $('#reviewCount').html(data.storeReviewListSize + "개");
             console.log(data.buyerList);
             displayList(data);
-            $('[name=star]').css({"color": "CCCC00"});
+            $('[name=star]').css({"color": "#FFEB34"});
         }
     });
     function displayList(data) {
