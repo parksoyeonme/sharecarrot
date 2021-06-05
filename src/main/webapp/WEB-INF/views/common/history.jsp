@@ -50,12 +50,13 @@
       display: flex;
       -webkit-box-pack: center;
       justify-content: center;
+      height: 25%;
     }
     .jjim-count{
       display: flex;
       -webkit-box-align: center;
       align-items: center;
-      font-size: 14px;
+      font-size: 12px;
       color: black;
       font-weight: 600;
       cursor:pointer;

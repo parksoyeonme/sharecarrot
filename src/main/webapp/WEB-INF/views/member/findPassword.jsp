@@ -41,7 +41,7 @@
 		align-items: center;
 	}
 
-	input {
+	.info-input input {
 		width: 300px;
 		height: 50px;
 		border: none;
