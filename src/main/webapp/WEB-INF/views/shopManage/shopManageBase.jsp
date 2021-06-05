@@ -77,7 +77,7 @@ $(document).ready(function(){
 		<div class="col-md-12">
 			<ul class="nav nav-pills">
 				<li class="nav-item">
-					<button class="nav-link" id="productEnrollNav" data-bs-toggle="tab" data-bs-target="#productEnroll" type="button" role="tab" aria-controls="productEnroll" aria-selected="true">
+					<button class="nav-link " id="productEnrollNav" data-bs-toggle="tab" data-bs-target="#productEnroll" type="button" role="tab" aria-controls="productEnroll" aria-selected="true">
 						상품등록
 					</button>
 				</li>
