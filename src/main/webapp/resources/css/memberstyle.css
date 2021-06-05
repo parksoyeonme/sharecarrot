@@ -1,0 +1,67 @@
+*{
+  text-decoration: none;
+  font-family:sans-serif;
+}
+
+.modal-backdrop {
+   background-color: orange;
+}
+
+body {
+  background-image: yellow;
+}
+
+div#loginForm {
+  position:absolute;
+  width:35%;
+  height:72%;
+  text-align:center;
+  top:54%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius: 15px;
+}
+
+
+.id {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 25px;
+  padding: 10px 10px;
+}
+
+.pw {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 10px;
+  padding: 10px 10px;
+}
+
+.findMemberinfo {
+	height : 40px;
+}
+
+.findMemberinfo p{
+	text-align: center;
+	margin: 0 auto;
+	text-decoration: none;
+	color: black;
+}
+.findMemberinfo p a:visited{
+	color : black;
+}
+.findMemberinfo p a:hover{
+	text-decoration: none;
+}

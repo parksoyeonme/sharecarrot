@@ -21,25 +21,12 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
 <!-- 사용자작성 css -->
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
-<style>
-.findMemberinfo p{
-	text-align: center;
-	margin: 0 auto;
-	text-decoration: none;
-	color: black;
-}
-.findMemberinfo p a:visited{
-	color : black;
-}
-.findMemberinfo p a:hover{
-	text-decoration: none;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/memberstyle.css" />
+
 <script>
 //jquery onload 함수
 $(() => {
-	$("#loginModal")
+	$("#loginForm")
 		.modal()
 		.on('hide.bs.modal', e=> {
 			//모달을 비활성화하면(X, 취소, 모달외 영역 클릭)
@@ -52,15 +39,18 @@ $(() => {
 </script>	
 
 </head>
+
+
 <body>
 	<!-- Modal시작 -->
 	<!-- https://getbootstrap.com/docs/4.1/components/modal/#live-demo -->
-	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
-		aria-labelledby="loginModalLabel" aria-hidden="true">
+	<div class="modal fade" id="loginForm" tabindex="-1" role="dialog"
+		aria-labelledby="loginModalLabel" 
+		aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="loginModalLabel">로그인</h5>
+					<h5 class="modal-title" style="margin-left:133px;" id="loginModalLabel">Login</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -77,20 +67,20 @@ $(() => {
 						<c:if test="${param.error != null}">
 						<span class="text-danger">아이디 또는 비밀번호가 일치하지 않습니다.</span>
 						</c:if>
-						<input type="text" class="form-control" name="id"
-							placeholder="아이디" required> <br /> <input
-							type="password" class="form-control" name="password"
+						<input type="text" class="id" name="id"
+							placeholder="아이디" required> <br /> 
+							<input type="password" class="pw" name="password"
 							placeholder="비밀번호" required>
 					</div>
 					<!-- css display: flex -->
 					<div class="modal-footer justify-content-between">
-						<div>
+						<div style="height:80; margin-left:15px;">
 							<input type="checkbox" class="form-check-input" name="remember-me" id="remember-me"/>
-							<label for="remember-me" class="form-check-label">Remember me</label>
+							<label for="remember-me" class="form-check-label">아이디 저장</label>
 						</div>
 						<div>
-							<button type="submit" class="btn btn-outline-success">로그인</button>
-							<button type="button" class="btn btn-outline-success" data-dismiss="modal">취소</button>
+							<button type="submit" class="btn btn-warning">Login</button>
+							<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
 						</div>
 					</div>
 					<div class="findMemberinfo">
@@ -100,6 +90,7 @@ $(() => {
 							<a href="${pageContext.request.contextPath}/member/findPassword.do">비밀번호찾기</a>
 						</p>
 					</div>
+					
 				</form:form>
 			</div>
 		</div>
