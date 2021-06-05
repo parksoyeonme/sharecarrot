@@ -10,123 +10,144 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="/resources/js/addressapi.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
+<style>
+    div#enroll-container {
+        width: 800px;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 50px;
+    }
+    /* 부트스트랩 : 파일라벨명 정렬*/
+    div#enroll-container label.custom-file-label {
+        text-align: left;
+    }
+</style>
 
-<div id="enroll-container" class="mx-auto text-center" >
-	
-	
-	<div class="sub_title" style="margin-top:50px;">
-		<h1>회원가입</h1>
-		<hr />
-	</div>
-
-	
-	
-	<form 
+<div id="enroll-container" class="row mx-3 mx-auto text-center">
+    <span class="fs-4 fw-bold">회원가입</span>
+    <hr/>
+    <div style="margin-left: -34px;" class="col-12">
+		<form 
 		name="memberEnrollFrm" 
 		action="${pageContext.request.contextPath}/member/memberEnroll.do?${_csrf.parameterName}=${_csrf.token}" 
 		method="post"
-		enctype="multipart/form-data"> 
-		<table>
-			<tr>
-			</tr>
-			<tr>
-                <th>프로필사진</th>
-                <td><input type="file" name="upfile" id="upfile" ></td>
-                <td><img id="profileImg" src="" style="max-width:150px; max-height:80px;"></td>
-            </tr>
-			<tr>
-				<th>아이디</th>
-				<td>
-					<div id="memberId-container">
-						<input type="text" 
-							   class="form-control" 
-							   placeholder="4글자이상"
-							   name="id" 
-							   id="id"
-							   required>
+		enctype="multipart/form-data">
+        	<!-- 테이블 -->
+            <div class="mb-3 row">
+                <label class="col-2 col-form-label fw-bold">프로필사진</label>
+                <div class="col-6" id="upfiletr">
+                    <div class="input-group" id="imgContainer">
+                        <input type="file" name="upfile" id="upfile" >
+                    </div>
+                </div>
+                <div class="col-1">
+                    <img id="profileImg" src="" style="max-width:150px; max-height:80px;">
+                </div>
+            </div>            
+    		<hr/>
+          	<div class="mb-3 row">
+            	<label class="col-2 col-form-label fw-bold">아이디</label>
+              	<div class="col-8">
+                	<input type="text" class="form-control" placeholder="4글자이상" name="id"	id="id"	required>
 						<span class="guide result">사용여부</span>
 						<input type="hidden" id="idValid" value="0"/>
-					</div>
-				</td>
-				<td>
-				</td>
-			</tr>
-			<tr>
-				<th>패스워드</th>
-				<td>
-					<input type="password" class="form-control" name="password" id="password" required>
-				</td>
-			</tr>
-			<tr>
-				<th>패스워드확인</th>
-				<td>	
-					<input type="password" class="form-control" id="passwordCheck" required>
-				</td>
-			</tr>  
-			<tr>
-				<th>이름</th>
-				<td>	
-					<input type="text" class="form-control" name="name" id="name" required>
-				</td>
-			</tr>
-			<tr>
-				<th>휴대폰</th>
-				<td>	
-					<input type="tel" class="form-control" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" required>
-				</td>
-			</tr>
-			<tr>
-				<th>생년월일</th>
-				<td>		
-					<input type="date" class="form-control" name="birthday" id="birthday"/>
-				</td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td>	
-					<input type="email" class="form-control" placeholder="abc@xyz.com" name="email" id="email">
-				</td>
-				<td>
-					<input type="button" value="인증번호 전송" class="btn btn-outline-secondary" style="margin-left:10px;" name="emailbutton" id="emailbutton">
-				</td>
-			</tr>
-			<tr>
-				<th></th>
-				<td>
-					<input	type="text" class="form-control" placeholder="인증번호 입력" name="emailconfirm" id="emailconfirm" readonly>
-				</td>
-				<td>
-					<input type="button" value="인증번호 확인"  class="btn btn-outline-secondary" name="emailconfirmbutton" id="emailconfirmbutton" style="margin-left:10px; visibility:hidden;">
+               	</div>
+            </div>
+           	<hr/>
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">패스워드</label>
+	           <div class="col-8">
+	               <input type="password" class="form-control" name="password" id="password" required>
+	           </div>
+	       	</div>
+	       	<hr/>           	
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">패스워드확인</label>
+	           <div class="col-8">
+	               <input type="password" class="form-control" id="passwordCheck" required>
+	           </div>
+	       	</div>
+	       	<hr/>            	
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">이름</label>
+	           <div class="col-8">
+	               <input type="text" class="form-control" name="name" id="name" required>
+	           </div>
+	       	</div>
+	       	<hr/>            	
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">연락처</label>
+	           <div class="col-8">
+	               <input type="tel" class="form-control" placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" required>
+	           </div>
+	       	</div>
+	       	<hr/>             	
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">생년월일</label>
+	           <div class="col-8">
+	               <input type="date" class="form-control" name="birthday" id="birthday"/>
+	           </div>
+	       	</div>
+	       	<hr/>            	
+            <div class="mb-3 row">
+                <label class="col-2 col-form-label fw-bold">이메일</label>
+                <div class="col-8">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="abc@xyz.com" name="email" id="email">                   
+                    </div>
+                </div>
+                <div class="col-1">
+                    <input type="button" value="인증번호 전송" class="btn btn-warning" name="emailbutton" id="emailbutton">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-10">
+                    <div class="input-group">
+                        <input	type="text" class="form-control" placeholder="인증번호 입력" name="emailconfirm" id="emailconfirm" style="margin-left:133px;" readonly>                   
+                    </div>
+                </div>
+                <div class="col-1">
+                    <input type="button" value="인증번호 확인"  class="btn btn-warning" name="emailconfirmbutton" id="emailconfirmbutton" style="margin-left:10px; visibility:hidden;">
 					<input type="hidden" id="emailValid" value="0"/>
-				</td>
-			</tr>
-			<tr>
-				<th>우편번호</th>
-				<td>	
-					<input type="text" class="form-control" placeholder="" name="address1" id="address1" readonly>
-				</td>
-				<td>
-					<input type="button" value="주소 찾기" onclick="execPostCode();" class="btn btn-outline-secondary" style="margin-left:10px;">
-				</td>
-			</tr>
-			<tr>
-				<th>도로명 주소</th>
-				<td>	
-					<input type="text" class="form-control" placeholder="" name="address2" id="address2" readonly>
-				</td>
-			</tr>
-			<tr>
-				<th>상세 주소</th>
-				<td>	
-					<input type="text" class="form-control" placeholder="" name="address3" id="address3">
-				</td>
-			</tr>
-		</table>
-		<input type="submit" class="btn btn-outline-secondary" value="가입" >
-		<input type="reset" onclick="cancel();" class="btn btn-outline-secondary" value="취소">
-	</form>
+                </div>
+            </div>
+			<hr/> 
+            <div class="mb-3 row">
+                <label class="col-2 col-form-label fw-bold">우편번호</label>
+                <div class="col-8">
+                    <div class="input-group" id="imgContainer">
+                        <input type="text" class="form-control" placeholder="" name="address1" id="address1" readonly>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <input type="button" value="주소 찾기" onclick="execPostCode();" class="btn btn-warning">
+                </div>
+            </div>	       	
+	       	<hr/>           	
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">도로명주소</label>
+	           <div class="col-8">
+	               <input type="text" class="form-control" placeholder="" name="address2" id="address2" readonly>
+	           </div>
+	       	</div>
+	       	<hr/>           	
+	       	<div class="mb-3 row">
+	           <label class="col-2 col-form-label fw-bold">상세주소</label>
+	           <div class="col-8">
+	               <input type="text" class="form-control" placeholder="" name="address3" id="address3">
+	           </div>
+	       	</div>          	
+           	<hr/>
+           	<div class="row justify-content-end">
+               <div class="col-2">
+                   <input type="submit" class="btn btn-warning" style="margin-left: -76px;" value="가입">
+                   <input type="reset" onclick="cancel();" class="btn btn-warning" value="취소">
+               </div>
+            </div>
+        </form>
+     </div>
 </div>
+    
 <script>
 function cancel(){
 	location.href = location.href = "${pageContext.request.contextPath}";
