@@ -47,6 +47,7 @@ $(() => {
 	});
 });
 </script>
+
 <section id="board-container" class="container">
 	<div style="text-align:center; margin-top:30px;">
 		<h1>공지사항</h1>
@@ -69,7 +70,7 @@ $(() => {
 		</table>
 	</div>
 	<table class="table" style="vertical-align:middle">
-		<thead class="thead-dark">
+		<thead class="table-light">
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
@@ -84,10 +85,9 @@ $(() => {
 			<td>${notice.memberId}</td>
 			<td><fmt:formatDate value="${notice.boardEnrollDate}" pattern="yy/MM/dd"/></td>
 		</tr>
-		</c:forEach>
-		
+		</c:forEach>		
 	</table>
-	
+		
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 	<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 		<input type="button" style="margin-right:10px;"value="글쓰기" id="btn-add" class="float-right btn btn-outline-success" onclick="goNoticeForm();"/>
