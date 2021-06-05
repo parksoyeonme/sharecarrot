@@ -10,7 +10,7 @@
 div#board-container{width:800px; text-align:center; margin-top:40px; margin-bottom:50px;}
 </style>
 <div id="board-container" class="mx-auto text-center">
-<h1>신고합니다</h1>
+<span class="fs-3 fw-bold">신고합니다&nbsp;</span>
 <!-- 테이블 -->
 		<table  id="report_table" class="table table-bordered" style="vertical-align:middle">
 		<!-- 한 행 -->
