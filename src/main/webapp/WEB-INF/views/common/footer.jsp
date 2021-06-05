@@ -16,7 +16,7 @@ a:hover { color: blue; text-decoration: underline;}
 
 footer{
 	background-color:#ffffff; 
-	/* width: 1024px;  */
+	width: 1024px; 
 	margin:0 auto; 
 	text-align:center; 
 	background-clip:content-box; 

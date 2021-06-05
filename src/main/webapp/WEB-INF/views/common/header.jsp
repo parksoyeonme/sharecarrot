@@ -49,6 +49,12 @@
         .toast{
         	background-color: blue !important;
         }
+				li.head-nav:not(:nth-child(1)) {
+					margin-top : 6px;
+				}
+				.form-logout{
+					margin-bottom: 0px;
+				}
     </style>
 </head>
 <body>
@@ -56,7 +62,7 @@
     <ul class="nav nav-pills flex-column flex-sm-row mb-3" id="header-nav">
     
     <!-- LOGO -->
-        <li class="nav-item mb-2">
+        <li class="nav-item head-nav mb-2">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        <a href="${pageContext.request.contextPath}">
 	            <img src="${pageContext.request.contextPath}/resources/images/mainlogo.png" style="max-height: 50px;">
@@ -65,7 +71,7 @@
         </li>
         
 	<!-- 검색바 -->
-        <li class="nav-item flex-sm-fill">
+        <li class="nav-item head-nav flex-sm-fill">
             <div class="input-group">
                 <div class="dropdown">
 				  <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -85,7 +91,7 @@
         </li>
         
 	<!-- 버튼그룹 -->
-        <li class="nav-item">
+        <li class="nav-item head-nav">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             
 		<!-- 비회원 화면 -->
@@ -95,7 +101,7 @@
                 </sec:authorize>
 		<!-- 로그인시 화면 -->
                 <sec:authorize access="isAuthenticated()">
-               		<form:form class="d-inline" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
+               		<form:form class="d-inline form-logout" action="${pageContext.request.contextPath}/member/memberLogout.do" method="POST">
 					    <button class="btn btn-light my-2 my-sm-0" type="submit"><spring:message code="header.logout" /></button>
 	                </form:form>
 	                <button type="button" class="btn btn-light" onclick=" myshop_head_click();"><spring:message code="header.myshop" /></button>
