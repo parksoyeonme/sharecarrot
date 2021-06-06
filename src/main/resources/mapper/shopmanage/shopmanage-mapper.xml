@@ -69,6 +69,7 @@
 			<if test="categoryCode != '' and categoryCode != null">
 			and 	category_code = #{categoryCode}
 			</if>
+			order by product_reg_date
 	</select>
 	
 	<select id="selectProductList" parameterType="com.kh.sharecarrot.product.model.vo.Product" resultType="com.kh.sharecarrot.product.model.vo.Product">
@@ -111,7 +112,7 @@
 				<if test="categoryCode != '' and categoryCode != null">
 				and 	category_code = #{categoryCode}
 				</if>
-				order by product_id desc
+				order by product_reg_date
 				)a
 			)
 		where rnum  <![CDATA[>=]]> 5 * (to_number(#{pageNum}) -1) +1 and rnum <![CDATA[<=]]> 5 * to_number(#{pageNum})
