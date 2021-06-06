@@ -52,7 +52,7 @@ $(document).ready(function () {
                 html += "<td>" + data.storeReviewList[i].reviewTitle + "</td>";
                 html += "<td><svg xmlns='http://www.w3.org/2000/svg' width='23' height='23' fill='currentColor' class='bi bi-star-fill' viewBox='0 0 16 16'><path name='star' d='M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z'/></svg>" + data.storeReviewList[i].reviewScore + "</td>";
                 if (data.reviewImageList[i] != null) {
-                    html += "<td><img id='reviewImg' style='height: 129px' src='${pageContext.request.contextPath}/resources/upload/product/" + data.reviewImageList[i].reviewImgRenamed + "'></td>";
+                    html += "<td><img id='reviewImg' style='height: 120px' src='${pageContext.request.contextPath}/resources/upload/product/" + data.reviewImageList[i].reviewImgRenamed + "'></td>";
                 } else {
                     html += "<td>X</td>";
                 } html += "<td>" + data.storeReviewList[i].reviewContent + "</td></tr>";
@@ -62,9 +62,9 @@ $(document).ready(function () {
                     if (data.reviewCommentlist[i] == "") {
                         html += "<tr>";
                         // 댓글쓰기버튼
-                        html += "<td><button type='button' onclick='reply_review(commentText" + i + "," + data.storeReviewList[i].reviewNo + ")' class='btn btn-warning'>댓글쓰기</button></td></tr>";
+                        html += "<td><button type='button'  onclick='reply_review(commentText" + i + "," + data.storeReviewList[i].reviewNo + ")' class='btn btn-warning'>댓글쓰기</button></td></tr>";
                         // 댓글쓰는부분 + 등록버튼
-                        html += "<tr><td style='display:none' id='commentText" + i + "' colspan='4'><input type='text' id='updateContent" + i + "' class='updateContent' style= 'width:72%'><button type='button' style='margin-left: 18px' id='BtnGoUpdate' onclick='update_review(" + data.storeReviewList[i].reviewNo + "," + i + ")' class='btn btn-warning'>댓글등록</button></td></tr>";
+                        html += "<tr><td style='display:none' id='commentText" + i + "' colspan='4'><input type='text' id='updateContent" + i + "' class='updateContent' style= 'width:72%'><button type='button' style='margin-left: 11px' id='BtnGoUpdate' onclick='update_review(" + data.storeReviewList[i].reviewNo + "," + i + ")' class='btn btn-warning'>댓글등록</button></td></tr>";
                     }
                     
                 }
@@ -99,7 +99,7 @@ $(document).ready(function () {
                         // 댓글쓰기버튼
                         html += "<td><button type='button' id='BtnGoWrite" + i + "' onclick='reply_review(commentText" + i + "," + data.storeReviewList[i].reviewNo + "," + "BtnGoWrite" + i + ")' class='btn btn-warning'>댓글쓰기</button></td></tr>";
                         // 댓글쓰는부분 + 등록버튼
-                        html += "<tr><td style='display:none' id='commentText" + i + "' colspan='4'><input type='text' id='updateContent" + i + "' class='updateContent' style= 'width:72%'><button type='button' style='margin-left: 18px' id='BtnGoUpdate' onclick='update_review(" + data.storeReviewList[i].reviewNo + "," + i + ")' class='btn btn-warning'>댓글등록</button></td></tr>";
+                        html += "<tr><td style='display:none' id='commentText" + i + "' colspan='4'><input type='text' id='updateContent" + i + "' class='updateContent' style= 'width:72%'><button type='button' style='margin-left: 11px' id='BtnGoUpdate' onclick='update_review(" + data.storeReviewList[i].reviewNo + "," + i + ")' class='btn btn-warning'>댓글등록</button></td></tr>";
                         html += "<tr>";
                         console.log("댓글 없음", buttonCount);
                     }
