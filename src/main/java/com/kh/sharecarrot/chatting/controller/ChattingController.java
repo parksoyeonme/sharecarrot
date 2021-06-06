@@ -37,9 +37,6 @@ public class ChattingController {
 	@Autowired
 	private ShopService shopService;
 	
-	@Autowired
-	private MemberService memberService;
-	
 	@GetMapping("/chattingRoom.do")
 	private void chattingRoom(@RequestParam String roomBuyerId, @RequestParam String roomSellerId, Model model) {
 		//0인 경우 구매자, 1인 경우 판매자
