@@ -66,7 +66,7 @@ public class BoardController {
 		
 		//locCode 공백제거
 		locCode = locCode.trim();
-		log.info("code = {}", code);
+		
 		Map<String, Object> param = new HashMap<>();
 		param.put("cPage", cPage);
 		param.put("numPerPage", numPerPage);
