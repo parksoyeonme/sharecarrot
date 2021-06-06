@@ -49,23 +49,19 @@ td.leftmsg{
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico" />	
 
 <script>
-
 // 자동 이동
 $(document).ready(function(){
 	var scrollPosition = $("#last").offset().top;
-
 	$("#previous_message").animate({
 		scrollTop: scrollPosition
 	}, 1000);
 });
-
 	
 //1.웹소켓객체 -> stomp 객체 전달
 const ws = new SockJS("${pageContext.request.contextPath}/stomp");
 const stompClient = Stomp.over(ws);
 var html = "";
 var $div = "";
-
 //2.connect핸들러 작성. 구독
 stompClient.connect({}, (frame) => {
 	console.log("stomp connected : ", frame);
@@ -81,7 +77,7 @@ stompClient.connect({}, (frame) => {
 		var minute = time.getMinutes();
 		var second = time.getSeconds();
 				
-		var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " 
+		var realtime = (time.getMonth()+1) + "." + time.getDate() + " " 
 		+ (("0" + hour).slice(-2)) + ":" + (("0" + minute).slice(-2)) + ":" + (("0"+second).slice(-2));
 // 		console.log(realtime);
 		$div = "";
@@ -105,7 +101,6 @@ stompClient.connect({}, (frame) => {
 				
 				$div.append(html);	
 				$div.scrollTop($div[0].scrollHeight);
-
 			}
 		}else if('${flag}' == 1){
 			if(roomBuyerId!=null){
@@ -119,21 +114,19 @@ stompClient.connect({}, (frame) => {
 				html += "<table id='#flag1_seller_tbl'>";
 				html += "<tr>";
 				html += "<td style='width:5px;'></td>";
-				html += "<td class='rightmsg' style='width:150px;'><p>"+ messageText +"</p></td>";
+				html += "<td class='leftmsg' style='width:150px;'><p>"+ messageText +"</p></td>";
 				html += "<td>" + realtime + "</td>";
 				html += "</tr>";
 				html += "</table>";
 				html += "</div>";
 				html += "</div>";
 				$div.scrollTop($('#scrollDiv').prop('scrollHeight'));
-
 				$div.append(html);
 				$div.scrollTop($div[0].scrollHeight);
 			}
 		}
 		
 		
-
 		
 	});
 });
@@ -153,17 +146,12 @@ function sendBtnClick(){
 	const url = "/chat/chattingRoom/${roomNo}"; // $("#stomp-url option:selected")
 	
 	if($message.val() == '') return;
-
 	sendMessage(url);
 };
-
 var $dv = "";
 var inputHtml = "";
-
-
 function sendMessage(url){
 	
-
 	var flag = ${flag};
 	var sender;
 	var receiver;
@@ -185,9 +173,9 @@ function sendMessage(url){
 		roomNo : '${roomNo}',
 		messageDate : Date.now()
 	};
-
 	var time = new Date(Date.now());
-	var realtime = (time.getMonth()+1) + "." + (time.getDay()-1) + " " 
+	console.log("날짜 : " + time.getDay());
+	var realtime = (time.getMonth()+1) + "." + time.getDate() + " " 
 	+ (("0" + time.getHours()).slice(-2)) + ":" + (("0" + time.getMinutes()).slice(-2)) + ":" + (("0" + time.getSeconds()).slice(-2));	
 	
 	if('${flag}' == 0){
@@ -237,7 +225,6 @@ function sendMessage(url){
 	$("#message").val(''); // 초기화
 	$("#message").focus();
 }
-
 $(document).ready(function(){
 	// 엔터로도 채팅 보낼 수 있게 처리
 	$("#message").keydown(function (key) {
@@ -246,7 +233,6 @@ $(document).ready(function(){
 		}
 	});
 });
-
 </script>
 
 <head>
