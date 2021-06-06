@@ -107,6 +107,7 @@
 		});
 		
 		function readBoardList(index, code){
+			console.log("index = " + index);
 			$.ajax({
 				type: "GET",
 				dataType : "json",
