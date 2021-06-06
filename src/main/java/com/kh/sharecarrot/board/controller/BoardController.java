@@ -142,6 +142,9 @@ public class BoardController {
 						@RequestParam(value="upfile", required= false) MultipartFile[] upFiles,
 						HttpServletRequest request, RedirectAttributes redirectAttr) throws Exception {
 
+		//줄바꿈, 개행처리
+			board.setBoardContent(board.getBoardContent().replaceAll("\r\n", "<br>"));
+				
 		try {
 			//파일저장
 			//saveDir
@@ -170,7 +173,10 @@ public class BoardController {
 			}
 			
 			board.setBoardImageList(boardImgList);
-			int reuslt = boardService.updateBorad(board, boardImgId);
+			if(boardImgId != null) {
+				int reuslt = boardService.updateBorad(board, boardImgId);				
+			}
+				
 			redirectAttr.addFlashAttribute("msg", "게시글 수정이 완료되었습니다.");
 			
 		} catch(IllegalStateException e) {
@@ -190,7 +196,8 @@ public class BoardController {
 	public void boardUpdate(@RequestParam int boardNo, Model model) {
 		Board board = boardService.selectOneBoard(boardNo);
 		List<Location> locationList = utilsService.selectLocationList();
-		
+		//줄바꿈, 개행처리
+		board.setBoardContent(board.getBoardContent().replaceAll("<br>", "\r\n"));
 		model.addAttribute(locationList);
 		model.addAttribute("board", board);
 	}

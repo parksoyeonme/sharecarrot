@@ -19,7 +19,7 @@
 	}
 	.boardImg{
 		height: 500px;
-		width:100%;
+		width:70%;
 	}
 	.customTable{
 		border-radius: 30px;
@@ -161,7 +161,7 @@
 						<%--이미지--%>		  
 						html += "<tr  class='table-light'><td colspan='5'>";
 							if(elem.boardImageList != null){
-								html += `<div id="imgSlider\${elem.boardNo}" class="carousel slide col" data-bs-ride="carousel">`;
+								html += `<div id="imgSlider\${elem.boardNo}" style="text-align:center;" class="carousel slide col" data-bs-ride="carousel">`;
 									html += `<div class="carousel-inner">`;
 										html += `<div class="carousel-item active">`;
 											html += `<img src="${pageContext.request.contextPath}/resources/upload/board/\${elem.boardImageList[0].boardImgRenamed}" class='boardImg' />`;
