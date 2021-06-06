@@ -112,9 +112,9 @@
                 <div class="btn-group" role="group">
                   <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"></button>
                   <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <li>
-                    	<a class="dropdown-item" href="#"><spring:message code="header.nav.Catagory" /></a>
-                    </li>
+<!--                     <li> -->
+<%--                     	<a class="dropdown-item" href="#"><spring:message code="header.nav.Catagory" /></a> --%>
+<!--                     </li> -->
                     <%--분기처리 --%>
                     <sec:authorize access="isAnonymous()">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/board/boardList.do"><spring:message code="header.nav.board" /></a></li>
