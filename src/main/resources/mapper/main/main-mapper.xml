@@ -24,7 +24,7 @@
                                     left join member m
                                     on s.member_id = m.member_id
 		<where>
-			d.product_ynh = 'N' and d.product_del_flag = 'N'
+			d.product_ynh = 'Y' and d.product_del_flag = 'N'
 		 	<if test="categoryCode != '' and categoryCode != null">
 		        and d.category_code = #{categoryCode}
 		 	</if>
