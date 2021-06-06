@@ -31,38 +31,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	
-		<!-- #9.1 handler interceptor 등록 -->
-	<interceptors>
-		<interceptor>
-			<mapping path="/member/**/*.do"/>
-			<mapping path="/chat/**/*.do"/>
-			<mapping path="/member/**/*.do"/>
-			<mapping path="/notice/**/*.do"/>
-			<mapping path="/product/**/*.do"/>
-			<mapping path="/report/**/*.do"/>
-			<mapping path="/shop/**/*.do"/>
-			<mapping path="/shopmanage/**/*.do"/>
-			<mapping path="/board/**/*.do"/>
-			<exclude-mapping path="/member/memberLogin.do"/>
-			<exclude-mapping path="/member/memberEnroll.do"/>
-			<exclude-mapping path="/member/checkIdDuplicate*.do"/>
-			<exclude-mapping path="/member/emailCheck.do"/>
-			<exclude-mapping path="/member/findId.do"/>
-			<exclude-mapping path="/member/findPassword.do"/>
-			<exclude-mapping path="/board/boardList.do"/>
-			<exclude-mapping path="/board/searchBoardList.do"/>
-			<exclude-mapping path="/notice/noticeList.do"/>
-			<exclude-mapping path="/notice/noticeDetail.do"/>
-			<exclude-mapping path="/product/productDetail.do"/>
-			<exclude-mapping path="/notice/getTotalJjimNo.do"/>
-			<exclude-mapping path="/shop/myshop.do"/>
-			<exclude-mapping path="/shop/myshopProductList.do"/>
-			<exclude-mapping path="/shop/myshopReviewList.do"/>
-			<beans:bean id="loginInterceptor" class="com.kh.sharecarrot.common.interceptor.LoginInterceptor"/>
-		</interceptor>
-	</interceptors>
-	
 	<!-- #14.1 jsonView Bean 및 viewResolver 등록 -->
 	<!-- 요청한 viewName과 실제bean이름을 매핑해주는 BeanNameViewResolver를 사용함. -->
     <!-- bean아이디는 viewResolver로 반드시 지정. 처리순서를 1로 우선처리되도록함. -->

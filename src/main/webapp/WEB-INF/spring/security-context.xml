@@ -17,12 +17,56 @@
 	
 	<!-- #6. HttpSecurity 설정 -->
 	<http auto-config="true">
+	
 <!-- 		<intercept-url pattern="/**" access="permitAll" /> -->
+		<intercept-url pattern="/member/memberDetail.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/member/memberUpdate.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/member/changePassword.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardEnroll.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardUpdate.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardDelete.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardLike.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardCommentInsert.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardCommentUpdate.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/board/boardCommentDelete.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/chat/chattingRoom.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/chat/chattingManagement.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/chat/chatEnroll.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/notice/noticeListGo.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/notice/noticeEnroll.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/notice/noticeUpdateForm.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/notice/deleteForm.do" access="isAuthenticated()"/>
+		<intercept-url pattern="/product/insertJjim.do" access="isAuthenticated()"/>
+	    <intercept-url pattern="/report/reportList.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/reportDetail.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/reportListGo.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/reportForm.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/reportEnroll.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/fileDownload.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/responseEntity/fileDownload.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/shop/myshopHead.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shop/reviewComment.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shop/deleteReviewComment.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/shopManageBase.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/enroll.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/getCode.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/productEnroll.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/selectProductInfo.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/manage.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/selectProductList.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/updateProductYnh.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/deleteProduct.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/transactionHistory.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/updateProduct.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/updateProductNewImage.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/selectTransactionList.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/selectProductJjimList.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/insertTransactionHistory.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/selectStoreReview.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/shopmanage/insertStoreReview.do" access="isAuthenticated()" />	    
 		<!-- <intercept-url pattern="/index.jsp" access="permitAll" /> forwarding 하는 path도 등록함.
 		<intercept-url pattern="/member/memberLogin.do" access="isAnonymous()" />
 		<intercept-url pattern="/member/**" access="isAuthenticated()"/>
-		<intercept-url pattern="/board/**" access="hasRole('USER')"/>
-	    <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />	    
 	    <intercept-url pattern="/**" access="isAuthenticated()" /> -->
 	    
 	    <!-- login-page="/member/memberLogin.do" GET 로그인폼페이지   -->
