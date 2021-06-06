@@ -19,13 +19,13 @@
     <div class="banner">
       <div class="slides">
         <div class="slide">
-          <img src="./resources/images/sample_banner1.jpg" alt="배너1">
+          <img src="./resources/images/mainlogo.png" alt="배너1">
         </div>
         <div class="slide">
-          <img src="./resources/images/sample_banner2.jpg" alt="배너2">
+          <img src="./resources/images/sample_banner1.jpg" alt="배너2">
         </div>
         <div class="slide">
-          <img src="./resources/images/sample_banner3.jpg" alt="배너3">
+          <img src="./resources/images/kh-banner.PNG" alt="배너3">
         </div>
       </div>
       <div class="slide-controls">
@@ -210,6 +210,7 @@
         dataType:"JSON",
         data:{
           locCode : $locationOption.val(),
+          category : $categoryOption.val(),
         },
         url:"${pageContext.request.contextPath}/search/mainProductList.do?${_csrf.parameterName}=${_csrf.token}",
         success: data =>{
@@ -232,7 +233,7 @@
           btnMore.className= "button-more";
           
           // $categoryOption.find('option:first').attr('selected');
-          $('#select-category option:eq(0)').prop('selected', true);  // 지역 선택시 카테고리 옵션 초기화
+          // $('#select-category option:eq(0)').prop('selected', true);  // 지역 선택시 카테고리 옵션 초기화
           
           while ( list_div.hasChildNodes() ) { 
             list_div.removeChild( list_div.firstChild ); 
