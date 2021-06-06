@@ -29,30 +29,39 @@ function productDetail(productId){
 	     <div class="row">
 	         
 	     </div>
-
-    <div class="col-lg-9" style="margin-left: 55px;">
-        <div class="content-product">
-            <div class="div-division" style="font-size: 20px;">검색결과 (${productListSize}개)
-			</div>
-			<div class="item-wrapper">
-				<div id = "product-list" class="product-list">
-					<c:forEach items="${productList}" var="product" varStatus="status">
-						<div class='item'>
-							<div class='item-photo' onclick='productDetail(${product.productId})'>
-								<img id='productImg' src='${pageContext.request.contextPath}/resources/upload/product/${productImageList[status.index].productImgRenamed}'>
-							</div>
-							<div class='item-detail'>
-								<div class='pro-title'>${product.productName}</div>
-								<div class='pro-price'>${product.productPrice}</div>
-							</div>
-						</div>
-					</c:forEach>
+	<c:choose>
+		<c:when test="${!empty productList}">
+	    <div class="col-lg-9" style="margin-left: 55px;">
+	        <div class="content-product">
+	            <div class="div-division" style="font-size: 20px;">검색결과 (${productListSize}개)
 				</div>
-			</div>
-			<div id="pagebar">${pageBar}</div>
-        </div>
-    </div>
-		</div>    
+				<div class="item-wrapper">
+					<div id = "product-list" class="product-list">
+						<c:forEach items="${productList}" var="product" varStatus="status">
+							<div class='item'>
+								<div class='item-photo' onclick='productDetail(${product.productId})'>
+									<img id='productImg' src='${pageContext.request.contextPath}/resources/upload/product/${productImageList[status.index].productImgRenamed}'>
+								</div>
+								<div class='item-detail'>
+									<div class='pro-title'>${product.productName}</div>
+									<div class='pro-price'>${product.productPrice}</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+				</div>
+				<div id="pagebar">${pageBar}</div>
+	        </div>
+	    </div>
+		</c:when>
+		<c:otherwise>
+		<div class="col-lg-9 mt-5 mb-5 pt-5 pb-5" style="margin-left: 55px; text-align:center;">
+			<h1>등록된 상품이 없습니다.</h1>
+		</div>
+		</c:otherwise>
+
+	</c:choose>
+	</div>    
 </section>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

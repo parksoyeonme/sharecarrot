@@ -8,7 +8,18 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+<style>
+#updateFrm{
+		width: 70%;
+		margin: 0 auto;
+		border: 1px solid green;
+		padding: 20px 20px;
+	}
+	#imgContainer{
+		width: 70%;
+		margin: 0 auto;
+	}
+</style>
   <form:form 
   		id="updateFrm"
   		method="post" 
@@ -32,16 +43,21 @@
 	  </c:forEach>
 	</select>
     <input type="text" name="memberId" id="memberId" value="<sec:authentication property="principal.username"/>" readonly>
+    <hr/>
+    
     <div class="mb-3">
       <input type="text" class="form-control" name="boardTitle" id="boardTitle" placeholder="제목을 입력해주세요" value='${board.boardTitle}' required>
     </div>
-    <div class="mb-3">
-      <textarea class="form-control" id="boardContent" name="boardContent" rows="3" placeholder="내용을 입력해주세요">${board.boardContent}</textarea>
+    <div class="form-floating mb-3">
+      <textarea class="form-control" id="boardContent" name="boardContent" rows="5" style="height: 300px;">${board.boardContent}</textarea>
+      <label for="boardContent" style="color: orange; resize: none;">회원들과 소중한 추억을 공유해보세요!</label>
     </div>
     <div class="" id="imgContainer">
       <input type="file" class="form-control" id="upfile0" name="upfile">
     </div>
-    <input type="button" class="btn btn-primary form-control mt-1" id="addImgBtn" value="이미지 추가 등록"/>
+    <div style="text-align: right;">
+    	<input type="button" class="btn btn-success btn-sm mt-3" id="addImgBtn" value="이미지 추가 등록"/>
+    </div>
     <div class='mt-5'>
     <h2>업로드 이미지</h2>
     <div id='uploadImg'>
@@ -54,7 +70,9 @@
     </div>
     </div>
     <hr />
-    <button class="btn btn-primary form-control">수정</button>
+      <div style="text-align: center;">
+   		<button class="btn btn-success" style="width:300px;">수정</button>
+   	</div>
   </form:form>
   <script>
     var index = $("#uploadImg img").length +1;
