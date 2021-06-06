@@ -100,19 +100,8 @@ public class ChattingController {
 	    String loginMemberId = ((UserDetails) principal).getUsername();
 	    String shopId = shopService.selectShopId(loginMemberId);
 		List<ChattingRoom> chattingRoomList = chattingService.selectRoomList(loginMemberId);
-		List<String> profileList = new ArrayList<String>();
-		List<String> lastChatList = new ArrayList<String>();
-		
-		Iterator<ChattingRoom> iter = chattingRoomList.iterator();
-		while(iter.hasNext()) {
-			ChattingRoom chattingRoom = iter.next();
-			profileList.add(memberService.selectProfile(chattingRoom.getRoomBuyerId()));  		
-			lastChatList.add(chattingService.selectLastChat(chattingRoom.getRoomNo()));
-		}
-		
+				
 		model.addAttribute("chattingRoomList", chattingRoomList);
-		model.addAttribute("lastChatList", lastChatList);
-		model.addAttribute("profileList", profileList);
 		model.addAttribute("shopId", shopId);
 	}
 	
