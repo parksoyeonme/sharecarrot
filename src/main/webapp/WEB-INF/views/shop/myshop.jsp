@@ -31,7 +31,7 @@
 		                </c:otherwise>
 	                </c:choose>
                 </div>
-                <div class="col-lg-7" style="width: 590px; height: 220px; background-color: #ef9a0f;">
+                <div class="col-lg-7" style="width: 590px; height: 220px;">
                     <ul class="amount">
                         <li>
                             <div style="font-size: 36px; font-weight: bold;">
