@@ -50,7 +50,7 @@ $(() => {
 </script>
 <section id="board-container" class="container">
 	<div style="text-align:center; margin-top:30px;">
-		<p class="fs-2 fw-bold text-center">거래 내역</p>
+		<p class="fs-2 fw-bold text-center">신고 내역</p>
 	</div>
 	<div class="searchlist">                                             
 		<input type="date" style="height:30px;" id="searchDate" />
