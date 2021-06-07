@@ -40,8 +40,8 @@
 	    <intercept-url pattern="/report/reportList.do" access="hasRole('ADMIN')" />	    
 	    <intercept-url pattern="/report/reportDetail.do" access="hasRole('ADMIN')" />	    
 	    <intercept-url pattern="/report/reportListGo.do" access="hasRole('ADMIN')" />	    
-	    <intercept-url pattern="/report/reportForm.do" access="hasRole('ADMIN')" />	    
-	    <intercept-url pattern="/report/reportEnroll.do" access="hasRole('ADMIN')" />	    
+	    <intercept-url pattern="/report/reportForm.do" access="isAuthenticated()" />	    
+	    <intercept-url pattern="/report/reportEnroll.do" access="isAuthenticated()" />	    
 	    <intercept-url pattern="/report/fileDownload.do" access="hasRole('ADMIN')" />	    
 	    <intercept-url pattern="/report/responseEntity/fileDownload.do" access="hasRole('ADMIN')" />	    
 	    <intercept-url pattern="/shop/myshopHead.do" access="isAuthenticated()" />	    
