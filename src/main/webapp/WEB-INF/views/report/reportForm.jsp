@@ -55,8 +55,12 @@
         }
         return true;
     }
-    function cancel(shopId) {
+    /* function cancel(shopId) {
         location.href = "${pageContext.request.contextPath}/shop/myshop.do?shopId=" + shopId;
+    } */
+    function cancel(){
+    	history.go(-1);
+    	
     }
 </script>
 <div id="board-container" class="row mx-3 mx-auto text-center">
@@ -114,7 +118,7 @@
            	<div class="row justify-content-end">
                <div class="col-2">
                    <input type="submit" class="btn btn-warning" style="margin-left: -76px;" value="신고등록">
-                   <input type="button" onclick="cancel('${shop.shopId}');" class="btn btn-warning" value="취소">
+                   <input type="button" onclick="cancel();" class="btn btn-warning" value="취소">
                </div>
             </div>
         </form>
