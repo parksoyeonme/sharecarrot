@@ -30,8 +30,12 @@ function noticeValidate(){
 	return true;
 }
 
-function cancel(){
+/* function cancel(){
 	location.href=	"${pageContext.request.contextPath}/notice/noticeList.do";
+} */
+function cancel(){
+	history.go(-1);
+	
 }
 
 </script>
